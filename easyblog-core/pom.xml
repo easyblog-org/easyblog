@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>top.easyblog</groupId>
-	<artifactId>easyblog-service</artifactId>
+	<artifactId>easyblog-core</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>easyblog-service</name>
+	<name>easyblog-core</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -30,8 +30,12 @@
         </dependency>
 		<dependency>
             <groupId>top.easyblog</groupId>
+            <artifactId>easyblog-service</artifactId>
+        </dependency>
+		<dependency>
+            <groupId>top.easyblog</groupId>
             <artifactId>easyblog-support</artifactId>
-        </dependency> 
+        </dependency>
 		<dependency>
             <groupId>top.easyblog</groupId>
             <artifactId>easyblog-dao</artifactId>
@@ -73,7 +77,6 @@
             </plugin>
         </plugins>
     </build>
-
 
 
 </project>
