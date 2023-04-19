@@ -1,13 +1,15 @@
 server:
   port: 8001
 
-
 #api验签有关配置
 application:
   app-id: 10086
   secret: a5fbe495127e41da9c2b7f7f6609e39c
 
+
+---
 spring:
+  profiles: dev
   application:
     name: easyblog
   datasource:
@@ -25,4 +27,3 @@ spring:
 
 urls:
   demo: http://127.0.0.1:8001
-debug: true
