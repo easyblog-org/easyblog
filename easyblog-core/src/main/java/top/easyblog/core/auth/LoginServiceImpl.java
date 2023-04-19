@@ -1,7 +1,9 @@
-package top.easyblog.core.service.auth;
+package top.easyblog.core.auth;
 
-import top.easyblog.service.service.auth.LoginService;
+import org.springframework.stereotype.Service;
+import top.easyblog.service.auth.LoginService;
 
-public class LoginServiceImpl implements LoginService{
+@Service
+public class LoginServiceImpl implements LoginService {
 
 }
