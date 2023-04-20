@@ -152,11 +152,11 @@
                 <version>${mybatis.spring.boot.version}</version>
             </dependency>
             <!--NACOS-->
-            <!-- <dependency>
+            <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
                 <version>${nacos-config-verion}</version>
-            </dependency> -->
+            </dependency>
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
