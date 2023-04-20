@@ -7,9 +7,7 @@ application:
   secret: a5fbe495127e41da9c2b7f7f6609e39c
 
 
----
 spring:
-  profiles: dev
   application:
     name: easyblog
   datasource:
