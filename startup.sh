@@ -156,8 +156,8 @@ runOnReal(){
      kill $PID
      echo ">>>>>> Stop application already running on port $PID successfully!"
   fi
-  nohup java -jar ${JVM_PARAMS} ${JAVA_OPTS} ${JAR_FILE_PATH} &
-  echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/${ARTIFACT}/logs/info.log"
+  nohup java -jar ${JVM_PARAMS} ${JAVA_OPTS} ${JAR_FILE_PATH} >${LOG_BASE_DIR}/server.log 2>&1 &
+  echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/server.log"
 }
 
 
