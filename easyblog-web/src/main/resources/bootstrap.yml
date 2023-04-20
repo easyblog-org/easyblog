@@ -1,2 +1,29 @@
 server:
   port: 8001
+
+#api验签有关配置
+application:
+  app-id: 10086
+  secret: a5fbe495127e41da9c2b7f7f6609e39c
+
+
+---
+spring:
+  profiles: dev
+  application:
+    name: easyblog
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://117.50.189.250:3306/easyblog_dev?autoReconnect=true&useSSL=false&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: easyblog_dev_rw
+    password: 5TykjGsjuqQ
+#  redis:
+#    host: 47.99.161.205
+#    port: 63790
+#    password: 5Ce1wjvX2pHQ6ftAD5bX
+
+
+
+urls:
+  demo: http://127.0.0.1:8001
