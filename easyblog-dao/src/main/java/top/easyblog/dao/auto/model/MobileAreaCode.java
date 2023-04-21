@@ -4,22 +4,18 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class User {
+public class MobileAreaCode {
     private Long id;
 
     private String code;
 
-    private String nickName;
+    private String crownCode;
 
-    private Integer integration;
+    private String countryCode;
 
-    private Integer level;
+    private String areaCode;
 
-    private Integer visit;
-
-    private Integer active;
-
-    private String introduction;
+    private String areaName;
 
     private Date createTime;
 
