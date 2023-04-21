@@ -4,7 +4,7 @@
     <!--彩色日志输出格式-->
     <property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} [%clr(%level){blue}] IP=%X{IP} RId=%X{RequestId} TxId=%X{TxId} %clr([%thread]){orange} %clr(%logger){cyan}[%clr(${PID}){magenta}]: %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
     <!--非彩色日志输出格式-->
-    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" />
+    <property name="PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] IP=%X{IP} RId=%X{RequestId} TxId=%X{TxId} [%thread] %logger{36}[${PID}]: - %msg%n" />
     <!--dev文件路径：src同级目录logs,如果上级目录不存在会自动创建-->
     <property name="DEV_FILE_PATH" value="/data/logs" />
     <!-- pro文件路径 -->
@@ -20,7 +20,7 @@
     <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <!--格式化输出：%d表示日期，%thread表示线程，%-5level：级别从左显示五个字符宽度，%logger{36}：logger是class的全名,后面的数字代表限制最长的字符，%msg：日志消息，%n换行符-->
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>${PATTERN}</pattern>
         </encoder>
         <!--滚动策略按照时间滚动-->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -43,7 +43,7 @@
             <level>ERROR</level>
         </filter>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>${PATTERN}</pattern>
         </encoder>
         <!--输出日志到src同级目录logs中的error.log文件中-->
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
