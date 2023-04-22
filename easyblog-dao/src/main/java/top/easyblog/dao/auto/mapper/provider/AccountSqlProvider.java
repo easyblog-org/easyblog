@@ -1,51 +1,59 @@
-package top.easyblog.dao.auto.mapper;
+package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.MobileAreaCode;
-import top.easyblog.dao.auto.model.MobileAreaCodeExample.Criteria;
-import top.easyblog.dao.auto.model.MobileAreaCodeExample.Criterion;
-import top.easyblog.dao.auto.model.MobileAreaCodeExample;
+import top.easyblog.dao.auto.model.Account;
+import top.easyblog.dao.auto.model.example.AccountExample.Criteria;
+import top.easyblog.dao.auto.model.example.AccountExample.Criterion;
+import top.easyblog.dao.auto.model.example.AccountExample;
 
-public class MobileAreaCodeSqlProvider {
+public class AccountSqlProvider {
 
-    public String countByExample(MobileAreaCodeExample example) {
+    public String countByExample(AccountExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("mobile_area_code");
+        sql.SELECT("count(*)").FROM("account");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(MobileAreaCodeExample example) {
+    public String deleteByExample(AccountExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("mobile_area_code");
+        sql.DELETE_FROM("account");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(MobileAreaCode record) {
+    public String insertSelective(Account record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("mobile_area_code");
+        sql.INSERT_INTO("account");
         
         if (record.getCode() != null) {
             sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getCrownCode() != null) {
-            sql.VALUES("crown_code", "#{crownCode,jdbcType=VARCHAR}");
+        if (record.getUserCode() != null) {
+            sql.VALUES("user_code", "#{userCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getCountryCode() != null) {
-            sql.VALUES("country_code", "#{countryCode,jdbcType=VARCHAR}");
+        if (record.getIdentityType() != null) {
+            sql.VALUES("identity_type", "#{identityType,jdbcType=INTEGER}");
         }
         
-        if (record.getAreaCode() != null) {
-            sql.VALUES("area_code", "#{areaCode,jdbcType=VARCHAR}");
+        if (record.getIdentifier() != null) {
+            sql.VALUES("identifier", "#{identifier,jdbcType=VARCHAR}");
         }
         
-        if (record.getAreaName() != null) {
-            sql.VALUES("area_name", "#{areaName,jdbcType=VARCHAR}");
+        if (record.getCredential() != null) {
+            sql.VALUES("credential", "#{credential,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVerified() != null) {
+            sql.VALUES("verified", "#{verified,jdbcType=INTEGER}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.VALUES("status", "#{status,jdbcType=INTEGER}");
         }
         
         if (record.getCreateTime() != null) {
@@ -59,7 +67,7 @@ public class MobileAreaCodeSqlProvider {
         return sql.toString();
     }
 
-    public String selectByExample(MobileAreaCodeExample example) {
+    public String selectByExample(AccountExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
@@ -67,13 +75,15 @@ public class MobileAreaCodeSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("code");
-        sql.SELECT("crown_code");
-        sql.SELECT("country_code");
-        sql.SELECT("area_code");
-        sql.SELECT("area_name");
+        sql.SELECT("user_code");
+        sql.SELECT("identity_type");
+        sql.SELECT("identifier");
+        sql.SELECT("credential");
+        sql.SELECT("verified");
+        sql.SELECT("status");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("mobile_area_code");
+        sql.FROM("account");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -84,11 +94,11 @@ public class MobileAreaCodeSqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        MobileAreaCode record = (MobileAreaCode) parameter.get("record");
-        MobileAreaCodeExample example = (MobileAreaCodeExample) parameter.get("example");
+        Account record = (Account) parameter.get("record");
+        AccountExample example = (AccountExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("mobile_area_code");
+        sql.UPDATE("account");
         
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
@@ -98,20 +108,28 @@ public class MobileAreaCodeSqlProvider {
             sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
-        if (record.getCrownCode() != null) {
-            sql.SET("crown_code = #{record.crownCode,jdbcType=VARCHAR}");
+        if (record.getUserCode() != null) {
+            sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getCountryCode() != null) {
-            sql.SET("country_code = #{record.countryCode,jdbcType=VARCHAR}");
+        if (record.getIdentityType() != null) {
+            sql.SET("identity_type = #{record.identityType,jdbcType=INTEGER}");
         }
         
-        if (record.getAreaCode() != null) {
-            sql.SET("area_code = #{record.areaCode,jdbcType=VARCHAR}");
+        if (record.getIdentifier() != null) {
+            sql.SET("identifier = #{record.identifier,jdbcType=VARCHAR}");
         }
         
-        if (record.getAreaName() != null) {
-            sql.SET("area_name = #{record.areaName,jdbcType=VARCHAR}");
+        if (record.getCredential() != null) {
+            sql.SET("credential = #{record.credential,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVerified() != null) {
+            sql.SET("verified = #{record.verified,jdbcType=INTEGER}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("status = #{record.status,jdbcType=INTEGER}");
         }
         
         if (record.getCreateTime() != null) {
@@ -128,44 +146,54 @@ public class MobileAreaCodeSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("mobile_area_code");
+        sql.UPDATE("account");
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("crown_code = #{record.crownCode,jdbcType=VARCHAR}");
-        sql.SET("country_code = #{record.countryCode,jdbcType=VARCHAR}");
-        sql.SET("area_code = #{record.areaCode,jdbcType=VARCHAR}");
-        sql.SET("area_name = #{record.areaName,jdbcType=VARCHAR}");
+        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        sql.SET("identity_type = #{record.identityType,jdbcType=INTEGER}");
+        sql.SET("identifier = #{record.identifier,jdbcType=VARCHAR}");
+        sql.SET("credential = #{record.credential,jdbcType=VARCHAR}");
+        sql.SET("verified = #{record.verified,jdbcType=INTEGER}");
+        sql.SET("status = #{record.status,jdbcType=INTEGER}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        MobileAreaCodeExample example = (MobileAreaCodeExample) parameter.get("example");
+        AccountExample example = (AccountExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(MobileAreaCode record) {
+    public String updateByPrimaryKeySelective(Account record) {
         SQL sql = new SQL();
-        sql.UPDATE("mobile_area_code");
+        sql.UPDATE("account");
         
         if (record.getCode() != null) {
             sql.SET("code = #{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getCrownCode() != null) {
-            sql.SET("crown_code = #{crownCode,jdbcType=VARCHAR}");
+        if (record.getUserCode() != null) {
+            sql.SET("user_code = #{userCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getCountryCode() != null) {
-            sql.SET("country_code = #{countryCode,jdbcType=VARCHAR}");
+        if (record.getIdentityType() != null) {
+            sql.SET("identity_type = #{identityType,jdbcType=INTEGER}");
         }
         
-        if (record.getAreaCode() != null) {
-            sql.SET("area_code = #{areaCode,jdbcType=VARCHAR}");
+        if (record.getIdentifier() != null) {
+            sql.SET("identifier = #{identifier,jdbcType=VARCHAR}");
         }
         
-        if (record.getAreaName() != null) {
-            sql.SET("area_name = #{areaName,jdbcType=VARCHAR}");
+        if (record.getCredential() != null) {
+            sql.SET("credential = #{credential,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getVerified() != null) {
+            sql.SET("verified = #{verified,jdbcType=INTEGER}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("status = #{status,jdbcType=INTEGER}");
         }
         
         if (record.getCreateTime() != null) {
@@ -181,7 +209,7 @@ public class MobileAreaCodeSqlProvider {
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, MobileAreaCodeExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, AccountExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

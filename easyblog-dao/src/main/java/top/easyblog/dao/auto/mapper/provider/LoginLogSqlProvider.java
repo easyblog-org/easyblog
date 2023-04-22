@@ -1,47 +1,67 @@
-package top.easyblog.dao.auto.mapper;
+package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.Roles;
-import top.easyblog.dao.auto.model.RolesExample.Criteria;
-import top.easyblog.dao.auto.model.RolesExample.Criterion;
-import top.easyblog.dao.auto.model.RolesExample;
+import top.easyblog.dao.auto.model.LoginLog;
+import top.easyblog.dao.auto.model.example.LoginLogExample.Criteria;
+import top.easyblog.dao.auto.model.example.LoginLogExample.Criterion;
+import top.easyblog.dao.auto.model.example.LoginLogExample;
 
-public class RolesSqlProvider {
+public class LoginLogSqlProvider {
 
-    public String countByExample(RolesExample example) {
+    public String countByExample(LoginLogExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("roles");
+        sql.SELECT("count(*)").FROM("login_log");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(RolesExample example) {
+    public String deleteByExample(LoginLogExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("roles");
+        sql.DELETE_FROM("login_log");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(Roles record) {
+    public String insertSelective(LoginLog record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("roles");
+        sql.INSERT_INTO("login_log");
         
         if (record.getCode() != null) {
             sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getName() != null) {
-            sql.VALUES("name", "#{name,jdbcType=SMALLINT}");
+        if (record.getUserCode() != null) {
+            sql.VALUES("user_code", "#{userCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getDesc() != null) {
-            sql.VALUES("desc", "#{desc,jdbcType=VARCHAR}");
+        if (record.getAccountCode() != null) {
+            sql.VALUES("account_code", "#{accountCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getEnabled() != null) {
-            sql.VALUES("enabled", "#{enabled,jdbcType=BIT}");
+        if (record.getToken() != null) {
+            sql.VALUES("token", "#{token,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.VALUES("status", "#{status,jdbcType=INTEGER}");
+        }
+        
+        if (record.getIpAddress() != null) {
+            sql.VALUES("ip_address", "#{ipAddress,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDevice() != null) {
+            sql.VALUES("device", "#{device,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOperationSystem() != null) {
+            sql.VALUES("operation_system", "#{operationSystem,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getLocation() != null) {
+            sql.VALUES("location", "#{location,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -55,7 +75,7 @@ public class RolesSqlProvider {
         return sql.toString();
     }
 
-    public String selectByExample(RolesExample example) {
+    public String selectByExample(LoginLogExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
@@ -63,27 +83,39 @@ public class RolesSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("code");
-        sql.SELECT("name");
-        sql.SELECT("desc");
-        sql.SELECT("enabled");
+        sql.SELECT("user_code");
+        sql.SELECT("account_code");
+        sql.SELECT("token");
+        sql.SELECT("status");
+        sql.SELECT("ip_address");
+        sql.SELECT("device");
+        sql.SELECT("operation_system");
+        sql.SELECT("location");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("roles");
+        sql.FROM("login_log");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
-        return sql.toString();
+
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if (example != null && example.getOffset() != null && example.getLimit() >= 0) {
+            sqlBuilder.append(" LIMIT ").append(example.getOffset());
+            if (example.getLimit() != null && example.getLimit() > 0) {
+                sqlBuilder.append(",").append(example.getLimit());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        Roles record = (Roles) parameter.get("record");
-        RolesExample example = (RolesExample) parameter.get("example");
+        LoginLog record = (LoginLog) parameter.get("record");
+        LoginLogExample example = (LoginLogExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("roles");
+        sql.UPDATE("login_log");
         
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
@@ -93,16 +125,36 @@ public class RolesSqlProvider {
             sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
-        if (record.getName() != null) {
-            sql.SET("name = #{record.name,jdbcType=SMALLINT}");
+        if (record.getUserCode() != null) {
+            sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getDesc() != null) {
-            sql.SET("desc = #{record.desc,jdbcType=VARCHAR}");
+        if (record.getAccountCode() != null) {
+            sql.SET("account_code = #{record.accountCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getEnabled() != null) {
-            sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
+        if (record.getToken() != null) {
+            sql.SET("token = #{record.token,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("status = #{record.status,jdbcType=INTEGER}");
+        }
+        
+        if (record.getIpAddress() != null) {
+            sql.SET("ip_address = #{record.ipAddress,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDevice() != null) {
+            sql.SET("device = #{record.device,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOperationSystem() != null) {
+            sql.SET("operation_system = #{record.operationSystem,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getLocation() != null) {
+            sql.SET("location = #{record.location,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -119,39 +171,64 @@ public class RolesSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("roles");
+        sql.UPDATE("login_log");
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("name = #{record.name,jdbcType=SMALLINT}");
-        sql.SET("desc = #{record.desc,jdbcType=VARCHAR}");
-        sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
+        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        sql.SET("account_code = #{record.accountCode,jdbcType=VARCHAR}");
+        sql.SET("token = #{record.token,jdbcType=VARCHAR}");
+        sql.SET("status = #{record.status,jdbcType=INTEGER}");
+        sql.SET("ip_address = #{record.ipAddress,jdbcType=VARCHAR}");
+        sql.SET("device = #{record.device,jdbcType=VARCHAR}");
+        sql.SET("operation_system = #{record.operationSystem,jdbcType=VARCHAR}");
+        sql.SET("location = #{record.location,jdbcType=VARCHAR}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        RolesExample example = (RolesExample) parameter.get("example");
+        LoginLogExample example = (LoginLogExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(Roles record) {
+    public String updateByPrimaryKeySelective(LoginLog record) {
         SQL sql = new SQL();
-        sql.UPDATE("roles");
+        sql.UPDATE("login_log");
         
         if (record.getCode() != null) {
             sql.SET("code = #{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getName() != null) {
-            sql.SET("name = #{name,jdbcType=SMALLINT}");
+        if (record.getUserCode() != null) {
+            sql.SET("user_code = #{userCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getDesc() != null) {
-            sql.SET("desc = #{desc,jdbcType=VARCHAR}");
+        if (record.getAccountCode() != null) {
+            sql.SET("account_code = #{accountCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getEnabled() != null) {
-            sql.SET("enabled = #{enabled,jdbcType=BIT}");
+        if (record.getToken() != null) {
+            sql.SET("token = #{token,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getStatus() != null) {
+            sql.SET("status = #{status,jdbcType=INTEGER}");
+        }
+        
+        if (record.getIpAddress() != null) {
+            sql.SET("ip_address = #{ipAddress,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDevice() != null) {
+            sql.SET("device = #{device,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getOperationSystem() != null) {
+            sql.SET("operation_system = #{operationSystem,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getLocation() != null) {
+            sql.SET("location = #{location,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -167,7 +244,7 @@ public class RolesSqlProvider {
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, RolesExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, LoginLogExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

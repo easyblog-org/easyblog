@@ -15,13 +15,14 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+import top.easyblog.dao.auto.mapper.provider.UserRoleRelationshipSqlProvider;
 import top.easyblog.dao.auto.model.UserRoleRelationship;
-import top.easyblog.dao.auto.model.UserRoleRelationshipExample;
+import top.easyblog.dao.auto.model.example.UserRoleRelationshipExample;
 
 @Mapper
 @Repository
 public interface UserRoleRelationshipMapper {
-    @SelectProvider(type=UserRoleRelationshipSqlProvider.class, method="countByExample")
+    @SelectProvider(type= UserRoleRelationshipSqlProvider.class, method="countByExample")
     long countByExample(UserRoleRelationshipExample example);
 
     @DeleteProvider(type=UserRoleRelationshipSqlProvider.class, method="deleteByExample")

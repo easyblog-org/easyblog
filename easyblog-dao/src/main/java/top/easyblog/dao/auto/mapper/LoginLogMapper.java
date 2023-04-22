@@ -16,13 +16,14 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+import top.easyblog.dao.auto.mapper.provider.LoginLogSqlProvider;
 import top.easyblog.dao.auto.model.LoginLog;
-import top.easyblog.dao.auto.model.LoginLogExample;
+import top.easyblog.dao.auto.model.example.LoginLogExample;
 
 @Mapper
 @Repository
 public interface LoginLogMapper {
-    @SelectProvider(type=LoginLogSqlProvider.class, method="countByExample")
+    @SelectProvider(type= LoginLogSqlProvider.class, method="countByExample")
     long countByExample(LoginLogExample example);
 
     @DeleteProvider(type=LoginLogSqlProvider.class, method="deleteByExample")

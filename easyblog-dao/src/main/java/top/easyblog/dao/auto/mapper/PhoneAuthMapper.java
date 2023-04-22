@@ -16,13 +16,14 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+import top.easyblog.dao.auto.mapper.provider.PhoneAuthSqlProvider;
 import top.easyblog.dao.auto.model.PhoneAuth;
-import top.easyblog.dao.auto.model.PhoneAuthExample;
+import top.easyblog.dao.auto.model.example.PhoneAuthExample;
 
 @Mapper
 @Repository
 public interface PhoneAuthMapper {
-    @SelectProvider(type=PhoneAuthSqlProvider.class, method="countByExample")
+    @SelectProvider(type= PhoneAuthSqlProvider.class, method="countByExample")
     long countByExample(PhoneAuthExample example);
 
     @DeleteProvider(type=PhoneAuthSqlProvider.class, method="deleteByExample")

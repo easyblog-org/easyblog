@@ -16,13 +16,14 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+import top.easyblog.dao.auto.mapper.provider.RolesSqlProvider;
 import top.easyblog.dao.auto.model.Roles;
-import top.easyblog.dao.auto.model.RolesExample;
+import top.easyblog.dao.auto.model.example.RolesExample;
 
 @Mapper
 @Repository
 public interface RolesMapper {
-    @SelectProvider(type=RolesSqlProvider.class, method="countByExample")
+    @SelectProvider(type= RolesSqlProvider.class, method="countByExample")
     long countByExample(RolesExample example);
 
     @DeleteProvider(type=RolesSqlProvider.class, method="deleteByExample")

@@ -16,13 +16,13 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+import top.easyblog.dao.auto.mapper.provider.UserSqlProvider;
 import top.easyblog.dao.auto.model.User;
-import top.easyblog.dao.auto.model.UserExample;
 
 @Mapper
 @Repository
 public interface UserMapper {
-    @SelectProvider(type=UserSqlProvider.class, method="countByExample")
+    @SelectProvider(type= UserSqlProvider.class, method="countByExample")
     long countByExample(UserExample example);
 
     @DeleteProvider(type=UserSqlProvider.class, method="deleteByExample")

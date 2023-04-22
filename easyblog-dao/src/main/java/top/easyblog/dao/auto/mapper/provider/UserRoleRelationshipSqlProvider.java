@@ -1,159 +1,146 @@
-package top.easyblog.dao.auto.mapper;
+package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.PhoneAuth;
-import top.easyblog.dao.auto.model.PhoneAuthExample.Criteria;
-import top.easyblog.dao.auto.model.PhoneAuthExample.Criterion;
-import top.easyblog.dao.auto.model.PhoneAuthExample;
+import top.easyblog.dao.auto.model.UserRoleRelationship;
+import top.easyblog.dao.auto.model.example.UserRoleRelationshipExample.Criteria;
+import top.easyblog.dao.auto.model.example.UserRoleRelationshipExample.Criterion;
+import top.easyblog.dao.auto.model.example.UserRoleRelationshipExample;
 
-public class PhoneAuthSqlProvider {
+public class UserRoleRelationshipSqlProvider {
 
-    public String countByExample(PhoneAuthExample example) {
+    public String countByExample(UserRoleRelationshipExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("phone_auth");
+        sql.SELECT("count(*)").FROM("user_role_relationship");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(PhoneAuthExample example) {
+    public String deleteByExample(UserRoleRelationshipExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("phone_auth");
+        sql.DELETE_FROM("user_role_relationship");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(PhoneAuth record) {
+    public String insertSelective(UserRoleRelationship record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("phone_auth");
-        
-        if (record.getCode() != null) {
-            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
+        sql.INSERT_INTO("user_role_relationship");
+
+        if (record.getUserId() != null) {
+            sql.VALUES("user_id", "#{userId,jdbcType=INTEGER}");
         }
-        
-        if (record.getMobileAreaCodeId() != null) {
-            sql.VALUES("mobile_area_code_id", "#{mobileAreaCodeId,jdbcType=VARCHAR}");
+
+        if (record.getRoleId() != null) {
+            sql.VALUES("role_id", "#{roleId,jdbcType=INTEGER}");
         }
-        
-        if (record.getPhone() != null) {
-            sql.VALUES("phone", "#{phone,jdbcType=VARCHAR}");
+
+        if (record.getEnabled() != null) {
+            sql.VALUES("enabled", "#{enabled,jdbcType=BIT}");
         }
-        
+
         if (record.getCreateTime() != null) {
             sql.VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
-        
+
         return sql.toString();
     }
 
-    public String selectByExample(PhoneAuthExample example) {
+    public String selectByExample(UserRoleRelationshipExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("id");
+            sql.SELECT_DISTINCT("user_id");
         } else {
-            sql.SELECT("id");
+            sql.SELECT("user_id");
         }
-        sql.SELECT("code");
-        sql.SELECT("mobile_area_code_id");
-        sql.SELECT("phone");
+        sql.SELECT("role_id");
+        sql.SELECT("enabled");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("phone_auth");
+        sql.FROM("user_role_relationship");
         applyWhere(sql, example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
+
         return sql.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        PhoneAuth record = (PhoneAuth) parameter.get("record");
-        PhoneAuthExample example = (PhoneAuthExample) parameter.get("example");
-        
+        UserRoleRelationship record = (UserRoleRelationship) parameter.get("record");
+        UserRoleRelationshipExample example = (UserRoleRelationshipExample) parameter.get("example");
+
         SQL sql = new SQL();
-        sql.UPDATE("phone_auth");
-        
-        if (record.getId() != null) {
-            sql.SET("id = #{record.id,jdbcType=BIGINT}");
+        sql.UPDATE("user_role_relationship");
+
+        if (record.getUserId() != null) {
+            sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
         }
-        
-        if (record.getCode() != null) {
-            sql.SET("code = #{record.code,jdbcType=VARCHAR}");
+
+        if (record.getRoleId() != null) {
+            sql.SET("role_id = #{record.roleId,jdbcType=INTEGER}");
         }
-        
-        if (record.getMobileAreaCodeId() != null) {
-            sql.SET("mobile_area_code_id = #{record.mobileAreaCodeId,jdbcType=VARCHAR}");
+
+        if (record.getEnabled() != null) {
+            sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
         }
-        
-        if (record.getPhone() != null) {
-            sql.SET("phone = #{record.phone,jdbcType=VARCHAR}");
-        }
-        
+
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
-        
+
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("phone_auth");
-        
-        sql.SET("id = #{record.id,jdbcType=BIGINT}");
-        sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("mobile_area_code_id = #{record.mobileAreaCodeId,jdbcType=VARCHAR}");
-        sql.SET("phone = #{record.phone,jdbcType=VARCHAR}");
+        sql.UPDATE("user_role_relationship");
+
+        sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
+        sql.SET("role_id = #{record.roleId,jdbcType=INTEGER}");
+        sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        
-        PhoneAuthExample example = (PhoneAuthExample) parameter.get("example");
+
+        UserRoleRelationshipExample example = (UserRoleRelationshipExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(PhoneAuth record) {
+    public String updateByPrimaryKeySelective(UserRoleRelationship record) {
         SQL sql = new SQL();
-        sql.UPDATE("phone_auth");
-        
-        if (record.getCode() != null) {
-            sql.SET("code = #{code,jdbcType=VARCHAR}");
+        sql.UPDATE("user_role_relationship");
+
+        if (record.getEnabled() != null) {
+            sql.SET("enabled = #{enabled,jdbcType=BIT}");
         }
-        
-        if (record.getMobileAreaCodeId() != null) {
-            sql.SET("mobile_area_code_id = #{mobileAreaCodeId,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getPhone() != null) {
-            sql.SET("phone = #{phone,jdbcType=VARCHAR}");
-        }
-        
+
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
-        
-        sql.WHERE("id = #{id,jdbcType=BIGINT}");
-        
+
+        sql.WHERE("user_id = #{userId,jdbcType=INTEGER}");
+        sql.WHERE("role_id = #{roleId,jdbcType=INTEGER}");
+
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, PhoneAuthExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, UserRoleRelationshipExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

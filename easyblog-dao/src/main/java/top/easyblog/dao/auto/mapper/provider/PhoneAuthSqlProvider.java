@@ -1,67 +1,43 @@
-package top.easyblog.dao.auto.mapper;
+package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.LoginLog;
-import top.easyblog.dao.auto.model.LoginLogExample.Criteria;
-import top.easyblog.dao.auto.model.LoginLogExample.Criterion;
-import top.easyblog.dao.auto.model.LoginLogExample;
+import top.easyblog.dao.auto.model.PhoneAuth;
+import top.easyblog.dao.auto.model.example.PhoneAuthExample.Criteria;
+import top.easyblog.dao.auto.model.example.PhoneAuthExample.Criterion;
+import top.easyblog.dao.auto.model.example.PhoneAuthExample;
 
-public class LoginLogSqlProvider {
+public class PhoneAuthSqlProvider {
 
-    public String countByExample(LoginLogExample example) {
+    public String countByExample(PhoneAuthExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("login_log");
+        sql.SELECT("count(*)").FROM("phone_auth");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(LoginLogExample example) {
+    public String deleteByExample(PhoneAuthExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("login_log");
+        sql.DELETE_FROM("phone_auth");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(LoginLog record) {
+    public String insertSelective(PhoneAuth record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("login_log");
+        sql.INSERT_INTO("phone_auth");
         
         if (record.getCode() != null) {
             sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.VALUES("user_code", "#{userCode,jdbcType=VARCHAR}");
+        if (record.getMobileAreaCodeId() != null) {
+            sql.VALUES("mobile_area_code_id", "#{mobileAreaCodeId,jdbcType=VARCHAR}");
         }
         
-        if (record.getAccountCode() != null) {
-            sql.VALUES("account_code", "#{accountCode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getToken() != null) {
-            sql.VALUES("token", "#{token,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getStatus() != null) {
-            sql.VALUES("status", "#{status,jdbcType=INTEGER}");
-        }
-        
-        if (record.getIpAddress() != null) {
-            sql.VALUES("ip_address", "#{ipAddress,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getDevice() != null) {
-            sql.VALUES("device", "#{device,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getOperationSystem() != null) {
-            sql.VALUES("operation_system", "#{operationSystem,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLocation() != null) {
-            sql.VALUES("location", "#{location,jdbcType=VARCHAR}");
+        if (record.getPhone() != null) {
+            sql.VALUES("phone", "#{phone,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -75,7 +51,7 @@ public class LoginLogSqlProvider {
         return sql.toString();
     }
 
-    public String selectByExample(LoginLogExample example) {
+    public String selectByExample(PhoneAuthExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
@@ -83,32 +59,33 @@ public class LoginLogSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("code");
-        sql.SELECT("user_code");
-        sql.SELECT("account_code");
-        sql.SELECT("token");
-        sql.SELECT("status");
-        sql.SELECT("ip_address");
-        sql.SELECT("device");
-        sql.SELECT("operation_system");
-        sql.SELECT("location");
+        sql.SELECT("mobile_area_code_id");
+        sql.SELECT("phone");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("login_log");
+        sql.FROM("phone_auth");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
-        return sql.toString();
+
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if (example != null && example.getOffset() != null && example.getLimit() >= 0) {
+            sqlBuilder.append(" LIMIT ").append(example.getOffset());
+            if (example.getLimit() != null && example.getLimit() > 0) {
+                sqlBuilder.append(",").append(example.getLimit());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        LoginLog record = (LoginLog) parameter.get("record");
-        LoginLogExample example = (LoginLogExample) parameter.get("example");
+        PhoneAuth record = (PhoneAuth) parameter.get("record");
+        PhoneAuthExample example = (PhoneAuthExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("login_log");
+        sql.UPDATE("phone_auth");
         
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
@@ -118,36 +95,12 @@ public class LoginLogSqlProvider {
             sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        if (record.getMobileAreaCodeId() != null) {
+            sql.SET("mobile_area_code_id = #{record.mobileAreaCodeId,jdbcType=VARCHAR}");
         }
         
-        if (record.getAccountCode() != null) {
-            sql.SET("account_code = #{record.accountCode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getToken() != null) {
-            sql.SET("token = #{record.token,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getStatus() != null) {
-            sql.SET("status = #{record.status,jdbcType=INTEGER}");
-        }
-        
-        if (record.getIpAddress() != null) {
-            sql.SET("ip_address = #{record.ipAddress,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getDevice() != null) {
-            sql.SET("device = #{record.device,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getOperationSystem() != null) {
-            sql.SET("operation_system = #{record.operationSystem,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLocation() != null) {
-            sql.SET("location = #{record.location,jdbcType=VARCHAR}");
+        if (record.getPhone() != null) {
+            sql.SET("phone = #{record.phone,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -164,64 +117,34 @@ public class LoginLogSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("login_log");
+        sql.UPDATE("phone_auth");
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
-        sql.SET("account_code = #{record.accountCode,jdbcType=VARCHAR}");
-        sql.SET("token = #{record.token,jdbcType=VARCHAR}");
-        sql.SET("status = #{record.status,jdbcType=INTEGER}");
-        sql.SET("ip_address = #{record.ipAddress,jdbcType=VARCHAR}");
-        sql.SET("device = #{record.device,jdbcType=VARCHAR}");
-        sql.SET("operation_system = #{record.operationSystem,jdbcType=VARCHAR}");
-        sql.SET("location = #{record.location,jdbcType=VARCHAR}");
+        sql.SET("mobile_area_code_id = #{record.mobileAreaCodeId,jdbcType=VARCHAR}");
+        sql.SET("phone = #{record.phone,jdbcType=VARCHAR}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        LoginLogExample example = (LoginLogExample) parameter.get("example");
+        PhoneAuthExample example = (PhoneAuthExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(LoginLog record) {
+    public String updateByPrimaryKeySelective(PhoneAuth record) {
         SQL sql = new SQL();
-        sql.UPDATE("login_log");
+        sql.UPDATE("phone_auth");
         
         if (record.getCode() != null) {
             sql.SET("code = #{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{userCode,jdbcType=VARCHAR}");
+        if (record.getMobileAreaCodeId() != null) {
+            sql.SET("mobile_area_code_id = #{mobileAreaCodeId,jdbcType=VARCHAR}");
         }
         
-        if (record.getAccountCode() != null) {
-            sql.SET("account_code = #{accountCode,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getToken() != null) {
-            sql.SET("token = #{token,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getStatus() != null) {
-            sql.SET("status = #{status,jdbcType=INTEGER}");
-        }
-        
-        if (record.getIpAddress() != null) {
-            sql.SET("ip_address = #{ipAddress,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getDevice() != null) {
-            sql.SET("device = #{device,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getOperationSystem() != null) {
-            sql.SET("operation_system = #{operationSystem,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getLocation() != null) {
-            sql.SET("location = #{location,jdbcType=VARCHAR}");
+        if (record.getPhone() != null) {
+            sql.SET("phone = #{phone,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -237,7 +160,7 @@ public class LoginLogSqlProvider {
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, LoginLogExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, PhoneAuthExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
@@ -265,7 +188,7 @@ public class LoginLogSqlProvider {
         }
         
         StringBuilder sb = new StringBuilder();
-        List<Criteria> oredCriteria = example.getOredCriteria();
+        List<PhoneAuthExample.Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
         for (int i = 0; i < oredCriteria.size(); i++) {
             Criteria criteria = oredCriteria.get(i);
@@ -280,7 +203,7 @@ public class LoginLogSqlProvider {
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
                 for (int j = 0; j < criterions.size(); j++) {
-                    Criterion criterion = criterions.get(j);
+                    PhoneAuthExample.Criterion criterion = criterions.get(j);
                     if (firstCriterion) {
                         firstCriterion = false;
                     } else {

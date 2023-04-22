@@ -16,13 +16,14 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.UpdateProvider;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
+import top.easyblog.dao.auto.mapper.provider.MobileAreaCodeSqlProvider;
 import top.easyblog.dao.auto.model.MobileAreaCode;
-import top.easyblog.dao.auto.model.MobileAreaCodeExample;
+import top.easyblog.dao.auto.model.example.MobileAreaCodeExample;
 
 @Mapper
 @Repository
 public interface MobileAreaCodeMapper {
-    @SelectProvider(type=MobileAreaCodeSqlProvider.class, method="countByExample")
+    @SelectProvider(type= MobileAreaCodeSqlProvider.class, method="countByExample")
     long countByExample(MobileAreaCodeExample example);
 
     @DeleteProvider(type=MobileAreaCodeSqlProvider.class, method="deleteByExample")

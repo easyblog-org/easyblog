@@ -1,47 +1,59 @@
-package top.easyblog.dao.auto.mapper;
+package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.UserHeader;
-import top.easyblog.dao.auto.model.UserHeaderExample.Criteria;
-import top.easyblog.dao.auto.model.UserHeaderExample.Criterion;
-import top.easyblog.dao.auto.model.UserHeaderExample;
+import top.easyblog.dao.auto.model.User;
+import top.easyblog.dao.auto.model.example.UserExample.Criteria;
+import top.easyblog.dao.auto.model.example.UserExample.Criterion;
+import top.easyblog.dao.auto.model.example.UserExample;
 
-public class UserHeaderSqlProvider {
+public class UserSqlProvider {
 
-    public String countByExample(UserHeaderExample example) {
+    public String countByExample(UserExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("user_header");
+        sql.SELECT("count(*)").FROM("user");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(UserHeaderExample example) {
+    public String deleteByExample(UserExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("user_header");
+        sql.DELETE_FROM("user");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(UserHeader record) {
+    public String insertSelective(User record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("user_header");
+        sql.INSERT_INTO("user");
         
         if (record.getCode() != null) {
             sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getHeaderImgUrl() != null) {
-            sql.VALUES("header_img_url", "#{headerImgUrl,jdbcType=VARCHAR}");
+        if (record.getNickName() != null) {
+            sql.VALUES("nick_name", "#{nickName,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.VALUES("user_code", "#{userCode,jdbcType=VARCHAR}");
+        if (record.getIntegration() != null) {
+            sql.VALUES("integration", "#{integration,jdbcType=INTEGER}");
         }
         
-        if (record.getStatus() != null) {
-            sql.VALUES("status", "#{status,jdbcType=TINYINT}");
+        if (record.getLevel() != null) {
+            sql.VALUES("level", "#{level,jdbcType=INTEGER}");
+        }
+        
+        if (record.getVisit() != null) {
+            sql.VALUES("visit", "#{visit,jdbcType=INTEGER}");
+        }
+        
+        if (record.getActive() != null) {
+            sql.VALUES("active", "#{active,jdbcType=INTEGER}");
+        }
+        
+        if (record.getIntroduction() != null) {
+            sql.VALUES("introduction", "#{introduction,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -55,7 +67,7 @@ public class UserHeaderSqlProvider {
         return sql.toString();
     }
 
-    public String selectByExample(UserHeaderExample example) {
+    public String selectByExample(UserExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
@@ -63,27 +75,37 @@ public class UserHeaderSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("code");
-        sql.SELECT("header_img_url");
-        sql.SELECT("user_code");
-        sql.SELECT("status");
+        sql.SELECT("nick_name");
+        sql.SELECT("integration");
+        sql.SELECT("level");
+        sql.SELECT("visit");
+        sql.SELECT("active");
+        sql.SELECT("introduction");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("user_header");
+        sql.FROM("user");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
-        return sql.toString();
+
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if (example != null && example.getOffset() != null && example.getLimit() >= 0) {
+            sqlBuilder.append(" LIMIT ").append(example.getOffset());
+            if (example.getLimit() != null && example.getLimit() > 0) {
+                sqlBuilder.append(",").append(example.getLimit());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        UserHeader record = (UserHeader) parameter.get("record");
-        UserHeaderExample example = (UserHeaderExample) parameter.get("example");
+        User record = (User) parameter.get("record");
+        UserExample example = (UserExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("user_header");
+        sql.UPDATE("user");
         
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
@@ -93,16 +115,28 @@ public class UserHeaderSqlProvider {
             sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
-        if (record.getHeaderImgUrl() != null) {
-            sql.SET("header_img_url = #{record.headerImgUrl,jdbcType=VARCHAR}");
+        if (record.getNickName() != null) {
+            sql.SET("nick_name = #{record.nickName,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        if (record.getIntegration() != null) {
+            sql.SET("integration = #{record.integration,jdbcType=INTEGER}");
         }
         
-        if (record.getStatus() != null) {
-            sql.SET("status = #{record.status,jdbcType=TINYINT}");
+        if (record.getLevel() != null) {
+            sql.SET("level = #{record.level,jdbcType=INTEGER}");
+        }
+        
+        if (record.getVisit() != null) {
+            sql.SET("visit = #{record.visit,jdbcType=INTEGER}");
+        }
+        
+        if (record.getActive() != null) {
+            sql.SET("active = #{record.active,jdbcType=INTEGER}");
+        }
+        
+        if (record.getIntroduction() != null) {
+            sql.SET("introduction = #{record.introduction,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -119,39 +153,54 @@ public class UserHeaderSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("user_header");
+        sql.UPDATE("user");
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("header_img_url = #{record.headerImgUrl,jdbcType=VARCHAR}");
-        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
-        sql.SET("status = #{record.status,jdbcType=TINYINT}");
+        sql.SET("nick_name = #{record.nickName,jdbcType=VARCHAR}");
+        sql.SET("integration = #{record.integration,jdbcType=INTEGER}");
+        sql.SET("level = #{record.level,jdbcType=INTEGER}");
+        sql.SET("visit = #{record.visit,jdbcType=INTEGER}");
+        sql.SET("active = #{record.active,jdbcType=INTEGER}");
+        sql.SET("introduction = #{record.introduction,jdbcType=VARCHAR}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        UserHeaderExample example = (UserHeaderExample) parameter.get("example");
+        UserExample example = (UserExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(UserHeader record) {
+    public String updateByPrimaryKeySelective(User record) {
         SQL sql = new SQL();
-        sql.UPDATE("user_header");
+        sql.UPDATE("user");
         
         if (record.getCode() != null) {
             sql.SET("code = #{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getHeaderImgUrl() != null) {
-            sql.SET("header_img_url = #{headerImgUrl,jdbcType=VARCHAR}");
+        if (record.getNickName() != null) {
+            sql.SET("nick_name = #{nickName,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{userCode,jdbcType=VARCHAR}");
+        if (record.getIntegration() != null) {
+            sql.SET("integration = #{integration,jdbcType=INTEGER}");
         }
         
-        if (record.getStatus() != null) {
-            sql.SET("status = #{status,jdbcType=TINYINT}");
+        if (record.getLevel() != null) {
+            sql.SET("level = #{level,jdbcType=INTEGER}");
+        }
+        
+        if (record.getVisit() != null) {
+            sql.SET("visit = #{visit,jdbcType=INTEGER}");
+        }
+        
+        if (record.getActive() != null) {
+            sql.SET("active = #{active,jdbcType=INTEGER}");
+        }
+        
+        if (record.getIntroduction() != null) {
+            sql.SET("introduction = #{introduction,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -167,7 +216,7 @@ public class UserHeaderSqlProvider {
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, UserHeaderExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, UserExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
@@ -195,7 +244,7 @@ public class UserHeaderSqlProvider {
         }
         
         StringBuilder sb = new StringBuilder();
-        List<Criteria> oredCriteria = example.getOredCriteria();
+        List<UserExample.Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
         for (int i = 0; i < oredCriteria.size(); i++) {
             Criteria criteria = oredCriteria.get(i);
@@ -207,7 +256,7 @@ public class UserHeaderSqlProvider {
                 }
                 
                 sb.append('(');
-                List<Criterion> criterions = criteria.getAllCriteria();
+                List<UserExample.Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
                 for (int j = 0; j < criterions.size(); j++) {
                     Criterion criterion = criterions.get(j);

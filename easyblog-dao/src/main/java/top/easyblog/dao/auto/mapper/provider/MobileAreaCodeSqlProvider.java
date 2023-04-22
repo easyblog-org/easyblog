@@ -1,43 +1,51 @@
-package top.easyblog.dao.auto.mapper;
+package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.UserRoleRelationship;
-import top.easyblog.dao.auto.model.UserRoleRelationshipExample.Criteria;
-import top.easyblog.dao.auto.model.UserRoleRelationshipExample.Criterion;
-import top.easyblog.dao.auto.model.UserRoleRelationshipExample;
+import top.easyblog.dao.auto.model.MobileAreaCode;
+import top.easyblog.dao.auto.model.example.MobileAreaCodeExample.Criteria;
+import top.easyblog.dao.auto.model.example.MobileAreaCodeExample.Criterion;
+import top.easyblog.dao.auto.model.example.MobileAreaCodeExample;
 
-public class UserRoleRelationshipSqlProvider {
+public class MobileAreaCodeSqlProvider {
 
-    public String countByExample(UserRoleRelationshipExample example) {
+    public String countByExample(MobileAreaCodeExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("user_role_relationship");
+        sql.SELECT("count(*)").FROM("mobile_area_code");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(UserRoleRelationshipExample example) {
+    public String deleteByExample(MobileAreaCodeExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("user_role_relationship");
+        sql.DELETE_FROM("mobile_area_code");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(UserRoleRelationship record) {
+    public String insertSelective(MobileAreaCode record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("user_role_relationship");
+        sql.INSERT_INTO("mobile_area_code");
         
-        if (record.getUserId() != null) {
-            sql.VALUES("user_id", "#{userId,jdbcType=INTEGER}");
+        if (record.getCode() != null) {
+            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getRoleId() != null) {
-            sql.VALUES("role_id", "#{roleId,jdbcType=INTEGER}");
+        if (record.getCrownCode() != null) {
+            sql.VALUES("crown_code", "#{crownCode,jdbcType=VARCHAR}");
         }
         
-        if (record.getEnabled() != null) {
-            sql.VALUES("enabled", "#{enabled,jdbcType=BIT}");
+        if (record.getCountryCode() != null) {
+            sql.VALUES("country_code", "#{countryCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAreaCode() != null) {
+            sql.VALUES("area_code", "#{areaCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAreaName() != null) {
+            sql.VALUES("area_name", "#{areaName,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -51,44 +59,66 @@ public class UserRoleRelationshipSqlProvider {
         return sql.toString();
     }
 
-    public String selectByExample(UserRoleRelationshipExample example) {
+    public String selectByExample(MobileAreaCodeExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("user_id");
+            sql.SELECT_DISTINCT("id");
         } else {
-            sql.SELECT("user_id");
+            sql.SELECT("id");
         }
-        sql.SELECT("role_id");
-        sql.SELECT("enabled");
+        sql.SELECT("code");
+        sql.SELECT("crown_code");
+        sql.SELECT("country_code");
+        sql.SELECT("area_code");
+        sql.SELECT("area_name");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("user_role_relationship");
+        sql.FROM("mobile_area_code");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
-        
-        return sql.toString();
+
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if (example != null && example.getOffset() != null && example.getLimit() >= 0) {
+            sqlBuilder.append(" LIMIT ").append(example.getOffset());
+            if (example.getLimit() != null && example.getLimit() > 0) {
+                sqlBuilder.append(",").append(example.getLimit());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        UserRoleRelationship record = (UserRoleRelationship) parameter.get("record");
-        UserRoleRelationshipExample example = (UserRoleRelationshipExample) parameter.get("example");
+        MobileAreaCode record = (MobileAreaCode) parameter.get("record");
+        MobileAreaCodeExample example = (MobileAreaCodeExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("user_role_relationship");
+        sql.UPDATE("mobile_area_code");
         
-        if (record.getUserId() != null) {
-            sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
+        if (record.getId() != null) {
+            sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
         
-        if (record.getRoleId() != null) {
-            sql.SET("role_id = #{record.roleId,jdbcType=INTEGER}");
+        if (record.getCode() != null) {
+            sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
-        if (record.getEnabled() != null) {
-            sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
+        if (record.getCrownCode() != null) {
+            sql.SET("crown_code = #{record.crownCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCountryCode() != null) {
+            sql.SET("country_code = #{record.countryCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAreaCode() != null) {
+            sql.SET("area_code = #{record.areaCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAreaName() != null) {
+            sql.SET("area_name = #{record.areaName,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -105,25 +135,44 @@ public class UserRoleRelationshipSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("user_role_relationship");
+        sql.UPDATE("mobile_area_code");
         
-        sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
-        sql.SET("role_id = #{record.roleId,jdbcType=INTEGER}");
-        sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
+        sql.SET("id = #{record.id,jdbcType=BIGINT}");
+        sql.SET("code = #{record.code,jdbcType=VARCHAR}");
+        sql.SET("crown_code = #{record.crownCode,jdbcType=VARCHAR}");
+        sql.SET("country_code = #{record.countryCode,jdbcType=VARCHAR}");
+        sql.SET("area_code = #{record.areaCode,jdbcType=VARCHAR}");
+        sql.SET("area_name = #{record.areaName,jdbcType=VARCHAR}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        UserRoleRelationshipExample example = (UserRoleRelationshipExample) parameter.get("example");
+        MobileAreaCodeExample example = (MobileAreaCodeExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(UserRoleRelationship record) {
+    public String updateByPrimaryKeySelective(MobileAreaCode record) {
         SQL sql = new SQL();
-        sql.UPDATE("user_role_relationship");
+        sql.UPDATE("mobile_area_code");
         
-        if (record.getEnabled() != null) {
-            sql.SET("enabled = #{enabled,jdbcType=BIT}");
+        if (record.getCode() != null) {
+            sql.SET("code = #{code,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCrownCode() != null) {
+            sql.SET("crown_code = #{crownCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCountryCode() != null) {
+            sql.SET("country_code = #{countryCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAreaCode() != null) {
+            sql.SET("area_code = #{areaCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getAreaName() != null) {
+            sql.SET("area_name = #{areaName,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -134,13 +183,12 @@ public class UserRoleRelationshipSqlProvider {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
         
-        sql.WHERE("user_id = #{userId,jdbcType=INTEGER}");
-        sql.WHERE("role_id = #{roleId,jdbcType=INTEGER}");
+        sql.WHERE("id = #{id,jdbcType=BIGINT}");
         
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, UserRoleRelationshipExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, MobileAreaCodeExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

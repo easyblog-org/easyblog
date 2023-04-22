@@ -1,4 +1,4 @@
-package top.easyblog.dao.auto.model;
+package top.easyblog.dao.auto.model.example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +13,7 @@ public class MobileAreaCodeExample {
 
     protected Integer offset;
 
-    protected Integer rows;
+    protected Integer limit;
 
     public MobileAreaCodeExample() {
         oredCriteria = new ArrayList<Criteria>();
@@ -66,7 +66,7 @@ public class MobileAreaCodeExample {
         oredCriteria.clear();
         orderByClause = null;
         distinct = false;
-        rows = null;
+        limit = null;
         offset = null;
     }
 
@@ -78,28 +78,28 @@ public class MobileAreaCodeExample {
         return this.offset;
     }
 
-    public void setRows(Integer rows) {
-        this.rows = rows;
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 
-    public Integer getRows() {
-        return this.rows;
+    public Integer getLimit() {
+        return this.limit;
     }
 
     public MobileAreaCodeExample limit(Integer rows) {
-        this.rows = rows;
+        this.limit = rows;
         return this;
     }
 
     public MobileAreaCodeExample limit(Integer offset, Integer rows) {
         this.offset = offset;
-        this.rows = rows;
+        this.limit = rows;
         return this;
     }
 
     public MobileAreaCodeExample page(Integer page, Integer pageSize) {
         this.offset = page * pageSize;
-        this.rows = pageSize;
+        this.limit = pageSize;
         return this;
     }
 
