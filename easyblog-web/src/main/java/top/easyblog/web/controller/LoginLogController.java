@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.easyblog.common.request.loginlog.QueryLoginLogListRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
-import top.easyblog.core.UserLoginLogService;
+import top.easyblog.core.LoginLogService;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 public class LoginLogController {
 
     @Autowired
-    private UserLoginLogService userSignInLogService;
+    private LoginLogService userSignInLogService;
 
     @ResponseWrapper
     @GetMapping

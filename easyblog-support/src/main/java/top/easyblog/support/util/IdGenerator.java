@@ -9,9 +9,9 @@ import java.util.UUID;
  */
 public class IdGenerator {
 
-    private static final String ALPHANUMERIC = "0123456789abcdefghijklmnopqrstuvwxyz";
+    private static final String ALPHANUMERIC = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHLJKLMNOPQRSTUVWXYZ";
 
-    public static final int DEFAULT_LENGTH = 32;
+    public static final int DEFAULT_LENGTH = 10;
 
     public static final int SHORT_LENGTH = 6;
 

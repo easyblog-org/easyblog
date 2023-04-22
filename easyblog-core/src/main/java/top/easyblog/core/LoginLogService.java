@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * @date 2022/01/30 13:34
  */
 @Service
-public class UserLoginLogService {
+public class LoginLogService {
 
     @Autowired
     private AtomicLoginLogService atomicLoginLogService;
@@ -66,7 +66,7 @@ public class UserLoginLogService {
         LoginLog loginLog = atomicLoginLogService.querySignLogByRequest(QueryLoginLogRequest.builder().code(code).build());
         if(Objects.nonNull(loginLog)){
             LoginLog updateReq2LoginLog = beanMapper.convertLoginLogUpdateReq2LoginLog(loginLog.getId(), request);
-            atomicLoginLogService.updateSignInLogByPrimarySelective(updateReq2LoginLog);
+            atomicLoginLogService.updateLoginLogByPrimarySelective(updateReq2LoginLog);
             return;
         }
 

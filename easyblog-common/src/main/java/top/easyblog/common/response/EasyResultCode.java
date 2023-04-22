@@ -45,30 +45,37 @@ public enum EasyResultCode {
     // 非法的消息模板code
     ILLEGAL_TEMPLATE_CODE,
 
-    // 消息参数配置未找到
-    MESSAGE_CONFIG_NOT_FOUND,
-    // 消息规则未找到
-    MESSAGE_CONFIG_RULE_NOT_FOUND,
-    // 消息发送记录不存在
-    SEND_RECORD_NOT_FOUND,
     // 发送消息失败
     SEND_MESSAGE_FAILED,
     // 不合法的消息
     ILLEGAL_MESSAGE_RECORD,
-    // 模板未找到
-    TEMPLATE_NOT_FOUND,
+
 
     //账号已存在
     USER_ACCOUNT_EXISTS,
+    //角色已存在
+    ROLE_EXISTS,
+    // 手机区域码已存在
+    PHONE_AREA_CODE_ALREADY_EXISTS,
+
     //账号不存在
     ACCOUNT_NOT_FOUND,
     //登录日志不存在
     LOGIN_LOG_NOT_FOUND,
     //手机区域码不存在
     MOBILE_AREA_NOT_FOUND,
+    // 模板未找到
+    TEMPLATE_NOT_FOUND,
+    // 消息参数配置未找到
+    MESSAGE_CONFIG_NOT_FOUND,
+    // 消息规则未找到
+    MESSAGE_CONFIG_RULE_NOT_FOUND,
+    // 消息发送记录不存在
+    SEND_RECORD_NOT_FOUND,
+    //角色不存在
+    ROLE_NOT_FOUND,
 
-    // 手机区域码已存在
-    PHONE_AREA_CODE_ALREADY_EXISTS,
+
 
     //无法识别的大洲编码
     UNKNOWN_CONTINENT_CODE,
