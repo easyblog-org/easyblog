@@ -4,12 +4,10 @@ import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.request.loginlog.QueryLoginLogListRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
-import top.easyblog.common.request.loginlog.UpdateSignInLogRequest;
 import top.easyblog.dao.auto.mapper.LoginLogMapper;
 import top.easyblog.dao.auto.model.LoginLog;
 import top.easyblog.dao.auto.model.example.LoginLogExample;
@@ -41,7 +39,7 @@ public class AtomicLoginLogService {
         record.setUpdateTime(new Date());
         record.setCode(IdGenerator.generateRandomCode(IdGenerator.DEFAULT_LENGTH));
         loginLogMapper.insertSelective(record);
-        log.info("[DB] insert new login in log:{}", JsonUtils.toJSONString(LoginLog));
+        log.info("[DB] insert new login in log:{}", JsonUtils.toJSONString(record));
         return record;
     }
 
@@ -107,14 +105,14 @@ public class AtomicLoginLogService {
         return example;
     }
 
-    public void updateSignInLogByPrimarySelective(LoginLog loginLog) {
+    public void updateLoginLogByPrimarySelective(LoginLog loginLog) {
         loginLog.setUpdateTime(new Date());
         loginLogMapper.updateByPrimaryKeySelective(loginLog);
         log.info("[DB]Update sign_in_log: {}", JsonUtils.toJSONString(loginLog));
     }
 
 
-    public void updateSignInLogByToken(String token, Integer status) {
+    public void updateLoginLogByToken(String token, Integer status) {
         myLoginLogMapper.updateByTokenSelective(token, status);
         log.info("[DB]Update sign_in_log status to [{}] by token [{}]", status, token);
     }

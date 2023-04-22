@@ -10,6 +10,9 @@ import java.util.Date;
  */
 @Data
 public class AccountBean {
+
+    private Long userId;
+
     private String code;
 
     private String userCode;

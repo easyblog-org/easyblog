@@ -39,12 +39,12 @@ public class UserDetailsBean {
     /**
      * 用户当前有效头像
      */
-    private UserHeaderImgBean userCurrentImages;
+    private UserHeaderBean userCurrentImages;
 
     /**
      * 用户历史所有头像
      */
-    private List<UserHeaderImgBean> userHistoryImages;
+    private List<UserHeaderBean> userHistoryImages;
 
     /**
      * 当前账户
@@ -59,7 +59,7 @@ public class UserDetailsBean {
     /**
      * 当前登录设备列表
      */
-    private List<SignInLogBean> signInLogs;
+    private List<LoginLogBean> signInLogs;
     /**
      * 用户等级
      */

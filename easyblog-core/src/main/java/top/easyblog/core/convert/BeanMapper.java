@@ -5,15 +5,17 @@ import org.mapstruct.Mapping;
 import top.easyblog.common.bean.AccountBean;
 import top.easyblog.common.bean.LoginLogBean;
 import top.easyblog.common.bean.MobileAreBean;
+import top.easyblog.common.bean.UserDetailsBean;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
+import top.easyblog.common.request.header.CreateUserHeaderImgRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateSignInLogRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
-import top.easyblog.dao.auto.model.Account;
-import top.easyblog.dao.auto.model.LoginLog;
-import top.easyblog.dao.auto.model.MobileAreaCode;
+import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
+import top.easyblog.common.request.user.CreateUserRequest;
+import top.easyblog.dao.auto.model.*;
 
 /**
  * @author: frank.huang
@@ -63,4 +65,16 @@ public interface BeanMapper {
 
 
     MobileAreaCode convertMobileAreaUpdateReq2MobileArea(Long id, UpdateMobileAreaRequest request);
+
+
+    PhoneAuth convertPhoneAuthCreateReq2PhoneAuth(CreatePhoneAuthRequest request);
+
+
+    UserHeader convertUserHeaderCreateReq2UserHeader(CreateUserHeaderImgRequest request);
+
+
+    UserDetailsBean convertUser2UserBean(User user);
+
+
+    User convertUserCreateReq2User(CreateUserRequest request);
 }

@@ -57,6 +57,8 @@ public enum EasyResultCode {
     ROLE_EXISTS,
     // 手机区域码已存在
     PHONE_AREA_CODE_ALREADY_EXISTS,
+    // 手机站账号已经存在
+    PHONE_ACCOUNT_ALREADY_EXISTS,
 
     //账号不存在
     ACCOUNT_NOT_FOUND,
@@ -74,6 +76,8 @@ public enum EasyResultCode {
     SEND_RECORD_NOT_FOUND,
     //角色不存在
     ROLE_NOT_FOUND,
+    //用户不存在
+    USER_NOT_FOUND,
 
 
 

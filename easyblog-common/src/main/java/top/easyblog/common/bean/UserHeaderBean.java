@@ -9,7 +9,7 @@ import java.util.Date;
  * @date 2022/01/30 10:32
  */
 @Data
-public class UserHeaderImgBean {
+public class UserHeaderBean {
     private Long id;
 
     private String headerImgUrl;

@@ -11,6 +11,8 @@ import java.util.Date;
 @Data
 public class LoginLogBean {
 
+    private Long id;
+
     private String code;
 
     private Long userCode;
