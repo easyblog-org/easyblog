@@ -17,6 +17,7 @@ import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import top.easyblog.client.http.converter.FormHttpMessageConverter;
 import top.easyblog.client.http.encoder.CamelToUnderscoreEncoder;
 import top.easyblog.client.internal.FeignLogger;
 import top.easyblog.client.internal.OkHttpClientFactory;
@@ -31,10 +32,11 @@ import java.util.concurrent.TimeUnit;
  * @date: 2021-11-14 20:31
  */
 @Configuration
-public class FeignConfig {
+public abstract class FeignConfig {
 
-    @Autowired
     protected GsonHttpMessageConverter customGsonConverters;
+
+    protected FormHttpMessageConverter formHttpMessageConverter;
 
     @Value("${feign.custom.read-timeout:6000}")
     private int readTimeout;
@@ -85,20 +87,6 @@ public class FeignConfig {
         };
     }
 
-    @Bean
-    public Decoder decoder() {
-        return new ResponseEntityDecoder(new SpringDecoder(() -> new HttpMessageConverters(false, Lists.newArrayList(customGsonConverters))));
-    }
-
-    @Bean
-    public Encoder encoder() {
-        return new SpringEncoder(() -> new HttpMessageConverters(false, Lists.newArrayList(customGsonConverters)));
-    }
-
-    @Bean
-    public QueryMapEncoder queryMapEncoder() {
-        return new CamelToUnderscoreEncoder();
-    }
 
     @Bean
     public Logger.Level logger() {

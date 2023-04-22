@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
-import top.easyblog.titan.util.JsonUtils;
+import top.easyblog.support.util.JsonUtils;
 
 import java.io.Writer;
 import java.lang.reflect.Type;

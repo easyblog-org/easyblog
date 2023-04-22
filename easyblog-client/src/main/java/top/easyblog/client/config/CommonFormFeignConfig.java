@@ -11,9 +11,11 @@ import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
+import top.easyblog.client.http.converter.CustomGsonHttpMessageConverter;
 import top.easyblog.client.http.converter.FormHttpMessageConverter;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.response.EasyResultCode;
+import top.easyblog.support.util.JsonUtils;
 
 /**
  * @author: frank.huang
@@ -21,12 +23,9 @@ import top.easyblog.common.response.EasyResultCode;
  */
 public class CommonFormFeignConfig extends FeignConfig {
 
-    private GsonHttpMessageConverter customGsonConverters;
-    private FormHttpMessageConverter formHttpMessageConverter;
-
 
     public CommonFormFeignConfig() {
-        customGsonConverters = new GsonHttpMessageConverter();
+        customGsonConverters = new CustomGsonHttpMessageConverter();
         customGsonConverters.setSupportedMediaTypes(Lists.newArrayList(MediaType.APPLICATION_JSON,
                 MediaType.APPLICATION_OCTET_STREAM, new MediaType("application", "*+json")));
         customGsonConverters.setGson(JsonUtils.getGson());

@@ -18,6 +18,7 @@ import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 import top.easyblog.dao.auto.mapper.provider.UserSqlProvider;
 import top.easyblog.dao.auto.model.User;
+import top.easyblog.dao.auto.model.example.UserExample;
 
 @Mapper
 @Repository
