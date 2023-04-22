@@ -28,6 +28,9 @@ public enum EasyResultCode {
     SIGN_NOT_FOUND,
     SING_HAS_EXPIRE,
 
+    // 非法参数
+    ILLEGAL_PARAM,
+    // 远程调用失败
     REMOTE_INVOKE_FAIL,
     // 数据库操作实体对象不允许为null
     DB_OPERATE_RECORD_NOT_ALLOW_NULL,
@@ -61,7 +64,17 @@ public enum EasyResultCode {
     ACCOUNT_NOT_FOUND,
     //登录日志不存在
     LOGIN_LOG_NOT_FOUND,
+    //手机区域码不存在
+    MOBILE_AREA_NOT_FOUND,
 
+    // 手机区域码已存在
+    PHONE_AREA_CODE_ALREADY_EXISTS,
+
+    //无法识别的大洲编码
+    UNKNOWN_CONTINENT_CODE,
+
+    //无删除权限
+    DELETE_OPERATION_NOT_PERMISSION,
     ;
 
 

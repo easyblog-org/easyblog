@@ -4,12 +4,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import top.easyblog.common.bean.AccountBean;
 import top.easyblog.common.bean.LoginLogBean;
+import top.easyblog.common.bean.MobileAreBean;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateSignInLogRequest;
+import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
+import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.dao.auto.model.Account;
 import top.easyblog.dao.auto.model.LoginLog;
+import top.easyblog.dao.auto.model.MobileAreaCode;
 
 /**
  * @author: frank.huang
@@ -50,4 +54,13 @@ public interface BeanMapper {
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "accountCode", ignore = true)
     LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateSignInLogRequest request);
+
+
+    MobileAreaCode convertMobileAreaCodeCreateReq2MobileArea(CreateMobileAreaRequest request);
+
+
+    MobileAreBean convertMobileArea2MobileAreaBean(MobileAreaCode item);
+
+
+    MobileAreaCode convertMobileAreaUpdateReq2MobileArea(Long id, UpdateMobileAreaRequest request);
 }

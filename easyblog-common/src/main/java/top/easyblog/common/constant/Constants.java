@@ -39,4 +39,7 @@ public final class Constants {
 
     //时间
     public static final long TEN_MINUS = 10*60*1000;
+
+    // 查询分页大小 1000
+    public static final int QUERY_LIMIT_ONE_THOUSAND = 1000;
 }

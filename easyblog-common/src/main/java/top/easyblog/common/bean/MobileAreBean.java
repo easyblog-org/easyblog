@@ -13,8 +13,8 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhoneAreaCodeBean {
-    private Long id;
+public class MobileAreBean {
+    private String code;
 
     private String continentCode;
 
