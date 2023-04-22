@@ -1,20 +1,23 @@
-package top.easyblog.common.bean;
+package top.easyblog.common.request.loginlog;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 /**
  * @author frank.huang
- * @date 2022/01/30 10:35
+ * @date 2022/02/11 17:11
  */
 @Data
-public class SignInLogBean {
-    private Long id;
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class UpdateSignInLogRequest {
 
-    private Long userId;
-
-    private Long accountId;
+    private String code;
 
     private String token;
 
@@ -27,8 +30,6 @@ public class SignInLogBean {
     private String operationSystem;
 
     private String location;
-
-    private Date createTime;
 
     private Date updateTime;
 }

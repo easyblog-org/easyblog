@@ -3,10 +3,13 @@ package top.easyblog.core.convert;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import top.easyblog.common.bean.AccountBean;
+import top.easyblog.common.bean.LoginLogBean;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
+import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
+import top.easyblog.common.request.loginlog.UpdateSignInLogRequest;
 import top.easyblog.dao.auto.model.Account;
-import top.easyblog.support.util.IdGenerator;
+import top.easyblog.dao.auto.model.LoginLog;
 
 /**
  * @author: frank.huang
@@ -25,9 +28,26 @@ public interface BeanMapper {
 
     AccountBean convertAccount2AccountBean(Account account);
 
+    @Mapping(target = "userCode", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "updateTime", ignore = true)
     @Mapping(target = "code", ignore = true)
     @Mapping(target = "id", source = "accountId")
-    Account convertUpdateAccount2Account(Long accountId, UpdateAccountRequest request);
+    Account convertAccountUpdateReq2Account(Long accountId, UpdateAccountRequest request);
+
+
+    @Mapping(target = "ipAddress", source = "ip")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "updateTime", ignore = true)
+    @Mapping(target = "code", ignore = true)
+    LoginLog convertLoginLogCreateReq2Account(CreateLoginLogRequest request);
+
+
+    LoginLogBean convertLoginLog2LoginLogBean(LoginLog loginLog);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "accountCode", ignore = true)
+    LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateSignInLogRequest request);
 }

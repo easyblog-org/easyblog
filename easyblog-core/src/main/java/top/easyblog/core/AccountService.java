@@ -117,7 +117,7 @@ public class AccountService {
             throw new BusinessException(EasyResultCode.ACCOUNT_NOT_FOUND);
         }
 
-        Account account = beanMapper.convertUpdateAccount2Account(oldAccount.getId(), request);
+        Account account = beanMapper.convertAccountUpdateReq2Account(oldAccount.getId(), request);
         atomicAccountService.updateAccountByPKSelective(account);
     }
 
@@ -133,7 +133,7 @@ public class AccountService {
             throw new BusinessException(EasyResultCode.ACCOUNT_NOT_FOUND);
         }
 
-        Account account = beanMapper.convertUpdateAccount2Account(oldAccount.getId(), request);
+        Account account = beanMapper.convertAccountUpdateReq2Account(oldAccount.getId(), request);
         atomicAccountService.updateAccountByPKSelective(account);
     }
 

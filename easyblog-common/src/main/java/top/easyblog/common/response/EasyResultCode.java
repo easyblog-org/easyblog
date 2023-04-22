@@ -59,7 +59,8 @@ public enum EasyResultCode {
     USER_ACCOUNT_EXISTS,
     //账号不存在
     ACCOUNT_NOT_FOUND,
-
+    //登录日志不存在
+    LOGIN_LOG_NOT_FOUND,
 
     ;
 
