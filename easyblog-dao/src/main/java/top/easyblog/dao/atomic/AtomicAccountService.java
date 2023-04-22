@@ -14,6 +14,7 @@ import top.easyblog.dao.annotation.RecordNullable;
 import top.easyblog.dao.auto.mapper.AccountMapper;
 import top.easyblog.dao.auto.model.Account;
 import top.easyblog.dao.auto.model.example.AccountExample;
+import top.easyblog.support.util.IdGenerator;
 import top.easyblog.support.util.JsonUtils;
 
 import java.util.Date;
@@ -33,11 +34,12 @@ public class AtomicAccountService {
 
 
     public Account insertSelective(Account record) {
-        Account account = new Account();
-        BeanUtils.copyProperties(record, account);
-        log.info("[DB] Insert account:{}", JsonUtils.toJSONString(account));
-        accountMapper.insertSelective(account);
-        return account;
+        record.setCreateTime(new Date());
+        record.setUpdateTime(new Date());
+        record.setCode(IdGenerator.generateRandomCode(IdGenerator.DEFAULT_LENGTH));
+        log.info("[DB] Insert account:{}", JsonUtils.toJSONString(record));
+        accountMapper.insertSelective(record);
+        return record;
     }
 
     @RecordNullable

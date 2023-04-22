@@ -35,15 +35,15 @@ if [ -z "${JAVA_HOME}" ]; then
   if $darwin; then
 
     if [ -x '/usr/libexec/java_home' ] ; then
-      export {JAVA_HOME}=`/usr/libexec/java_home`
+      export JAVA_HOME='/usr/libexec/java_home'
 
     elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
-      export {JAVA_HOME}="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
+      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
     fi
   else
     JAVA_PATH=`dirname $(readlink -f $(which javac))`
     if [ "x${JAVA_PATH}" != "x" ]; then
-      export {JAVA_HOME}=`dirname ${JAVA_PATH} 2>/dev/null`
+      export JAVA_HOME=`dirname ${JAVA_PATH} 2>/dev/null`
     fi
   fi
   if [ -z "${JAVA_HOME}" ]; then

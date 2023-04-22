@@ -8,10 +8,6 @@ import lombok.Data;
  */
 @Data
 public class UpdateAccountRequest {
-    private Long id;
-
-    private Long userId;
-
     private Integer identityType;
 
     private String identifier;

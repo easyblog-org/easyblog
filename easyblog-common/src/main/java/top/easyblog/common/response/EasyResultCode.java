@@ -53,7 +53,15 @@ public enum EasyResultCode {
     // 不合法的消息
     ILLEGAL_MESSAGE_RECORD,
     // 模板未找到
-    TEMPLATE_NOT_FOUND;
+    TEMPLATE_NOT_FOUND,
+
+    //账号已存在
+    USER_ACCOUNT_EXISTS,
+    //账号不存在
+    ACCOUNT_NOT_FOUND,
+
+
+    ;
 
 
     public String getCode() {

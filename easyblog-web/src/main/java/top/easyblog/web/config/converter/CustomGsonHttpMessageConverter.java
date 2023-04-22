@@ -1,4 +1,4 @@
-package top.easyblog.web.converter;
+package top.easyblog.web.config.converter;
 
 import com.google.common.collect.Lists;
 import org.springframework.http.MediaType;
