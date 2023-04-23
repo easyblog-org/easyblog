@@ -6,7 +6,7 @@ import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.QueryMobileAreaListRequest;
 import top.easyblog.common.request.mobilearea.QueryMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
-import top.easyblog.core.MobileAreaCodeService;
+import top.easyblog.core.MobileAreaService;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
@@ -19,10 +19,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/v1/in/area-code")
-public class MobileAreaCodeController {
+public class MobileAreaController {
 
     @Autowired
-    private MobileAreaCodeService mobileAreaCodeService;
+    private MobileAreaService mobileAreaCodeService;
 
 
     @ResponseWrapper

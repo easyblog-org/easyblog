@@ -3,6 +3,8 @@ package top.easyblog.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -28,7 +30,7 @@ import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.annotation.Transaction;
 import top.easyblog.core.context.CreateOrRefreshUserRoleContext;
-import top.easyblog.core.context.QueryUserSectionContext;
+import top.easyblog.core.context.UserSectionContext;
 import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicUserRolesService;
 import top.easyblog.dao.atomic.AtomicUserService;
@@ -55,7 +57,7 @@ public class UserService {
     private AtomicUserRolesService atomicUserRolesService;
 
     @Autowired
-    private UserHeaderService headerImgService;
+    private UserHeaderService userHeaderService;
 
     @Autowired
     private AccountService accountService;
@@ -103,28 +105,30 @@ public class UserService {
      * @param section
      * @return
      */
-    private QueryUserSectionContext queryUserSectionSections(String section, List<String> userCodes) {
-        QueryUserSectionContext context = QueryUserSectionContext.builder().build();
-        if (CollectionUtils.isEmpty(userCodes)) {
+    private UserSectionContext queryUserSectionSections(String section, Map<Long,String> userIdCodesMap) {
+        UserSectionContext context = UserSectionContext.builder().build();
+        if (MapUtils.isEmpty(userIdCodesMap)) {
             return context;
         }
 
+        List<String> userCodes = userIdCodesMap.values().stream().toList();
+        List<Long> userIds = userIdCodesMap.keySet().stream().toList();
         if (section.contains(UserQuerySection.QUERY_HEADER_IMG.getName())) {
             QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
-            List<UserHeaderBean> userHeaderImgBeans = headerImgService.queryUserHeaderBeans(queryUserHeadersRequest);
-            Map<Long, List<UserHeaderBean>> userHeaderImgBeanMap = userHeaderImgBeans.stream().filter(Objects::nonNull)
+            List<UserHeaderBean> userHeaderBeans = userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
+            Map<Long, List<UserHeaderBean>> userHeaderBeanMap = userHeaderBeans.stream().filter(Objects::nonNull)
                     .collect(Collectors.groupingBy(UserHeaderBean::getUserId));
-            context.setUserHistoryImagesMap(userHeaderImgBeanMap);
+            context.setUserHistoryImagesMap(userHeaderBeanMap);
         }
         if (section.contains(UserQuerySection.QUERY_CURRENT_HEADER_IMG.getName())) {
             QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
-            List<UserHeaderBean> userHeaderImgBeans = headerImgService.queryUserHeaderBeans(queryUserHeadersRequest);
-            Map<Long, UserHeaderBean> userHeaderImgBeanMap = userHeaderImgBeans.stream().
+            List<UserHeaderBean> userHeaderBeans = userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
+            Map<Long, UserHeaderBean> userHeaderBeanMap = userHeaderBeans.stream().
                     filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
                     .collect(Collectors.toMap(UserHeaderBean::getUserId, Function.identity(), (x, y) -> x));
-            context.setUserCurrentImagesMap(userHeaderImgBeanMap);
+            context.setUserCurrentImagesMap(userHeaderBeanMap);
         }
         if (section.contains(UserQuerySection.QUERY_ACCOUNTS.getName())) {
             QueryAccountListRequest queryAccountListRequest = QueryAccountListRequest.builder()
@@ -146,12 +150,12 @@ public class UserService {
         }
         if (section.contains(UserQuerySection.QUERY_ROLE.getName())) {
             List<UserRoleRelationship> userRoleRelationships = atomicUserRolesService.queryList(QueryUserRolesListRequest.builder()
-                    .userIds(Collections.emptyList()).enabled(Boolean.TRUE).build());
+                    .userIds(userIds).enabled(Boolean.TRUE).build());
 
             if (CollectionUtils.isNotEmpty(userRoleRelationships)) {
                 Map<String, UserRoleRelationship> userRoleIdMap = userRoleRelationships.stream().filter(Objects::nonNull)
                         .collect(Collectors.toMap(item -> String.format("%s-%s", item.getRoleId(), item.getUserId()), Function.identity(), (x, y) -> x));
-                List<Long> roleIds = userRoleRelationships.stream().map(UserRoleRelationship::getRoleId).map(Long::valueOf).collect(Collectors.toList());
+                List<Long> roleIds = userRoleRelationships.stream().map(UserRoleRelationship::getRoleId).collect(Collectors.toList());
                 PageResponse<RolesBean> rolesBeanPageResponse = rolesService.queryRolesList(QueryRolesListRequest.builder()
                         .ids(roleIds).build());
                 List<RolesBean> rolesBeans = rolesBeanPageResponse.getData();
@@ -188,21 +192,20 @@ public class UserService {
             return;
         }
 
-        List<String> userCodes = userDetailsBeans.stream().map(UserDetailsBean::getCode).collect(Collectors.toList());
-        QueryUserSectionContext context = queryUserSectionSections(section, userCodes);
-        userDetailsBeans.stream().filter(Objects::nonNull).forEach(userDetailsBean -> {
-            userDetailsBean.setUserCurrentImages(getSectionOptional(context.getUserCurrentImagesMap(), userDetailsBean.getId()));
-            userDetailsBean.setUserHistoryImages(getSectionOptional(context.getUserHistoryImagesMap(), userDetailsBean.getId()));
-            userDetailsBean.setAccounts(getSectionOptional(context.getAccountsMap(), userDetailsBean.getId()));
-            userDetailsBean.setRoles(getSectionOptional(context.getRolesMap(), userDetailsBean.getId()));
-            userDetailsBean.setSignInLogs(getSectionOptional(context.getSignInLogsMap(), userDetailsBean.getId()));
+        Map<Long,String> userIdCodesMap = userDetailsBeans.stream().filter(Objects::nonNull)
+               .collect(Collectors.toMap(UserDetailsBean::getId, UserDetailsBean::getCode,(x,y)->x));
+        UserSectionContext context = queryUserSectionSections(section, userIdCodesMap);
+        Optional.ofNullable(context).ifPresent(ctx -> {
+            userDetailsBeans.stream().filter(Objects::nonNull).forEach(userDetailsBean -> {
+                userDetailsBean.setUserCurrentImages(ctx.getSectionOptional(ctx.getUserCurrentImagesMap(), userDetailsBean.getId()));
+                userDetailsBean.setUserHistoryImages(ctx.getSectionOptional(ctx.getUserHistoryImagesMap(), userDetailsBean.getId()));
+                userDetailsBean.setAccounts(ctx.getSectionOptional(ctx.getAccountsMap(), userDetailsBean.getId()));
+                userDetailsBean.setRoles(ctx.getSectionOptional(ctx.getRolesMap(), userDetailsBean.getId()));
+                userDetailsBean.setSignInLogs(ctx.getSectionOptional(ctx.getSignInLogsMap(), userDetailsBean.getId()));
+            });
         });
     }
 
-
-    private <T> T getSectionOptional(Map<Long, T> contextMap, Long key) {
-        return Optional.ofNullable(contextMap).map(map -> map.get(key)).orElse(null);
-    }
 
     /**
      * 更新用户信息
@@ -235,7 +238,7 @@ public class UserService {
     @Transaction
     public PageResponse<UserDetailsBean> queryUserListPage(QueryUserListRequest request) {
         if (Objects.isNull(request.getOffset()) || Objects.isNull(request.getLimit())) {
-            //不分页，默认查询1000条数据
+            //没有分页参数，默认查询1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
             request.setLimit(Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
             List<UserDetailsBean> userDetailsBeans = buildUserDetailsBeanList(request);
@@ -292,37 +295,6 @@ public class UserService {
         return userDetailsBean;
     }
 
-    private void createOrRefreshUserRole(CreateOrRefreshUserRoleContext context) {
-        List<String> roles = context.getRoles();
-        if (CollectionUtils.isEmpty(roles)) {
-            log.info("Empty role list.....ignore!");
-            return;
-        }
 
-        List<RolesBean> rolesBeans = rolesService.queryAllRolesList();
-        if (CollectionUtils.isEmpty(rolesBeans)) {
-            throw new BusinessException(EasyResultCode.ROLE_NOT_FOUND);
-        }
-
-        Map<String, RolesBean> rolesBeanMap = rolesBeans.stream().collect(Collectors.toMap(RolesBean::getCode, Function.identity(), (x, y) -> x));
-
-        // 存在 user-role 映射关系，删除老的
-        long userRoleNum = atomicUserRolesService.countByRequest(QueryUserRolesListRequest.builder()
-                .userIds(Collections.singletonList(context.getUserId().intValue())).build());
-        if (userRoleNum > 0) {
-            atomicUserRolesService.deleteByExample(UpdateUserRolesRequest.builder()
-                    .userId(context.getUserId().intValue()).build());
-        }
-
-        roles.stream().filter(Objects::nonNull).forEach(roleCode -> {
-            RolesBean rolesBean = rolesBeanMap.get(roleCode);
-            UserRoleRelationship UserRoleRelationship = new UserRoleRelationship();
-            UserRoleRelationship.setRoleId(Objects.requireNonNull(rolesBean, String.format("Role %s not found", roleCode)).getId().intValue());
-            UserRoleRelationship.setUserId(context.getUserId().intValue());
-            UserRoleRelationship.setEnabled(Boolean.TRUE);
-            atomicUserRolesService.insertOne(UserRoleRelationship);
-        });
-    }
-
-
+   
 }

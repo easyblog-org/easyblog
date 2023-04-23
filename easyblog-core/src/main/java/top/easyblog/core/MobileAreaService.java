@@ -18,7 +18,7 @@ import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.convert.BeanMapper;
-import top.easyblog.dao.atomic.AtomicMobileAreaCodeService;
+import top.easyblog.dao.atomic.AtomicMobileAreaService;
 import top.easyblog.dao.auto.model.MobileAreaCode;
 
 import java.util.Collections;
@@ -33,10 +33,10 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class MobileAreaCodeService {
+public class MobileAreaService {
 
     @Autowired
-    private AtomicMobileAreaCodeService atomicMobileAreaCodeService;
+    private AtomicMobileAreaService atomicMobileAreaService;
 
     @Autowired
     private BeanMapper beanMapper;
@@ -45,7 +45,7 @@ public class MobileAreaCodeService {
     private String batchDeletePassword;
 
     public void createMobileArea(CreateMobileAreaRequest request) {
-        MobileAreaCode mobileArea = atomicMobileAreaCodeService.queryPhoneAreaCodeByRequest(QueryMobileAreaRequest.builder()
+        MobileAreaCode mobileArea = atomicMobileAreaService.queryPhoneAreaCodeByRequest(QueryMobileAreaRequest.builder()
                 .crownCode(request.getCrownCode()).countryCode(request.getCountryCode()).build());
         if (Objects.nonNull(mobileArea)) {
             throw new BusinessException(EasyResultCode.PHONE_AREA_CODE_ALREADY_EXISTS);
@@ -54,12 +54,12 @@ public class MobileAreaCodeService {
         ContinentEnum.codeOfOptional(request.getContinentCode());
 
         mobileArea = beanMapper.convertMobileAreaCodeCreateReq2MobileArea(request);
-        atomicMobileAreaCodeService.insertPhoneAreaCodeByRequest(mobileArea);
+        atomicMobileAreaService.insertPhoneAreaCodeByRequest(mobileArea);
     }
 
 
     public MobileAreBean queryMobileAreaDetails(QueryMobileAreaRequest request) {
-        return Optional.ofNullable(atomicMobileAreaCodeService.queryPhoneAreaCodeByRequest(request))
+        return Optional.ofNullable(atomicMobileAreaService.queryPhoneAreaCodeByRequest(request))
                 .map(item -> beanMapper.convertMobileArea2MobileAreaBean(item)).orElse(null);
     }
 
@@ -74,7 +74,7 @@ public class MobileAreaCodeService {
                     .total((long) phoneAreaCodeBeans.size()).data(phoneAreaCodeBeans).limit(request.getLimit()).offset(request.getOffset()).build();
         }
         //分页
-        long count = atomicMobileAreaCodeService.countByRequest(request);
+        long count = atomicMobileAreaService.countByRequest(request);
         if (Objects.equals(NumberUtils.LONG_ZERO, count)) {
             return PageResponse.<MobileAreBean>builder().limit(request.getLimit()).offset(request.getOffset())
                     .total(NumberUtils.LONG_ZERO).data(Collections.emptyList()).build();
@@ -85,21 +85,21 @@ public class MobileAreaCodeService {
     }
 
     private List<MobileAreBean> buildMobileAreaBeanList(QueryMobileAreaListRequest request) {
-        return atomicMobileAreaCodeService.queryPhoneAreaCodeListByRequest(request).stream().map(areaCode -> {
+        return atomicMobileAreaService.queryPhoneAreaCodeListByRequest(request).stream().map(areaCode -> {
             return beanMapper.convertMobileArea2MobileAreaBean(areaCode);
         }).collect(Collectors.toList());
     }
 
 
     public void updateMobileArea(String code, UpdateMobileAreaRequest request) {
-        MobileAreaCode areaCode = atomicMobileAreaCodeService.queryPhoneAreaCodeByRequest(QueryMobileAreaRequest.builder()
+        MobileAreaCode areaCode = atomicMobileAreaService.queryPhoneAreaCodeByRequest(QueryMobileAreaRequest.builder()
                 .code(code).build());
         if (Objects.isNull(areaCode)) {
             throw new BusinessException(EasyResultCode.MOBILE_AREA_NOT_FOUND);
         }
 
         MobileAreaCode mobileAreaCode = beanMapper.convertMobileAreaUpdateReq2MobileArea(areaCode.getId(), request);
-        atomicMobileAreaCodeService.updatePhoneAreaCodeByRequest(mobileAreaCode);
+        atomicMobileAreaService.updatePhoneAreaCodeByRequest(mobileAreaCode);
     }
 
 
@@ -111,6 +111,6 @@ public class MobileAreaCodeService {
         if (StringUtils.isBlank(password) || !StringUtils.equals(password, batchDeletePassword)) {
             throw new BusinessException(EasyResultCode.DELETE_OPERATION_NOT_PERMISSION);
         }
-        atomicMobileAreaCodeService.deleteByIds(codes);
+        atomicMobileAreaService.deleteByIds(codes);
     }
 }

@@ -24,7 +24,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Service
-public class AtomicMobileAreaCodeService {
+public class AtomicMobileAreaService {
 
     @Autowired
     private MobileAreaCodeMapper mobileAreaCodeMapper;

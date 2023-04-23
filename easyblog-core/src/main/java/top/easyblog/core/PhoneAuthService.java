@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
 import top.easyblog.common.request.phoneauth.QueryPhoneAuthRequest;
@@ -14,6 +15,7 @@ import top.easyblog.dao.atomic.AtomicPhoneAuthService;
 import top.easyblog.dao.auto.model.PhoneAuth;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: frank.huang
@@ -24,7 +26,7 @@ import java.util.Objects;
 public class PhoneAuthService {
 
     @Autowired
-    private AtomicPhoneAuthService phoneAuthService;
+    private AtomicPhoneAuthService atomicPhoneAuthService;
 
     @Autowired
     private BeanMapper beanMapper;
@@ -37,20 +39,20 @@ public class PhoneAuthService {
         }
 
         phoneAuth = beanMapper.convertPhoneAuthCreateReq2PhoneAuth(request);
-        return phoneAuthService.insertByRequestSelective(phoneAuth);
+        return atomicPhoneAuthService.insertByRequestSelective(phoneAuth);
     }
 
 
 
     public PhoneAuth queryPhoneAuthDetails(QueryPhoneAuthRequest request) {
-        return phoneAuthService.queryPhoneAuthByRequest(request);
+        return atomicPhoneAuthService.queryPhoneAuthByRequest(request);
     }
 
 
     public void updatePhoneAuth(UpdatePhoneAuthRequest request) {
         PhoneAuth phoneAuth = new PhoneAuth();
         BeanUtils.copyProperties(request, phoneAuth);
-        phoneAuthService.updatePhoneAuthByRequest(phoneAuth);
+        atomicPhoneAuthService.updatePhoneAuthByRequest(phoneAuth);
     }
 
 }
