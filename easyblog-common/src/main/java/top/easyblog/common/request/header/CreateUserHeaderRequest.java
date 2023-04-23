@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserHeaderImgRequest {
+public class CreateUserHeaderRequest {
     @NotNull(message = "Required param 'user_code' is not present.")
     private String userCode;
     private String headerImgUrl;

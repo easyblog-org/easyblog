@@ -15,7 +15,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateSignInLogRequest {
+public class UpdateLoginLogRequest {
 
     private String code;
 

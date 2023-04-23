@@ -1,4 +1,4 @@
-package top.easyblog.core.context;
+package top.easyblog.support.context;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

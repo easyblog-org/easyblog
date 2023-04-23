@@ -184,12 +184,12 @@ public class UserRoleRelationshipExample {
             return (Criteria) this;
         }
 
-        public Criteria andUserIdIn(List<Integer> values) {
+        public Criteria andUserIdIn(List<Long> values) {
             addCriterion("user_id in", values, "userId");
             return (Criteria) this;
         }
 
-        public Criteria andUserIdNotIn(List<Integer> values) {
+        public Criteria andUserIdNotIn(List<Long> values) {
             addCriterion("user_id not in", values, "userId");
             return (Criteria) this;
         }
@@ -244,7 +244,7 @@ public class UserRoleRelationshipExample {
             return (Criteria) this;
         }
 
-        public Criteria andRoleIdIn(List<Integer> values) {
+        public Criteria andRoleIdIn(List<Long> values) {
             addCriterion("role_id in", values, "roleId");
             return (Criteria) this;
         }

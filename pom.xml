@@ -79,6 +79,11 @@
                 <version>${easyblog-version}</version>
             </dependency>
             <dependency>
+                <groupId>top.easyblog</groupId>
+                <artifactId>easyblog-client</artifactId>
+                <version>${easyblog-version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>

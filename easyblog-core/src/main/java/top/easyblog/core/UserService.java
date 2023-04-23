@@ -3,13 +3,13 @@ package top.easyblog.core;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.*;
 import top.easyblog.common.constant.Constants;
@@ -21,7 +21,6 @@ import top.easyblog.common.request.header.QueryUserHeadersRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogListRequest;
 import top.easyblog.common.request.role.QueryRolesListRequest;
 import top.easyblog.common.request.role.QueryUserRolesListRequest;
-import top.easyblog.common.request.role.UpdateUserRolesRequest;
 import top.easyblog.common.request.user.CreateUserRequest;
 import top.easyblog.common.request.user.QueryUserListRequest;
 import top.easyblog.common.request.user.QueryUserRequest;
@@ -29,13 +28,14 @@ import top.easyblog.common.request.user.UpdateUserRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.annotation.Transaction;
-import top.easyblog.core.context.CreateOrRefreshUserRoleContext;
-import top.easyblog.core.context.UserSectionContext;
 import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicUserRolesService;
 import top.easyblog.dao.atomic.AtomicUserService;
 import top.easyblog.dao.auto.model.User;
 import top.easyblog.dao.auto.model.UserRoleRelationship;
+import top.easyblog.support.context.CreateOrRefreshUserRoleContext;
+import top.easyblog.support.context.UserSectionContext;
+import top.easyblog.support.event.UserCreateOrUpdateEvent;
 
 import java.util.*;
 import java.util.function.Function;
@@ -67,6 +67,9 @@ public class UserService {
 
     @Autowired
     private RolesService rolesService;
+
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
     private BeanMapper beanMapper;
@@ -111,8 +114,8 @@ public class UserService {
             return context;
         }
 
-        List<String> userCodes = userIdCodesMap.values().stream().toList();
-        List<Long> userIds = userIdCodesMap.keySet().stream().toList();
+        List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
+        List<Long> userIds = new ArrayList<>(userIdCodesMap.keySet());
         if (section.contains(UserQuerySection.QUERY_HEADER_IMG.getName())) {
             QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
@@ -162,7 +165,7 @@ public class UserService {
                 Map<Long, List<RolesBean>> rolesIdMap = rolesBeans.stream().filter(Objects::nonNull).collect(Collectors.groupingBy(RolesBean::getId));
                 Map<Long, List<RolesBean>> userIdRoleMap = Maps.newHashMap();
                 userRoleIdMap.forEach((roleUserId, userRole) -> {
-                    userIdRoleMap.compute(userRole.getUserId().longValue(), (k, v) -> {
+                    userIdRoleMap.compute(userRole.getUserId(), (k, v) -> {
                         if (v == null) {
                             v = Lists.newArrayList();
                         }
@@ -224,8 +227,10 @@ public class UserService {
         BeanUtils.copyProperties(request, newUser);
         atomicUserService.updateUserByPrimaryKey(newUser);
 
-        createOrRefreshUserRole(CreateOrRefreshUserRoleContext.builder()
-                .userId(user.getId()).roles(request.getRoles()).build());
+        //异步更新User和Role的关系
+        CreateOrRefreshUserRoleContext context = CreateOrRefreshUserRoleContext.builder()
+                .userId(newUser.getId()).roles(request.getRoles()).build();
+        applicationEventPublisher.publishEvent(new UserCreateOrUpdateEvent(context));
         return user.getId();
     }
 
@@ -289,9 +294,9 @@ public class UserService {
         Objects.requireNonNull(userDetailsBean).setIsNewUser(Boolean.TRUE);
 
         // 创建 or 更新用户角色
-        // TODO 观察者模式 更新UserRole
-        createOrRefreshUserRole(CreateOrRefreshUserRoleContext.builder()
-                .userId(newUser.getId()).roles(request.getRoles()).build());
+        CreateOrRefreshUserRoleContext context = CreateOrRefreshUserRoleContext.builder()
+                .userId(newUser.getId()).roles(request.getRoles()).build();
+        applicationEventPublisher.publishEvent(new UserCreateOrUpdateEvent(context));
         return userDetailsBean;
     }
 

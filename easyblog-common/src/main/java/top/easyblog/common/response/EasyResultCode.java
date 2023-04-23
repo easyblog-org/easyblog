@@ -20,8 +20,13 @@ public enum EasyResultCode {
     INTERNAL_ERROR,
     DATA_ACCESS_FAIL,
     PARAMETER_VALIDATE_FAILED,
+    LOGIN_FAILED,
+    PASSWORD_VALID_FAILED,
+    REQUEST_GITEE_ACCESS_TOKEN_FAILED,
+    REQUEST_GITEE_USER_INFO_FAILED,
+    REQUEST_GITHUB_ACCESS_TOKEN_FAILED,
+    REQUEST_GITHUB_USER_INFO_FAILED,
 
-    AUTH_TOKEN_NOT_FOUND,
 
     SIGN_FAIL,
     SIGN_ERROR,
@@ -44,11 +49,21 @@ public enum EasyResultCode {
     ILLEGAL_CONFIG_IDS,
     // 非法的消息模板code
     ILLEGAL_TEMPLATE_CODE,
+    //不正确的登录策略
+    INCORRECT_LOGIN_POLICY,
+    //非法认证策略
+    INCORRECT_OAUTH_POLICY,
+    //必须得请求参数不存在
+    REQUIRED_REQUEST_PARAM_NOT_EXISTS,
+    //非法账号类型
+    INVALID_IDENTITY_TYPE,
 
     // 发送消息失败
     SEND_MESSAGE_FAILED,
     // 不合法的消息
     ILLEGAL_MESSAGE_RECORD,
+    //不正确或已过期的验证码
+    INCORRECT_OR_EXPIRE_CAPTCHA,
 
 
     //账号已存在
@@ -59,6 +74,8 @@ public enum EasyResultCode {
     PHONE_AREA_CODE_ALREADY_EXISTS,
     // 手机站账号已经存在
     PHONE_ACCOUNT_ALREADY_EXISTS,
+    //邮箱账号存在
+    EMAIL_ACCOUNT_EXISTS,
 
     //账号不存在
     ACCOUNT_NOT_FOUND,
@@ -78,14 +95,27 @@ public enum EasyResultCode {
     ROLE_NOT_FOUND,
     //用户不存在
     USER_NOT_FOUND,
+    //认证Token不存在
+    AUTH_TOKEN_NOT_FOUND,
 
 
 
     //无法识别的大洲编码
     UNKNOWN_CONTINENT_CODE,
-
+    //账号未激活
+    ACCOUNT_IS_PRE_ACTIVE,
+    //账号被删除
+    ACCOUNT_IS_DELETE,
+    //账号被冻结
+    ACCOUNT_IS_FREEZE,
+    //账号不是邮箱
+    IDENTIFIER_NOT_EMAIL,
+    //账号不是手机
+    IDENTIFIER_NOT_PHONE,
     //无删除权限
     DELETE_OPERATION_NOT_PERMISSION,
+    //密码不一致
+    PASSWORD_NOT_EQUAL,
     ;
 
 

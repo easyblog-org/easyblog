@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.UserHeaderBean;
 import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.Status;
-import top.easyblog.common.request.header.CreateUserHeaderImgRequest;
+import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.header.QueryUserHeaderImgRequest;
 import top.easyblog.common.request.header.QueryUserHeadersRequest;
 import top.easyblog.common.response.PageResponse;
@@ -39,7 +39,7 @@ public class UserHeaderService {
     @Autowired
     private BeanMapper beanMapper;
 
-    public void createUserHeader(CreateUserHeaderImgRequest request) {
+    public void createUserHeader(CreateUserHeaderRequest request) {
         UserHeader UserHeader = headerImgService.queryByRequest(QueryUserHeaderImgRequest.builder()
                 .userCode(request.getUserCode()).status(Status.ENABLE.getCode()).build());
         //更新用户之前的头像状态为失效

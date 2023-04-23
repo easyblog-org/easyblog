@@ -8,9 +8,9 @@ import top.easyblog.common.bean.MobileAreBean;
 import top.easyblog.common.bean.UserDetailsBean;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
-import top.easyblog.common.request.header.CreateUserHeaderImgRequest;
+import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
-import top.easyblog.common.request.loginlog.UpdateSignInLogRequest;
+import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
@@ -55,7 +55,7 @@ public interface BeanMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "accountCode", ignore = true)
-    LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateSignInLogRequest request);
+    LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateLoginLogRequest request);
 
 
     MobileAreaCode convertMobileAreaCodeCreateReq2MobileArea(CreateMobileAreaRequest request);
@@ -70,7 +70,7 @@ public interface BeanMapper {
     PhoneAuth convertPhoneAuthCreateReq2PhoneAuth(CreatePhoneAuthRequest request);
 
 
-    UserHeader convertUserHeaderCreateReq2UserHeader(CreateUserHeaderImgRequest request);
+    UserHeader convertUserHeaderCreateReq2UserHeader(CreateUserHeaderRequest request);
 
 
     UserDetailsBean convertUser2UserBean(User user);

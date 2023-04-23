@@ -8,7 +8,7 @@ import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogListRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
-import top.easyblog.common.request.loginlog.UpdateSignInLogRequest;
+import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.convert.BeanMapper;
@@ -62,7 +62,7 @@ public class LoginLogService {
     }
 
 
-    public void updateSignLog(String code, UpdateSignInLogRequest request) {
+    public void updateSignLog(String code, UpdateLoginLogRequest request) {
         LoginLog loginLog = atomicLoginLogService.querySignLogByRequest(QueryLoginLogRequest.builder().code(code).build());
         if(Objects.nonNull(loginLog)){
             LoginLog updateReq2LoginLog = beanMapper.convertLoginLogUpdateReq2LoginLog(loginLog.getId(), request);
