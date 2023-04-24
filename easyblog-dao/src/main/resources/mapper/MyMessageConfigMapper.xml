@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.easyblog.dao.custom.MyMessageConfigMapper">
+    <resultMap id="BaseResultMap" type="top.easyblog.common.bean.MessageConfigBean">
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
+        <result column="template_value_config_type" jdbcType="TINYINT" property="templateValueConfigType"/>
+        <result column="expression" jdbcType="VARCHAR" property="expression"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+    </resultMap>
+
+
+    <sql id="BASE_QUERY_COL">
+        mc.code,mc.type,mc.name,mc.deleted,mc.create_time,mc.update_time,
+        tvc.type as template_value_config_type,  tvc.expression, tvc.url
+    </sql>
+
+    <select id="selectListByRequest" resultMap="BaseResultMap"
+            parameterType="top.easyblog.common.request.message.config.QueryMessageConfigsRequest">
+        select
+        <include refid="BASE_QUERY_COL"/>
+        from message_config mc left join template_value_config tvc on tvc.id = mc.template_value_config_id
+        <where>
+            <include refid="message_config_where_condition"/>
+        </where>
+        group by mc.id
+        <if test="request.limit!=null">
+            <if test="request.offset!=null">
+               limit #{request.offset},#{request.limit}
+            </if>
+            <if test="request.offset==null">
+                limit #{request.limit}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByRequest" resultType="long"
+            parameterType="top.easyblog.common.request.message.config.QueryMessageConfigsRequest">
+        select count(*)
+        from message_config mc left join template_value_config tvc on tvc.id = mc.template_value_config_id
+        <where>
+            <include refid="message_config_where_condition"/>
+        </where>
+    </select>
+
+    <sql id="message_config_where_condition">
+        <if test="request.codes!=null and request.codes.size()>0">
+            and mc.code in
+            <foreach collection="request.codes" item="code" open="(" separator="," close=")">
+                #{code}
+            </foreach>
+        </if>
+        <if test="request.types!=null and request.types.size()>0">
+            and mc.type in
+            <foreach collection="request.types" item="type" open="(" separator="," close=")">
+                #{type}
+            </foreach>
+        </if>
+        <if test="request.deleted!=null">
+            and mc.deleted=#{request.deleted}
+        </if>
+    </sql>
+
+
+</mapper>
