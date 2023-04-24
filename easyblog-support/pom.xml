@@ -48,6 +48,10 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		 <dependency>
+            <groupId>com.github.subchen</groupId>
+            <artifactId>jetbrick-template</artifactId>
+        </dependency>
 		<!--Spring AOP-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
