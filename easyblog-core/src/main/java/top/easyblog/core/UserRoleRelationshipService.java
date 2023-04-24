@@ -59,7 +59,7 @@ public class UserRoleRelationshipService {
                 .userIds(Collections.singletonList(context.getUserId())).build());
         if (userRoleNum > 0) {
             atomicUserRolesService.deleteByExample(UpdateUserRolesRequest.builder()
-                    .userId(context.getUserId().intValue()).build());
+                    .userId(context.getUserId()).build());
         }
 
         roles.stream().filter(Objects::nonNull).forEach(roleCode -> {

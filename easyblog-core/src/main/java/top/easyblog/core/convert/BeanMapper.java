@@ -2,15 +2,19 @@ package top.easyblog.core.convert;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import top.easyblog.common.bean.AccountBean;
-import top.easyblog.common.bean.LoginLogBean;
-import top.easyblog.common.bean.MobileAreBean;
-import top.easyblog.common.bean.UserDetailsBean;
+import org.mapstruct.Mappings;
+import top.easyblog.common.bean.*;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
+import top.easyblog.common.request.message.config.CreateMessageConfigRequest;
+import top.easyblog.common.request.message.config.CreateTemplateValueConfigRequest;
+import top.easyblog.common.request.message.config.UpdateMessageConfigRequest;
+import top.easyblog.common.request.message.config.UpdateTemplateValueConfigRequest;
+import top.easyblog.common.request.message.rule.CreateMessageConfigRuleRequest;
+import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
@@ -77,4 +81,37 @@ public interface BeanMapper {
 
 
     User convertUserCreateReq2User(CreateUserRequest request);
+
+
+    @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(6))")
+    @Mapping(target = "templateValueConfigId", source = "templateValueConfigId")
+    MessageConfig buildMessageConfig(CreateMessageConfigRequest request, Long templateValueConfigId);
+
+    @Mapping(target = "id", source = "id")
+    MessageConfig buildMessageConfig(UpdateMessageConfigRequest request, Long id);
+
+    TemplateValueConfig buildTemplateConfig(CreateTemplateValueConfigRequest request);
+
+    @Mapping(target = "id", source = "id")
+    TemplateValueConfig buildTemplateConfig(UpdateTemplateValueConfigRequest request, Long id);
+
+    @Mappings({
+            @Mapping(target = "templateValueConfigType", source = "templateValueConfig.type"),
+            @Mapping(target = "expression", source = "templateValueConfig.expression"),
+            @Mapping(target = "url", source = "templateValueConfig.url"),
+            @Mapping(target = "type", source = "messageConfig.type"),
+            @Mapping(target = "deleted", source = "messageConfig.deleted"),
+            @Mapping(target = "createTime", expression = "java(messageConfig.getCreateTime().getTime()/1000)"),
+            @Mapping(target = "updateTime", expression = "java(messageConfig.getUpdateTime().getTime()/1000)")
+    })
+    MessageConfigBean buildMessageConfigBean(MessageConfig messageConfig, TemplateValueConfig templateValueConfig);
+
+    MessageConfigRule buildMessageConfigRule(CreateMessageConfigRuleRequest request);
+
+    @Mapping(target = "id", source = "id")
+    MessageConfigRule buildMessageConfigRule(UpdateMessageConfigRuleRequest request, Long id);
+
+    @Mapping(target = "createTime", expression = "java(messageConfigRule.getCreateTime().getTime()/1000)")
+    @Mapping(target = "updateTime", expression = "java(messageConfigRule.getUpdateTime().getTime()/1000)")
+    MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
 }

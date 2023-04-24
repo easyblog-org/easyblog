@@ -1,11 +1,13 @@
 package top.easyblog.common.request.message.config;
 
 import lombok.*;
-import top.easyblog.titan.nestor.enums.TemplateValueConfigType;
+import top.easyblog.common.enums.TemplateValueConfigType;
+import top.easyblog.common.request.BaseRequest;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
+import static org.hibernate.validator.internal.util.Contracts.assertNotEmpty;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 /**
@@ -17,7 +19,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class CreateMessageConfigRequest extends BaseRequest {
+public class CreateMessageConfigRequest implements BaseRequest {
 
     private String code;
 
@@ -38,6 +40,6 @@ public class CreateMessageConfigRequest extends BaseRequest {
                 Objects.equals(TemplateValueConfigType.codeOf(templateValueConfig.getType()), TemplateValueConfigType.INTERFACE_JSON_VALUE)){
             assertNotEmpty(templateValueConfig.getUrl(), "Required param 'templateValueConfig.url' is not present");
         }
-        return super.validate();
+        return true;
     }
 }

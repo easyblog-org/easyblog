@@ -161,7 +161,7 @@ public abstract class AbstractLoginStrategy implements ILoginStrategy {
         }
 
         UserRoleRelationship userRoles = atomicUserRolesService.queryDetails(QueryUserRolesDetailsRequest.builder()
-                .roleId(roles.getId().intValue()).userId(newUser.getId().intValue()).enabled(Boolean.TRUE)
+                .roleId(roles.getId()).userId(newUser.getId()).enabled(Boolean.TRUE)
                 .build());
         if (Objects.nonNull(userRoles)) {
             log.info("Already exists user-role mapping:[uid={},roleId={}]", userRoles.getUserId(), userRoles.getRoleId());

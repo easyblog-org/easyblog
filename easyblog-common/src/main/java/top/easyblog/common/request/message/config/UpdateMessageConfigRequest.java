@@ -1,10 +1,13 @@
 package top.easyblog.common.request.message.config;
 
 import lombok.*;
-import top.easyblog.titan.nestor.enums.TemplateValueConfigType;
+import top.easyblog.common.enums.TemplateValueConfigType;
+import top.easyblog.common.request.BaseRequest;
 
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotEmpty;
 
 /**
  * @author: frank.huang
@@ -15,7 +18,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
-public class UpdateMessageConfigRequest extends BaseRequest {
+public class UpdateMessageConfigRequest implements BaseRequest {
 
     @NotBlank(message = "Required param 'name' is not present")
     private String name;
@@ -30,6 +33,6 @@ public class UpdateMessageConfigRequest extends BaseRequest {
                 Objects.equals(TemplateValueConfigType.codeOf(templateValueConfig.getType()), TemplateValueConfigType.INTERFACE_JSON_VALUE)){
             assertNotEmpty(templateValueConfig.getUrl(), "Required param 'templateValueConfig.url' is not present");
         }
-        return super.validate();
+        return true;
     }
 }
