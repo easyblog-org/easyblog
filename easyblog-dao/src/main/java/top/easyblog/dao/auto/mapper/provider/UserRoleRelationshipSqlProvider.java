@@ -27,27 +27,27 @@ public class UserRoleRelationshipSqlProvider {
     public String insertSelective(UserRoleRelationship record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("user_role_relationship");
-
+        
         if (record.getUserId() != null) {
-            sql.VALUES("user_id", "#{userId,jdbcType=INTEGER}");
+            sql.VALUES("user_id", "#{userId,jdbcType=BIGINT}");
         }
-
+        
         if (record.getRoleId() != null) {
-            sql.VALUES("role_id", "#{roleId,jdbcType=INTEGER}");
+            sql.VALUES("role_id", "#{roleId,jdbcType=BIGINT}");
         }
-
+        
         if (record.getEnabled() != null) {
             sql.VALUES("enabled", "#{enabled,jdbcType=BIT}");
         }
-
+        
         if (record.getCreateTime() != null) {
             sql.VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
-
+        
         return sql.toString();
     }
 
@@ -64,41 +64,48 @@ public class UserRoleRelationshipSqlProvider {
         sql.SELECT("update_time");
         sql.FROM("user_role_relationship");
         applyWhere(sql, example, false);
-
+        
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
 
-        return sql.toString();
+        StringBuilder sqlBuilder = new StringBuilder(sql.toString());
+        if (example != null && example.getOffset() != null && example.getLimit() >= 0) {
+            sqlBuilder.append(" LIMIT ").append(example.getOffset());
+            if (example.getLimit() != null && example.getLimit() > 0) {
+                sqlBuilder.append(",").append(example.getLimit());
+            }
+        }
+        return sqlBuilder.toString();
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
         UserRoleRelationship record = (UserRoleRelationship) parameter.get("record");
         UserRoleRelationshipExample example = (UserRoleRelationshipExample) parameter.get("example");
-
+        
         SQL sql = new SQL();
         sql.UPDATE("user_role_relationship");
-
+        
         if (record.getUserId() != null) {
-            sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
+            sql.SET("user_id = #{record.userId,jdbcType=BIGINT}");
         }
-
+        
         if (record.getRoleId() != null) {
-            sql.SET("role_id = #{record.roleId,jdbcType=INTEGER}");
+            sql.SET("role_id = #{record.roleId,jdbcType=BIGINT}");
         }
-
+        
         if (record.getEnabled() != null) {
             sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
         }
-
+        
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
-
+        
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -106,13 +113,13 @@ public class UserRoleRelationshipSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("user_role_relationship");
-
-        sql.SET("user_id = #{record.userId,jdbcType=INTEGER}");
-        sql.SET("role_id = #{record.roleId,jdbcType=INTEGER}");
+        
+        sql.SET("user_id = #{record.userId,jdbcType=BIGINT}");
+        sql.SET("role_id = #{record.roleId,jdbcType=BIGINT}");
         sql.SET("enabled = #{record.enabled,jdbcType=BIT}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-
+        
         UserRoleRelationshipExample example = (UserRoleRelationshipExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -121,22 +128,22 @@ public class UserRoleRelationshipSqlProvider {
     public String updateByPrimaryKeySelective(UserRoleRelationship record) {
         SQL sql = new SQL();
         sql.UPDATE("user_role_relationship");
-
+        
         if (record.getEnabled() != null) {
             sql.SET("enabled = #{enabled,jdbcType=BIT}");
         }
-
+        
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
-
-        sql.WHERE("user_id = #{userId,jdbcType=INTEGER}");
-        sql.WHERE("role_id = #{roleId,jdbcType=INTEGER}");
-
+        
+        sql.WHERE("user_id = #{userId,jdbcType=BIGINT}");
+        sql.WHERE("role_id = #{roleId,jdbcType=BIGINT}");
+        
         return sql.toString();
     }
 
