@@ -79,35 +79,27 @@
 
         <!--请根据自己数据库对应的表名进行配置修改，这里仅供参考-->
         <!--生成对应表及类名-->
-        <table tableName="account">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="mobile_area_code">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="phone_auth">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="roles">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="login_log">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="user">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="user_header">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
         <table tableName="user_role_relationship">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+        <table tableName="business_message_record">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+        <table tableName="message_config">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+        <table tableName="message_config_rule">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+        <table tableName="message_template">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>
+        <table tableName="template_value_config">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>

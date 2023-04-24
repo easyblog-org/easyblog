@@ -3,57 +3,49 @@ package top.easyblog.dao.auto.mapper.provider;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.Account;
-import top.easyblog.dao.auto.model.example.AccountExample.Criteria;
-import top.easyblog.dao.auto.model.example.AccountExample.Criterion;
-import top.easyblog.dao.auto.model.example.AccountExample;
+import top.easyblog.dao.auto.model.MessageConfig;
+import top.easyblog.dao.auto.model.example.MessageConfigExample.Criteria;
+import top.easyblog.dao.auto.model.example.MessageConfigExample.Criterion;
+import top.easyblog.dao.auto.model.example.MessageConfigExample;
 
-public class AccountSqlProvider {
+public class MessageConfigSqlProvider {
 
-    public String countByExample(AccountExample example) {
+    public String countByExample(MessageConfigExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("account");
+        sql.SELECT("count(*)").FROM("message_config");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(AccountExample example) {
+    public String deleteByExample(MessageConfigExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("account");
+        sql.DELETE_FROM("message_config");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(Account record) {
+    public String insertSelective(MessageConfig record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("account");
+        sql.INSERT_INTO("message_config");
         
         if (record.getCode() != null) {
             sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.VALUES("user_code", "#{userCode,jdbcType=VARCHAR}");
+        if (record.getType() != null) {
+            sql.VALUES("type", "#{type,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentityType() != null) {
-            sql.VALUES("identity_type", "#{identityType,jdbcType=INTEGER}");
+        if (record.getName() != null) {
+            sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentifier() != null) {
-            sql.VALUES("identifier", "#{identifier,jdbcType=VARCHAR}");
+        if (record.getTemplateValueConfigId() != null) {
+            sql.VALUES("template_value_config_id", "#{templateValueConfigId,jdbcType=BIGINT}");
         }
         
-        if (record.getCredential() != null) {
-            sql.VALUES("credential", "#{credential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVerified() != null) {
-            sql.VALUES("verified", "#{verified,jdbcType=INTEGER}");
-        }
-        
-        if (record.getStatus() != null) {
-            sql.VALUES("status", "#{status,jdbcType=INTEGER}");
+        if (record.getDeleted() != null) {
+            sql.VALUES("deleted", "#{deleted,jdbcType=BIT}");
         }
         
         if (record.getCreateTime() != null) {
@@ -67,7 +59,7 @@ public class AccountSqlProvider {
         return sql.toString();
     }
 
-    public String selectByExample(AccountExample example) {
+    public String selectByExample(MessageConfigExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
@@ -75,15 +67,13 @@ public class AccountSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("code");
-        sql.SELECT("user_code");
-        sql.SELECT("identity_type");
-        sql.SELECT("identifier");
-        sql.SELECT("credential");
-        sql.SELECT("verified");
-        sql.SELECT("status");
+        sql.SELECT("type");
+        sql.SELECT("name");
+        sql.SELECT("template_value_config_id");
+        sql.SELECT("deleted");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("account");
+        sql.FROM("message_config");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -101,11 +91,11 @@ public class AccountSqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        Account record = (Account) parameter.get("record");
-        AccountExample example = (AccountExample) parameter.get("example");
+        MessageConfig record = (MessageConfig) parameter.get("record");
+        MessageConfigExample example = (MessageConfigExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("account");
+        sql.UPDATE("message_config");
         
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
@@ -115,28 +105,20 @@ public class AccountSqlProvider {
             sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        if (record.getType() != null) {
+            sql.SET("type = #{record.type,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentityType() != null) {
-            sql.SET("identity_type = #{record.identityType,jdbcType=INTEGER}");
+        if (record.getName() != null) {
+            sql.SET("name = #{record.name,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentifier() != null) {
-            sql.SET("identifier = #{record.identifier,jdbcType=VARCHAR}");
+        if (record.getTemplateValueConfigId() != null) {
+            sql.SET("template_value_config_id = #{record.templateValueConfigId,jdbcType=BIGINT}");
         }
         
-        if (record.getCredential() != null) {
-            sql.SET("credential = #{record.credential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVerified() != null) {
-            sql.SET("verified = #{record.verified,jdbcType=INTEGER}");
-        }
-        
-        if (record.getStatus() != null) {
-            sql.SET("status = #{record.status,jdbcType=INTEGER}");
+        if (record.getDeleted() != null) {
+            sql.SET("deleted = #{record.deleted,jdbcType=BIT}");
         }
         
         if (record.getCreateTime() != null) {
@@ -153,54 +135,44 @@ public class AccountSqlProvider {
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("account");
+        sql.UPDATE("message_config");
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
-        sql.SET("identity_type = #{record.identityType,jdbcType=INTEGER}");
-        sql.SET("identifier = #{record.identifier,jdbcType=VARCHAR}");
-        sql.SET("credential = #{record.credential,jdbcType=VARCHAR}");
-        sql.SET("verified = #{record.verified,jdbcType=INTEGER}");
-        sql.SET("status = #{record.status,jdbcType=INTEGER}");
+        sql.SET("type = #{record.type,jdbcType=VARCHAR}");
+        sql.SET("name = #{record.name,jdbcType=VARCHAR}");
+        sql.SET("template_value_config_id = #{record.templateValueConfigId,jdbcType=BIGINT}");
+        sql.SET("deleted = #{record.deleted,jdbcType=BIT}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        AccountExample example = (AccountExample) parameter.get("example");
+        MessageConfigExample example = (MessageConfigExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(Account record) {
+    public String updateByPrimaryKeySelective(MessageConfig record) {
         SQL sql = new SQL();
-        sql.UPDATE("account");
+        sql.UPDATE("message_config");
         
         if (record.getCode() != null) {
             sql.SET("code = #{code,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{userCode,jdbcType=VARCHAR}");
+        if (record.getType() != null) {
+            sql.SET("type = #{type,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentityType() != null) {
-            sql.SET("identity_type = #{identityType,jdbcType=INTEGER}");
+        if (record.getName() != null) {
+            sql.SET("name = #{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentifier() != null) {
-            sql.SET("identifier = #{identifier,jdbcType=VARCHAR}");
+        if (record.getTemplateValueConfigId() != null) {
+            sql.SET("template_value_config_id = #{templateValueConfigId,jdbcType=BIGINT}");
         }
         
-        if (record.getCredential() != null) {
-            sql.SET("credential = #{credential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVerified() != null) {
-            sql.SET("verified = #{verified,jdbcType=INTEGER}");
-        }
-        
-        if (record.getStatus() != null) {
-            sql.SET("status = #{status,jdbcType=INTEGER}");
+        if (record.getDeleted() != null) {
+            sql.SET("deleted = #{deleted,jdbcType=BIT}");
         }
         
         if (record.getCreateTime() != null) {
@@ -216,7 +188,7 @@ public class AccountSqlProvider {
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, AccountExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, MessageConfigExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }

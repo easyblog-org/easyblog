@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import top.easyblog.dao.auto.mapper.provider.UserRoleRelationshipSqlProvider;
 import top.easyblog.dao.auto.model.UserRoleRelationship;
 import top.easyblog.dao.auto.model.example.UserRoleRelationshipExample;
+import top.easyblog.dao.auto.model.UserRoleRelationshipKey;
 
 @Mapper
 @Repository
@@ -30,16 +31,16 @@ public interface UserRoleRelationshipMapper {
 
     @Delete({
         "delete from user_role_relationship",
-        "where user_id = #{userId,jdbcType=INTEGER}",
-          "and role_id = #{roleId,jdbcType=INTEGER}"
+        "where user_id = #{userId,jdbcType=BIGINT}",
+          "and role_id = #{roleId,jdbcType=BIGINT}"
     })
-    int deleteByPrimaryKey(UserRoleRelationship relationship);
+    int deleteByPrimaryKey(UserRoleRelationshipKey key);
 
     @Insert({
         "insert into user_role_relationship (user_id, role_id, ",
         "enabled, create_time, ",
         "update_time)",
-        "values (#{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, ",
+        "values (#{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, ",
         "#{enabled,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, ",
         "#{updateTime,jdbcType=TIMESTAMP})"
     })
@@ -50,8 +51,8 @@ public interface UserRoleRelationshipMapper {
 
     @SelectProvider(type=UserRoleRelationshipSqlProvider.class, method="selectByExample")
     @Results({
-        @Result(column="user_id", property="userId", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="role_id", property="roleId", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="user_id", property="userId", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="role_id", property="roleId", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="enabled", property="enabled", jdbcType=JdbcType.BIT),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
@@ -62,17 +63,17 @@ public interface UserRoleRelationshipMapper {
         "select",
         "user_id, role_id, enabled, create_time, update_time",
         "from user_role_relationship",
-        "where user_id = #{userId,jdbcType=INTEGER}",
-          "and role_id = #{roleId,jdbcType=INTEGER}"
+        "where user_id = #{userId,jdbcType=BIGINT}",
+          "and role_id = #{roleId,jdbcType=BIGINT}"
     })
     @Results({
-        @Result(column="user_id", property="userId", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="role_id", property="roleId", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="user_id", property="userId", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="role_id", property="roleId", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="enabled", property="enabled", jdbcType=JdbcType.BIT),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
-    UserRoleRelationship selectByPrimaryKey(UserRoleRelationship record);
+    UserRoleRelationship selectByPrimaryKey(UserRoleRelationshipKey key);
 
     @UpdateProvider(type=UserRoleRelationshipSqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") UserRoleRelationship record, @Param("example") UserRoleRelationshipExample example);
@@ -88,8 +89,8 @@ public interface UserRoleRelationshipMapper {
         "set enabled = #{enabled,jdbcType=BIT},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP}",
-        "where user_id = #{userId,jdbcType=INTEGER}",
-          "and role_id = #{roleId,jdbcType=INTEGER}"
+        "where user_id = #{userId,jdbcType=BIGINT}",
+          "and role_id = #{roleId,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(UserRoleRelationship record);
 }

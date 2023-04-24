@@ -3,57 +3,57 @@ package top.easyblog.dao.auto.mapper.provider;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.jdbc.SQL;
-import top.easyblog.dao.auto.model.Account;
-import top.easyblog.dao.auto.model.example.AccountExample.Criteria;
-import top.easyblog.dao.auto.model.example.AccountExample.Criterion;
-import top.easyblog.dao.auto.model.example.AccountExample;
+import top.easyblog.dao.auto.model.BusinessMessageRecord;
+import top.easyblog.dao.auto.model.example.BusinessMessageRecordExample.Criteria;
+import top.easyblog.dao.auto.model.example.BusinessMessageRecordExample.Criterion;
+import top.easyblog.dao.auto.model.example.BusinessMessageRecordExample;
 
-public class AccountSqlProvider {
+public class BusinessMessageRecordSqlProvider {
 
-    public String countByExample(AccountExample example) {
+    public String countByExample(BusinessMessageRecordExample example) {
         SQL sql = new SQL();
-        sql.SELECT("count(*)").FROM("account");
+        sql.SELECT("count(*)").FROM("business_message_record");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String deleteByExample(AccountExample example) {
+    public String deleteByExample(BusinessMessageRecordExample example) {
         SQL sql = new SQL();
-        sql.DELETE_FROM("account");
+        sql.DELETE_FROM("business_message_record");
         applyWhere(sql, example, false);
         return sql.toString();
     }
 
-    public String insertSelective(Account record) {
+    public String insertSelective(BusinessMessageRecord record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("account");
+        sql.INSERT_INTO("business_message_record");
         
-        if (record.getCode() != null) {
-            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
+        if (record.getBusinessId() != null) {
+            sql.VALUES("business_id", "#{businessId,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.VALUES("user_code", "#{userCode,jdbcType=VARCHAR}");
+        if (record.getBusinessModule() != null) {
+            sql.VALUES("business_module", "#{businessModule,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentityType() != null) {
-            sql.VALUES("identity_type", "#{identityType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getIdentifier() != null) {
-            sql.VALUES("identifier", "#{identifier,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCredential() != null) {
-            sql.VALUES("credential", "#{credential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVerified() != null) {
-            sql.VALUES("verified", "#{verified,jdbcType=INTEGER}");
+        if (record.getBusinessEvent() != null) {
+            sql.VALUES("business_event", "#{businessEvent,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
-            sql.VALUES("status", "#{status,jdbcType=INTEGER}");
+            sql.VALUES("status", "#{status,jdbcType=TINYINT}");
+        }
+        
+        if (record.getRetryTimes() != null) {
+            sql.VALUES("retry_times", "#{retryTimes,jdbcType=INTEGER}");
+        }
+        
+        if (record.getFailReason() != null) {
+            sql.VALUES("fail_reason", "#{failReason,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDeleted() != null) {
+            sql.VALUES("deleted", "#{deleted,jdbcType=BIT}");
         }
         
         if (record.getCreateTime() != null) {
@@ -64,26 +64,57 @@ public class AccountSqlProvider {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getBusinessMessage() != null) {
+            sql.VALUES("business_message", "#{businessMessage,jdbcType=LONGVARCHAR}");
+        }
+        
         return sql.toString();
     }
 
-    public String selectByExample(AccountExample example) {
+    public String selectByExampleWithBLOBs(BusinessMessageRecordExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
         } else {
             sql.SELECT("id");
         }
-        sql.SELECT("code");
-        sql.SELECT("user_code");
-        sql.SELECT("identity_type");
-        sql.SELECT("identifier");
-        sql.SELECT("credential");
-        sql.SELECT("verified");
+        sql.SELECT("business_id");
+        sql.SELECT("business_module");
+        sql.SELECT("business_event");
         sql.SELECT("status");
+        sql.SELECT("retry_times");
+        sql.SELECT("fail_reason");
+        sql.SELECT("deleted");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.FROM("account");
+        sql.SELECT("business_message");
+        sql.FROM("business_message_record");
+        applyWhere(sql, example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        
+        return sql.toString();
+    }
+
+    public String selectByExample(BusinessMessageRecordExample example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("business_id");
+        sql.SELECT("business_module");
+        sql.SELECT("business_event");
+        sql.SELECT("status");
+        sql.SELECT("retry_times");
+        sql.SELECT("fail_reason");
+        sql.SELECT("deleted");
+        sql.SELECT("create_time");
+        sql.SELECT("update_time");
+        sql.FROM("business_message_record");
         applyWhere(sql, example, false);
         
         if (example != null && example.getOrderByClause() != null) {
@@ -101,42 +132,42 @@ public class AccountSqlProvider {
     }
 
     public String updateByExampleSelective(Map<String, Object> parameter) {
-        Account record = (Account) parameter.get("record");
-        AccountExample example = (AccountExample) parameter.get("example");
+        BusinessMessageRecord record = (BusinessMessageRecord) parameter.get("record");
+        BusinessMessageRecordExample example = (BusinessMessageRecordExample) parameter.get("example");
         
         SQL sql = new SQL();
-        sql.UPDATE("account");
+        sql.UPDATE("business_message_record");
         
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
         
-        if (record.getCode() != null) {
-            sql.SET("code = #{record.code,jdbcType=VARCHAR}");
+        if (record.getBusinessId() != null) {
+            sql.SET("business_id = #{record.businessId,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        if (record.getBusinessModule() != null) {
+            sql.SET("business_module = #{record.businessModule,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentityType() != null) {
-            sql.SET("identity_type = #{record.identityType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getIdentifier() != null) {
-            sql.SET("identifier = #{record.identifier,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCredential() != null) {
-            sql.SET("credential = #{record.credential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVerified() != null) {
-            sql.SET("verified = #{record.verified,jdbcType=INTEGER}");
+        if (record.getBusinessEvent() != null) {
+            sql.SET("business_event = #{record.businessEvent,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
-            sql.SET("status = #{record.status,jdbcType=INTEGER}");
+            sql.SET("status = #{record.status,jdbcType=TINYINT}");
+        }
+        
+        if (record.getRetryTimes() != null) {
+            sql.SET("retry_times = #{record.retryTimes,jdbcType=INTEGER}");
+        }
+        
+        if (record.getFailReason() != null) {
+            sql.SET("fail_reason = #{record.failReason,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDeleted() != null) {
+            sql.SET("deleted = #{record.deleted,jdbcType=BIT}");
         }
         
         if (record.getCreateTime() != null) {
@@ -147,60 +178,85 @@ public class AccountSqlProvider {
             sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getBusinessMessage() != null) {
+            sql.SET("business_message = #{record.businessMessage,jdbcType=LONGVARCHAR}");
+        }
+        
+        applyWhere(sql, example, true);
+        return sql.toString();
+    }
+
+    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
+        SQL sql = new SQL();
+        sql.UPDATE("business_message_record");
+        
+        sql.SET("id = #{record.id,jdbcType=BIGINT}");
+        sql.SET("business_id = #{record.businessId,jdbcType=VARCHAR}");
+        sql.SET("business_module = #{record.businessModule,jdbcType=VARCHAR}");
+        sql.SET("business_event = #{record.businessEvent,jdbcType=VARCHAR}");
+        sql.SET("status = #{record.status,jdbcType=TINYINT}");
+        sql.SET("retry_times = #{record.retryTimes,jdbcType=INTEGER}");
+        sql.SET("fail_reason = #{record.failReason,jdbcType=VARCHAR}");
+        sql.SET("deleted = #{record.deleted,jdbcType=BIT}");
+        sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
+        sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
+        sql.SET("business_message = #{record.businessMessage,jdbcType=LONGVARCHAR}");
+        
+        BusinessMessageRecordExample example = (BusinessMessageRecordExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
-        sql.UPDATE("account");
+        sql.UPDATE("business_message_record");
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
-        sql.SET("code = #{record.code,jdbcType=VARCHAR}");
-        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
-        sql.SET("identity_type = #{record.identityType,jdbcType=INTEGER}");
-        sql.SET("identifier = #{record.identifier,jdbcType=VARCHAR}");
-        sql.SET("credential = #{record.credential,jdbcType=VARCHAR}");
-        sql.SET("verified = #{record.verified,jdbcType=INTEGER}");
-        sql.SET("status = #{record.status,jdbcType=INTEGER}");
+        sql.SET("business_id = #{record.businessId,jdbcType=VARCHAR}");
+        sql.SET("business_module = #{record.businessModule,jdbcType=VARCHAR}");
+        sql.SET("business_event = #{record.businessEvent,jdbcType=VARCHAR}");
+        sql.SET("status = #{record.status,jdbcType=TINYINT}");
+        sql.SET("retry_times = #{record.retryTimes,jdbcType=INTEGER}");
+        sql.SET("fail_reason = #{record.failReason,jdbcType=VARCHAR}");
+        sql.SET("deleted = #{record.deleted,jdbcType=BIT}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         
-        AccountExample example = (AccountExample) parameter.get("example");
+        BusinessMessageRecordExample example = (BusinessMessageRecordExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
 
-    public String updateByPrimaryKeySelective(Account record) {
+    public String updateByPrimaryKeySelective(BusinessMessageRecord record) {
         SQL sql = new SQL();
-        sql.UPDATE("account");
+        sql.UPDATE("business_message_record");
         
-        if (record.getCode() != null) {
-            sql.SET("code = #{code,jdbcType=VARCHAR}");
+        if (record.getBusinessId() != null) {
+            sql.SET("business_id = #{businessId,jdbcType=VARCHAR}");
         }
         
-        if (record.getUserCode() != null) {
-            sql.SET("user_code = #{userCode,jdbcType=VARCHAR}");
+        if (record.getBusinessModule() != null) {
+            sql.SET("business_module = #{businessModule,jdbcType=VARCHAR}");
         }
         
-        if (record.getIdentityType() != null) {
-            sql.SET("identity_type = #{identityType,jdbcType=INTEGER}");
-        }
-        
-        if (record.getIdentifier() != null) {
-            sql.SET("identifier = #{identifier,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCredential() != null) {
-            sql.SET("credential = #{credential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getVerified() != null) {
-            sql.SET("verified = #{verified,jdbcType=INTEGER}");
+        if (record.getBusinessEvent() != null) {
+            sql.SET("business_event = #{businessEvent,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
-            sql.SET("status = #{status,jdbcType=INTEGER}");
+            sql.SET("status = #{status,jdbcType=TINYINT}");
+        }
+        
+        if (record.getRetryTimes() != null) {
+            sql.SET("retry_times = #{retryTimes,jdbcType=INTEGER}");
+        }
+        
+        if (record.getFailReason() != null) {
+            sql.SET("fail_reason = #{failReason,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getDeleted() != null) {
+            sql.SET("deleted = #{deleted,jdbcType=BIT}");
         }
         
         if (record.getCreateTime() != null) {
@@ -211,12 +267,16 @@ public class AccountSqlProvider {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getBusinessMessage() != null) {
+            sql.SET("business_message = #{businessMessage,jdbcType=LONGVARCHAR}");
+        }
+        
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
         
         return sql.toString();
     }
 
-    protected void applyWhere(SQL sql, AccountExample example, boolean includeExamplePhrase) {
+    protected void applyWhere(SQL sql, BusinessMessageRecordExample example, boolean includeExamplePhrase) {
         if (example == null) {
             return;
         }
