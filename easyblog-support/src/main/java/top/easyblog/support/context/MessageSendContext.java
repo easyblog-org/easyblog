@@ -18,14 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 public class MessageSendContext {
     /**
-     * id 用于by主键更新
-     */
-    private Long sendRecordId;
-    /**
-     * 发件人
-     */
-    private String sender;
-    /**
      * 收件人
      */
     private String receiver;
@@ -37,6 +29,12 @@ public class MessageSendContext {
      * 主体（标题）
      */
     private String title;
+
+    /**
+     * 渠道
+     */
+    private Byte channel;
+
     /**
      * 附件（Only for email）
      */

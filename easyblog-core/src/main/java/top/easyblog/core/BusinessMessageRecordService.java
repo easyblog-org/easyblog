@@ -2,11 +2,16 @@ package top.easyblog.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.enums.MessageSendChannel;
 import top.easyblog.common.request.message.record.CreateMessageSendRecordRequest;
+import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicBusinessMessageRecordService;
+import top.easyblog.dao.auto.model.BusinessMessageRecord;
+import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageProcessorContext;
+import top.easyblog.support.event.MessageSendPreparedEvent;
 
 /**
  * 创建消息发送
@@ -25,48 +30,33 @@ public class BusinessMessageRecordService {
     @Autowired
     private MessageSendChainService messageSendChainService;
 
+    @Autowired
+    private ApplicationEventPublisher applicationEventPublisher;
+
+    @Autowired
+    private BeanMapper beanMapper;
+
 
     public void createMessageRecord(CreateMessageSendRecordRequest request) {
+        BusinessMessageRecord record = beanMapper.convertMessageSendRecordCreateReq2MessageSendRecord(request);
+        BusinessMessageRecordContext messageRecordContext = beanMapper.convertMessageSendRecord2MessageSendRecordContext(record);
+        applicationEventPublisher.publishEvent(new MessageSendPreparedEvent(messageRecordContext));
+    }
 
+
+    public void updateMessageRecord() {
 
     }
 
 
-    public void updateMessageRecord(){
+    public void details() {
 
     }
 
 
-    public void details(){
+    public void list() {
 
     }
 
-
-    public void list(){
-
-    }
-
-    public MessageProcessorContext sendPlainEmail(CreateMessageSendRecordRequest request) {
-        return messageSendChainService.execute(MessageProcessorContext.builder()
-                .receiver(request.getReceiver())
-                .sender(request.getSender())
-                .title(request.getTitle())
-                .templateCode(request.getTemplateCode())
-                .channel(MessageSendChannel.PLAIN_EMAIL.getCode())
-                .replaceValues(request.getReplaceValues())
-                .build());
-    }
-
-    public MessageProcessorContext sendAttachmentEmail(CreateMessageSendRecordRequest request) {
-        return messageSendChainService.execute(MessageProcessorContext.builder()
-                .receiver(request.getReceiver())
-                .sender(request.getSender())
-                .title(request.getTitle())
-                .templateCode(request.getTemplateCode())
-                .channel(MessageSendChannel.ATTACHMENT_EMAIL.getCode())
-                .replaceValues(request.getReplaceValues())
-                .attachments(request.getAttachments())
-                .build());
-    }
 
 }

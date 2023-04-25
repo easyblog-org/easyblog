@@ -29,7 +29,7 @@ public class MessageSendRecordController {
     private BusinessMessageRecordService messageSendRecordService;
 
 
-    @ResponseWrapper
+ /*   @ResponseWrapper
     @PostMapping("/email")
     public MessageProcessorContext sendPlainEmail(@RequestBody @Valid CreateMessageSendRecordRequest request) {
         return messageSendRecordService.sendPlainEmail(request);
@@ -48,7 +48,7 @@ public class MessageSendRecordController {
         }).collect(Collectors.toList());
         request.setAttachments(attachmentsList);
         return messageSendRecordService.sendAttachmentEmail(request);
-    }
+    }*/
 
 
 }

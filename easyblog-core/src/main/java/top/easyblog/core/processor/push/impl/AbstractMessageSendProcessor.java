@@ -1,6 +1,7 @@
 package top.easyblog.core.processor.push.impl;
 
 import java.util.Optional;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -8,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import top.easyblog.core.processor.push.MessageSendProcessor;
 import top.easyblog.dao.auto.model.BusinessMessageRecord;
 

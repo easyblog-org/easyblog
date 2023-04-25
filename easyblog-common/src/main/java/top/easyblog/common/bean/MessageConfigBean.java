@@ -14,7 +14,7 @@ public class MessageConfigBean {
 
     private String name;
 
-    private Byte templateValueConfigType;
+    private TemplateValueConfigBean templateValueConfigBean;
 
     private String expression;
 

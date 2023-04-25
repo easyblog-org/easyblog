@@ -1,11 +1,6 @@
 package top.easyblog.support.executor;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +22,7 @@ public class CustomExecutor {
      * @return
      */
     @Bean("messageProcessor")
-    public Executor messageProcessor() {
+    public ExecutorService messageProcessor() {
         return new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAXIMUM_POOL_SIZE,
                 DEFAULT_KEEP_ALIVE_TIME, DEFAULT_KEEP_ALIVE_TIME_UNIT, DEFAULT_WORK_QUEUE,
                 new ThreadPoolExecutor.CallerRunsPolicy());

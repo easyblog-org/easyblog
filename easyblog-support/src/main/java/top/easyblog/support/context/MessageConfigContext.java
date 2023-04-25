@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.easyblog.common.bean.MessageConfigBean;
+import top.easyblog.common.bean.TemplateValueConfigBean;
 
 import java.util.List;
 
@@ -21,23 +22,25 @@ public class MessageConfigContext {
 
     private String businessEvent;
 
-    private String msgGroup;
+    private String group;
 
     private Integer priority;
 
     private Byte channel;
 
-    private List<MessageConfigBean> configs; 
+    private List<MessageConfigBean> configs;
 
     private String expectPushTime;
 
     private Byte idType;
 
-    private Byte sendChannel;
-
     private Byte msgType;
 
     private Byte shieldType;
+
+    private String title;
+
+    private String businessMessage;
 
     private String msgTemplateContent;
 

@@ -20,7 +20,12 @@ public enum MessageConfigType {
     /**
      * 消息正文
      */
-    CONTENT;
+    CONTENT,
+    /**
+     * 消息标题
+     */
+    SUBJECT,
+    ;
 
 
 

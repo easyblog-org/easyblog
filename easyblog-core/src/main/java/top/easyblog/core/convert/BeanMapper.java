@@ -15,6 +15,7 @@ import top.easyblog.common.request.message.config.CreateMessageConfigRequest;
 import top.easyblog.common.request.message.config.CreateTemplateValueConfigRequest;
 import top.easyblog.common.request.message.config.UpdateMessageConfigRequest;
 import top.easyblog.common.request.message.config.UpdateTemplateValueConfigRequest;
+import top.easyblog.common.request.message.record.CreateMessageSendRecordRequest;
 import top.easyblog.common.request.message.rule.CreateMessageConfigRuleRequest;
 import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
@@ -22,6 +23,7 @@ import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
 import top.easyblog.common.request.user.CreateUserRequest;
 import top.easyblog.dao.auto.model.*;
+import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageConfigContext;
 
 /**
@@ -121,7 +123,23 @@ public interface BeanMapper {
 
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
-
+    @Mappings({
+            @Mapping(target = "businessModule",source = "msg.businessModule"),
+            @Mapping(target = "businessEvent",source = "msg.businessEvent"),
+            @Mapping(target = "businessMessage",source = "msg.businessMessage"),
+            @Mapping(target = "group",source = "messageConfigRule.group"),
+            @Mapping(target = "priority",source = "messageConfigRule.priority"),
+            @Mapping(target = "channel",source = "messageTemplate.channel"),
+            @Mapping(target = "idType",source = "messageTemplate.idType"),
+            @Mapping(target = "msgType",source = "messageTemplate.msgType"),
+            @Mapping(target = "shieldType",source = "messageTemplate.shieldType"),
+            @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgTemplateContent"),
+            @Mapping(target = "configs",source = "messageConfigs")
+    })
     MessageConfigContext buildMessageConfigContext(BusinessMessageRecord msg, MessageConfigRuleBean messageConfigRule,
             MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
+
+    BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateMessageSendRecordRequest request);
+
+    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record);
 }
