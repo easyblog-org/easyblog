@@ -60,11 +60,9 @@ public class GiteeAuthStrategyImpl implements IAuthStrategy<GiteeAuthDTO>, IOaut
                 .grantType(LoginConstants.COMMON_GRANT_TYPE)
                 .redirectUri(giteeAuthProperties.getRedirectUrl())
                 .build());
-        return Optional.ofNullable(accessToken).map(item -> {
-            String token = item.getAccessToken();
-            log.info("Get Gitee access_token: {}", JsonUtils.toJSONString(accessToken));
-            return token;
-        }).orElseThrow(() -> new BusinessException(EasyResultCode.REQUEST_GITEE_ACCESS_TOKEN_FAILED));
+        log.info("Get Gitee access_token: {}", JsonUtils.toJSONString(accessToken));        
+        return Optional.ofNullable(accessToken).map(GiteeAuthTokenDTO::getAccessToken)
+        .orElseThrow(() -> new BusinessException(EasyResultCode.REQUEST_GITEE_ACCESS_TOKEN_FAILED));
     }
 
     @Override
@@ -80,10 +78,8 @@ public class GiteeAuthStrategyImpl implements IAuthStrategy<GiteeAuthDTO>, IOaut
     @Override
     public GiteeAuthDTO getUserInfo(String accessToken) {
         GiteeAuthDTO giteeUserInfo = giteeClient.getGiteeUserInfo(accessToken);
-        return Optional.of(giteeUserInfo).map(item -> {
-            log.info("Get gitee user info: {}", JsonUtils.toJSONString(item));
-            return item;
-        }).orElseThrow(() -> new BusinessException(EasyResultCode.REQUEST_GITEE_USER_INFO_FAILED));
+        log.info("Get gitee user info: {}", JsonUtils.toJSONString(giteeUserInfo));
+        return Optional.of(giteeUserInfo).orElseThrow(() -> new BusinessException(EasyResultCode.REQUEST_GITEE_USER_INFO_FAILED));
     }
 
     @Override

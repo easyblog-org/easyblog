@@ -20,8 +20,6 @@ public class CreateMessageTemplateRequest {
     @NotBlank(message = "Required param 'name' is not present.")
     private String name;
 
-    private Byte msgStatus;
-
     private String expectPushTime;
 
     private Byte idType;
@@ -32,6 +30,7 @@ public class CreateMessageTemplateRequest {
 
     private Byte shieldType;
 
+    @NotBlank(message = "Required param 'name' is not present.")
     private String msgContent;
 
     private Boolean deleted;

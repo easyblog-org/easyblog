@@ -1,5 +1,7 @@
 package top.easyblog.core.convert;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -20,6 +22,7 @@ import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
 import top.easyblog.common.request.user.CreateUserRequest;
 import top.easyblog.dao.auto.model.*;
+import top.easyblog.support.context.MessageConfigContext;
 
 /**
  * @author: frank.huang
@@ -114,4 +117,11 @@ public interface BeanMapper {
     @Mapping(target = "createTime", expression = "java(messageConfigRule.getCreateTime().getTime()/1000)")
     @Mapping(target = "updateTime", expression = "java(messageConfigRule.getUpdateTime().getTime()/1000)")
     MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
+
+
+    MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
+
+
+    MessageConfigContext buildMessageConfigContext(BusinessMessageRecord msg, MessageConfigRuleBean messageConfigRule,
+            MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
 }

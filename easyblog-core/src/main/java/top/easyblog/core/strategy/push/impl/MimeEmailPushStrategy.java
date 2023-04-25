@@ -49,16 +49,16 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
         }
         MimeMessage mimeMessage = mailSender.createMimeMessage();
        try{
-           MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,true);
-           /*helper.setFrom(messageSendRecord.getSender());
-           helper.setTo(messageSendRecord.getReceiver());
-           helper.setSubject(messageSendRecord.getTitle());*/
-           helper.setText(messageSendRecord.getBusinessMessage());
+           MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+           /*mimeMessageHelper.setFrom(messageSendRecord.getSender());
+           mimeMessageHelper.setTo(messageSendRecord.getReceiver());
+           mimeMessageHelper.setSubject(messageSendRecord.getTitle());*/
+           mimeMessageHelper.setText(messageSendRecord.getBusinessMessage());
            List<File> attachments = context.getAttachments();
            // 添加附件（多个）
            if (CollectionUtils.isNotEmpty(attachments)) {
                for (File attachment : attachments) {
-                   helper.addAttachment(attachment.getName(), attachment);
+                mimeMessageHelper.addAttachment(attachment.getName(), attachment);
                }
            }
            // 发送邮件

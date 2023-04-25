@@ -83,6 +83,11 @@ public class MessageConfigService {
         return beanMapper.buildMessageConfigBean(messageConfig, templateValueConfig);
     }
 
+    public List<MessageConfigBean> listAll(QueryMessageConfigsRequest request) {
+       return atomicMessageConfigService.queryListByRequest(request);
+    }
+
+
     public PageResponse<MessageConfigBean> list(QueryMessageConfigsRequest request) {
         long amount = atomicMessageConfigService.countByRequest(request);
         if (Objects.equals(NumberUtils.LONG_ZERO, amount)) {

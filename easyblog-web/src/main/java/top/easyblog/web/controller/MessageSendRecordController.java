@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.message.record.CreateMessageSendRecordRequest;
 import top.easyblog.common.response.EasyResultCode;
-import top.easyblog.core.MessageSendRecordService;
+import top.easyblog.core.BusinessMessageRecordService;
 import top.easyblog.support.context.MessageProcessorContext;
 import top.easyblog.web.annotation.ResponseWrapper;
 
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class MessageSendRecordController {
 
     @Autowired
-    private MessageSendRecordService messageSendRecordService;
+    private BusinessMessageRecordService messageSendRecordService;
 
 
     @ResponseWrapper

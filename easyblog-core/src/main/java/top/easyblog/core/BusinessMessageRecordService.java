@@ -5,21 +5,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.enums.MessageSendChannel;
 import top.easyblog.common.request.message.record.CreateMessageSendRecordRequest;
+import top.easyblog.dao.atomic.AtomicBusinessMessageRecordService;
 import top.easyblog.support.context.MessageProcessorContext;
 
 /**
- * 消息发送服务
+ * 创建消息发送
  *
  * @author: frank.huang
  * @date: 2023-02-12 12:33
  */
 @Slf4j
 @Service
-public class MessageSendRecordService {
+public class BusinessMessageRecordService {
+
+
+    @Autowired
+    private AtomicBusinessMessageRecordService atomicBusinessMessageRecordService;
 
     @Autowired
     private MessageSendChainService messageSendChainService;
 
+
+    public void createMessageRecord(CreateMessageSendRecordRequest request) {
+
+
+    }
+
+
+    public void updateMessageRecord(){
+
+    }
+
+
+    public void details(){
+
+    }
+
+
+    public void list(){
+
+    }
 
     public MessageProcessorContext sendPlainEmail(CreateMessageSendRecordRequest request) {
         return messageSendChainService.execute(MessageProcessorContext.builder()

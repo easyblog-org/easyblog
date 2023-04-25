@@ -63,10 +63,9 @@ public class GitHubAuthStrategyImpl implements IAuthStrategy<GitHubAuthDTO>, IOa
                 .code(code)
                 .grantType(LoginConstants.COMMON_GRANT_TYPE)
                 .build());
+        log.info("Get GitHub access_token: {}", JsonUtils.toJSONString(accessToken));        
         return Optional.ofNullable(accessToken).map(item -> {
-            String token = Iterables.getFirst(item.get("accessToken"), null);
-            log.info("Get GitHub access_token: {}", JsonUtils.toJSONString(accessToken));
-            return token;
+            return Iterables.getFirst(item.get("accessToken"), null);
         }).orElseThrow(() -> new BusinessException(EasyResultCode.REQUEST_GITHUB_ACCESS_TOKEN_FAILED));
     }
 
@@ -84,11 +83,8 @@ public class GitHubAuthStrategyImpl implements IAuthStrategy<GitHubAuthDTO>, IOa
     @Override
     public GitHubAuthDTO getUserInfo(String accessToken) {
         GitHubAuthDTO gitHubAuthBean = gitHubOpenApiClient.getGithubUserInfo(String.format("token %s", accessToken));
-        if (Objects.isNull(gitHubAuthBean)) {
-            throw new BusinessException(EasyResultCode.REQUEST_GITHUB_USER_INFO_FAILED);
-        }
         log.info("Get github user information: {}", JsonUtils.toJSONString(gitHubAuthBean));
-        return gitHubAuthBean;
+        return Optional.ofNullable(gitHubAuthBean).orElseThrow(()->new BusinessException(EasyResultCode.REQUEST_GITHUB_USER_INFO_FAILED));
     }
 
 

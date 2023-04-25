@@ -22,7 +22,23 @@ public class MessageSendContext {
      */
     private Long sendRecordId;
     /**
-     * Only for email
+     * 发件人
+     */
+    private String sender;
+    /**
+     * 收件人
+     */
+    private String receiver;
+    /**
+     * 内容
+     */
+    private String content;
+    /**
+     * 主体（标题）
+     */
+    private String title;
+    /**
+     * 附件（Only for email）
      */
     private List<File> attachments;
 }
