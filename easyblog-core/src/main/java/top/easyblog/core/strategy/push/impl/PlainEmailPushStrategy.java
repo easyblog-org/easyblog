@@ -44,10 +44,8 @@ public class PlainEmailPushStrategy implements MessagePushStrategy {
             simpleMailMessage.setTo(context.getReceiver());
             simpleMailMessage.setText(context.getContent());
             mailSender.send(simpleMailMessage);
-            applicationEventPublisher.publishEvent(new MessageSendSuccessEvent(context));
         } catch (Exception e) {
             log.info(e.getMessage());
-            //applicationEventPublisher.publishEvent(new MessageSendFailedEvent(context));
         }
     }
 

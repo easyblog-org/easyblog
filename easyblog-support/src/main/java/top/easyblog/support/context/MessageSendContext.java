@@ -17,6 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageSendContext {
+
+    /**
+     * 发送配置
+     */
+    private MessageConfigContext messageConfigContext;
+
     /**
      * 收件人
      */

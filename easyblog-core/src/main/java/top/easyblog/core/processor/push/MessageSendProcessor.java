@@ -2,6 +2,7 @@ package top.easyblog.core.processor.push;
 
 
 import top.easyblog.dao.auto.model.BusinessMessageRecord;
+import top.easyblog.support.context.BusinessMessageRecordContext;
 
 /**
  * 消息推送处理接口，用于消息格式校验、解析组装和发送
@@ -14,7 +15,7 @@ public interface MessageSendProcessor {
      * @param message 消息内容
      * @return 是否正确发送到目标服务器
      */
-    boolean send(BusinessMessageRecord message);
+    boolean send(BusinessMessageRecordContext message);
 
 
 
@@ -22,5 +23,5 @@ public interface MessageSendProcessor {
     * 异步发送消息
     * @param message 消息内容
     */
-    void asyncSend(BusinessMessageRecord message);
+    void asyncSend(BusinessMessageRecordContext message);
 }

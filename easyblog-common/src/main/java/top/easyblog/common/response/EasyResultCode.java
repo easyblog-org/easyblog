@@ -42,6 +42,8 @@ public enum EasyResultCode {
     ILLEGAL_CONFIG_TYPE,
     // 非法的消息参数模板取值配置类型
     ILLEGAL_TEMPLATE_VALUE_TYPE,
+    // 非法参数配置
+    ILLEGAL_TEMPLATE_VALUE_CONFIG,
     // 非法消息发送发送渠道
     ILLEGAL_MESSAGE_SEND_CHANNEL,
     // 非法的消息参数id

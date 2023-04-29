@@ -30,8 +30,6 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
 
     private final JavaMailSender mailSender;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     @Value("${message.sender}")
     private String emailSender;
 
@@ -58,7 +56,6 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
             }
             // 发送邮件
             mailSender.send(mimeMessage);
-            applicationEventPublisher.publishEvent(new MessageSendSuccessEvent(context));
         } catch (Exception e) {
             log.info(e.getMessage());
 

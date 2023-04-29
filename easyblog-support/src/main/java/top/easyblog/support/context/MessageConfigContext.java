@@ -18,6 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageConfigContext {
+
+    private Long businessMessageRecordId;
+
     private String businessModule;
 
     private String businessEvent;

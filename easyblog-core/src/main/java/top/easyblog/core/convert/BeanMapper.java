@@ -125,6 +125,7 @@ public interface BeanMapper {
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
     @Mappings({
+            @Mapping(target = "businessMessageRecordId",source = "msg.id"),
             @Mapping(target = "businessModule",source = "msg.businessModule"),
             @Mapping(target = "businessEvent",source = "msg.businessEvent"),
             @Mapping(target = "businessMessage",source = "msg.businessMessage"),
@@ -137,7 +138,7 @@ public interface BeanMapper {
             @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgTemplateContent"),
             @Mapping(target = "configs",source = "messageConfigs")
     })
-    MessageConfigContext buildMessageConfigContext(BusinessMessageRecord msg, MessageConfigRuleBean messageConfigRule,
+    MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg, MessageConfigRuleBean messageConfigRule,
             MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
 
     BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
