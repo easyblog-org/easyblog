@@ -17,7 +17,7 @@ public enum MessageSendStatus {
     /**
      * 已初始化
      */
-    INITIALIZED((byte) 1),
+    UNSEND((byte) 1),
     /**
      * 发送成功
      */
@@ -26,10 +26,6 @@ public enum MessageSendStatus {
      * 发送失败
      */
     FAILED((byte) 3),
-    /**
-     * 发送中
-     */
-    SENDING((byte) 10),
 
     ;
 

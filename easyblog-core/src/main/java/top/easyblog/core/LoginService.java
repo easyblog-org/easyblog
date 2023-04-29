@@ -1,4 +1,4 @@
-package top.easyblog.core.impl;
+package top.easyblog.core;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -15,8 +15,6 @@ import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
 import top.easyblog.common.response.EasyResultCode;
-import top.easyblog.core.LoginLogService;
-import top.easyblog.core.RedisService;
 import top.easyblog.core.annotation.Transaction;
 import top.easyblog.core.strategy.LoginStrategyContext;
 import top.easyblog.service.ILoginService;
@@ -34,7 +32,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Service
-public class LoginServiceImpl implements ILoginService {
+public class LoginService implements ILoginService {
 
     @Autowired
     private LoginLogService loginLogService;

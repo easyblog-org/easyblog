@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class QueryMessageSendRecordRequest {
+public class QueryBusinessMessageRecordRequest {
     private Long id;
+    private String businessModule;
+    private String businessEvent;
 }

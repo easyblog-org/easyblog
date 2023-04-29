@@ -8,17 +8,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import top.easyblog.common.enums.MessageSendChannel;
-import top.easyblog.common.exception.BusinessException;
-import top.easyblog.common.request.message.record.QueryMessageSendRecordRequest;
-import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.core.strategy.push.MessagePushStrategy;
-import top.easyblog.dao.atomic.AtomicMessageSendRecordService;
-import top.easyblog.dao.auto.model.BusinessMessageRecord;
 import top.easyblog.support.context.MessageSendContext;
-import top.easyblog.support.event.MessageSendFailedEvent;
 import top.easyblog.support.event.MessageSendSuccessEvent;
-
-import java.util.Objects;
 
 /**
  * 纯文本邮件

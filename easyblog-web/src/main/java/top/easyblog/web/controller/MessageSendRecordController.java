@@ -2,26 +2,21 @@ package top.easyblog.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import top.easyblog.common.exception.BusinessException;
-import top.easyblog.common.request.message.record.CreateMessageSendRecordRequest;
-import top.easyblog.common.response.EasyResultCode;
+import top.easyblog.common.bean.BusinessMessageRecordBean;
+import top.easyblog.common.request.message.record.CreateBusinessMessageRecordRequest;
+import top.easyblog.common.request.message.record.QueryBusinessMessageRecordRequest;
+import top.easyblog.common.request.message.record.QueryBusinessMessageRecordsRequest;
+import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordRequest;
+import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.BusinessMessageRecordService;
-import top.easyblog.support.context.MessageProcessorContext;
+import top.easyblog.dao.auto.model.BusinessMessageRecord;
 import top.easyblog.web.annotation.ResponseWrapper;
-
-import javax.validation.Valid;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author: frank.huang
  * @date: 2023-02-12 13:47
  */
-@RequestMapping("/v1/message/send")
+@RequestMapping("/v1/message")
 @RestController
 public class MessageSendRecordController {
 
@@ -29,26 +24,29 @@ public class MessageSendRecordController {
     private BusinessMessageRecordService messageSendRecordService;
 
 
- /*   @ResponseWrapper
-    @PostMapping("/email")
-    public MessageProcessorContext sendPlainEmail(@RequestBody @Valid CreateMessageSendRecordRequest request) {
-        return messageSendRecordService.sendPlainEmail(request);
+    @ResponseWrapper
+    @PostMapping("/record")
+    public BusinessMessageRecord createBusinessRecord(CreateBusinessMessageRecordRequest request) {
+        return messageSendRecordService.createMessageRecord(request);
     }
 
     @ResponseWrapper
-    @PostMapping("/attachment-email")
-    public MessageProcessorContext sendAttachmentEmail(@RequestBody @Valid CreateMessageSendRecordRequest request,
-                                                       @RequestParam("attachments") MultipartFile[] attachments) {
-        List<InputStream> attachmentsList = Arrays.stream(attachments).map(multipartFile -> {
-            try {
-                return multipartFile.getInputStream();
-            } catch (IOException e) {
-                throw new BusinessException(EasyResultCode.SEND_MESSAGE_FAILED);
-            }
-        }).collect(Collectors.toList());
-        request.setAttachments(attachmentsList);
-        return messageSendRecordService.sendAttachmentEmail(request);
-    }*/
+    @PutMapping("/record/{id}")
+    public void updateBusinessRecord(@PathVariable("id") Long id, UpdateBusinessMessageRecordRequest request) {
+        messageSendRecordService.updateMessageRecord(id, request);
+    }
+
+    @ResponseWrapper
+    @GetMapping("/record")
+    public BusinessMessageRecordBean details(QueryBusinessMessageRecordRequest request) {
+        return messageSendRecordService.details(request);
+    }
+
+    @ResponseWrapper
+    @GetMapping("/records")
+    public PageResponse<BusinessMessageRecordBean> list(QueryBusinessMessageRecordsRequest request) {
+        return messageSendRecordService.list(request);
+    }
 
 
 }

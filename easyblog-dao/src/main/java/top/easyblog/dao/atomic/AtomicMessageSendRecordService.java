@@ -2,10 +2,9 @@ package top.easyblog.dao.atomic;
 
 import com.google.common.collect.Iterables;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.easyblog.common.request.message.record.QueryMessageSendRecordRequest;
+import top.easyblog.common.request.message.record.QueryBusinessMessageRecordRequest;
 import top.easyblog.dao.annotation.RecordNullable;
 import top.easyblog.dao.auto.mapper.BusinessMessageRecordMapper;
 import top.easyblog.dao.auto.model.BusinessMessageRecord;
@@ -40,7 +39,7 @@ public class AtomicMessageSendRecordService {
     }
 
     @RecordNullable
-    public BusinessMessageRecord details(QueryMessageSendRecordRequest request) {
+    public BusinessMessageRecord details(QueryBusinessMessageRecordRequest request) {
         BusinessMessageRecordExample example = new BusinessMessageRecordExample();
         BusinessMessageRecordExample.Criteria criteria = example.createCriteria();
         if (Objects.nonNull(request.getId())) {

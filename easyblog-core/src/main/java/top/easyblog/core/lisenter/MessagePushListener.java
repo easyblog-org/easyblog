@@ -26,7 +26,7 @@ public class MessagePushListener implements SmartApplicationListener {
 
 
     @Override
-    public void onApplicationEvent(ApplicationEvent applicationEvent) {
+    public void onApplicationEvent(@NotNull ApplicationEvent applicationEvent) {
         if (applicationEvent instanceof MessageSendPreparedEvent) {
             onMessageSendPreparedEvent((MessageSendPreparedEvent)applicationEvent);
         } else if (applicationEvent instanceof MessageSendFailedEvent) {

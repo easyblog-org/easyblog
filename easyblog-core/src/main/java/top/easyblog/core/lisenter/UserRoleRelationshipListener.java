@@ -1,4 +1,4 @@
-package top.easyblog.core;
+package top.easyblog.core.lisenter;
 
 import java.util.*;
 import java.util.function.Function;
@@ -16,6 +16,7 @@ import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.role.QueryUserRolesListRequest;
 import top.easyblog.common.request.role.UpdateUserRolesRequest;
 import top.easyblog.common.response.EasyResultCode;
+import top.easyblog.core.RolesService;
 import top.easyblog.dao.atomic.AtomicUserRolesService;
 import top.easyblog.dao.auto.model.UserRoleRelationship;
 import top.easyblog.support.context.CreateOrRefreshUserRoleContext;
@@ -23,7 +24,7 @@ import top.easyblog.support.event.UserCreateOrUpdateEvent;
 
 @Slf4j
 @Service
-public class UserRoleRelationshipService {
+public class UserRoleRelationshipListener {
 
     @Autowired
     private AtomicUserRolesService atomicUserRolesService;

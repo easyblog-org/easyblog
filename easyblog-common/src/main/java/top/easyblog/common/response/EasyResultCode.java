@@ -73,6 +73,8 @@ public enum EasyResultCode {
     INCORRECT_OR_EXPIRE_CAPTCHA,
     // 消息不能为空
     MESSAGE_RECORD_CANNOT_NULL,
+    //非法消息推送操作
+    ILLEGAL_MESSAGE_RECORD_OPERATION,
 
     // 账号已存在
     USER_ACCOUNT_EXISTS,
@@ -105,6 +107,8 @@ public enum EasyResultCode {
     USER_NOT_FOUND,
     // 认证Token不存在
     AUTH_TOKEN_NOT_FOUND,
+    //发送记录未找到
+    MESSAGE_RECORD_NOT_FOUND,
 
     // 无法识别的大洲编码
     UNKNOWN_CONTINENT_CODE,

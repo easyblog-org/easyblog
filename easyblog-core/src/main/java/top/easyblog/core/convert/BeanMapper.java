@@ -15,7 +15,8 @@ import top.easyblog.common.request.message.config.CreateMessageConfigRequest;
 import top.easyblog.common.request.message.config.CreateTemplateValueConfigRequest;
 import top.easyblog.common.request.message.config.UpdateMessageConfigRequest;
 import top.easyblog.common.request.message.config.UpdateTemplateValueConfigRequest;
-import top.easyblog.common.request.message.record.CreateMessageSendRecordRequest;
+import top.easyblog.common.request.message.record.CreateBusinessMessageRecordRequest;
+import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordRequest;
 import top.easyblog.common.request.message.rule.CreateMessageConfigRuleRequest;
 import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
@@ -139,7 +140,12 @@ public interface BeanMapper {
     MessageConfigContext buildMessageConfigContext(BusinessMessageRecord msg, MessageConfigRuleBean messageConfigRule,
             MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
 
-    BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateMessageSendRecordRequest request);
+    BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
 
     BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record);
+
+    BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
+
+    @Mapping(target = "id",source = "id")
+    BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id,UpdateBusinessMessageRecordRequest request);
 }

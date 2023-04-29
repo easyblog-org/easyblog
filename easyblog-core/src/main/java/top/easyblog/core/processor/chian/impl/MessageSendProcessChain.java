@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.easyblog.common.exception.BusinessException;
-import top.easyblog.common.request.message.record.QueryMessageSendRecordRequest;
+import top.easyblog.common.request.message.record.QueryBusinessMessageRecordRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.core.processor.chian.MessageProcessChain;
 import top.easyblog.core.strategy.push.MessagePushStrategy;
@@ -35,7 +35,7 @@ public class MessageSendProcessChain implements MessageProcessChain {
 
     @Override
     public MessageProcessorContext process(MessageProcessorContext context) {
-        BusinessMessageRecord messageSendRecord = atomicMessageSendRecordService.details(QueryMessageSendRecordRequest.builder()
+        BusinessMessageRecord messageSendRecord = atomicMessageSendRecordService.details(QueryBusinessMessageRecordRequest.builder()
                 .id(context.getMessageRecordId())
                 .build());
         if (Objects.nonNull(messageSendRecord)) {
