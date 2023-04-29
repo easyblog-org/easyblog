@@ -25,9 +25,7 @@ public class PlainEmailPushStrategy implements MessagePushStrategy {
 
     private final JavaMailSender mailSender;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
-    @Value("${message.sender}")
+    @Value("${message.email.sender}")
     private String emailSender;
 
     @Override
@@ -37,16 +35,12 @@ public class PlainEmailPushStrategy implements MessagePushStrategy {
 
     @Override
     public void push(MessageSendContext context) {
-        try {
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setSubject(context.getTitle());
-            simpleMailMessage.setFrom(emailSender);
-            simpleMailMessage.setTo(context.getReceiver());
-            simpleMailMessage.setText(context.getContent());
-            mailSender.send(simpleMailMessage);
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setSubject(context.getTitle());
+        simpleMailMessage.setFrom(emailSender);
+        simpleMailMessage.setTo(context.getReceiver());
+        simpleMailMessage.setText(context.getContent());
+        mailSender.send(simpleMailMessage);
     }
 
 }

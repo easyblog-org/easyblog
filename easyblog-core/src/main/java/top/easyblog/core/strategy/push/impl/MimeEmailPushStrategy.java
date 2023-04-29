@@ -13,6 +13,7 @@ import top.easyblog.core.strategy.push.MessagePushStrategy;
 import top.easyblog.support.context.MessageSendContext;
 import top.easyblog.support.event.MessageSendSuccessEvent;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.util.List;
@@ -30,7 +31,7 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
 
     private final JavaMailSender mailSender;
 
-    @Value("${message.sender}")
+    @Value("${message.email.sender}")
     private String emailSender;
 
     @Override
@@ -39,26 +40,21 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
     }
 
     @Override
-    public void push(MessageSendContext context) {
+    public void push(MessageSendContext context) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-        try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-           mimeMessageHelper.setFrom(emailSender);
-           mimeMessageHelper.setTo(context.getReceiver());
-           mimeMessageHelper.setSubject(context.getTitle());
-            mimeMessageHelper.setText(context.getContent());
-            List<File> attachments = context.getAttachments();
-            // 添加附件（多个）
-            if (CollectionUtils.isNotEmpty(attachments)) {
-                for (File attachment : attachments) {
-                    mimeMessageHelper.addAttachment(attachment.getName(), attachment);
-                }
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+        mimeMessageHelper.setFrom(emailSender);
+        mimeMessageHelper.setTo(context.getReceiver());
+        mimeMessageHelper.setSubject(context.getTitle());
+        mimeMessageHelper.setText(context.getContent());
+        List<File> attachments = context.getAttachments();
+        // 添加附件（多个）
+        if (CollectionUtils.isNotEmpty(attachments)) {
+            for (File attachment : attachments) {
+                mimeMessageHelper.addAttachment(attachment.getName(), attachment);
             }
-            // 发送邮件
-            mailSender.send(mimeMessage);
-        } catch (Exception e) {
-            log.info(e.getMessage());
-
         }
+        // 发送邮件
+        mailSender.send(mimeMessage);
     }
 }

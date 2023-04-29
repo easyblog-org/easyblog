@@ -58,7 +58,6 @@ public class DefaultMessageSendProcessor extends AbstractMessageSendProcessor {
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
 
-
     @Autowired
     private BeanMapper beanMapper;
 

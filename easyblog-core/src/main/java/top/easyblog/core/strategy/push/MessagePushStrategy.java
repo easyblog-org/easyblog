@@ -2,6 +2,8 @@ package top.easyblog.core.strategy.push;
 
 import top.easyblog.support.context.MessageSendContext;
 
+import javax.mail.MessagingException;
+
 /**
  * 消息发送策略
  *
@@ -22,6 +24,6 @@ public interface MessagePushStrategy {
      *
      * @param context
      */
-    void push(MessageSendContext context);
+    void push(MessageSendContext context) throws MessagingException;
 
 }
