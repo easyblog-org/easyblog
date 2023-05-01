@@ -113,7 +113,7 @@ public abstract class AbstractLoginStrategy implements ILoginStrategy {
             throw new BusinessException(EasyResultCode.PASSWORD_VALID_FAILED);
         }
         return userService.queryUserDetails(QueryUserRequest.builder()
-                .id(currAccount.getUserId())
+                .code(currAccount.getUserCode())
                 .sections(String.format("%s,%s,%s", LoginConstants.QUERY_CURRENT_HEADER_IMG, LoginConstants.QUERY_ROLE, LoginConstants.QUERY_CURRENT_HEADER_IMG)).build());
     }
 

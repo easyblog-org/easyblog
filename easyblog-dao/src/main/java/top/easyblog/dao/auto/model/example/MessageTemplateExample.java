@@ -344,63 +344,63 @@ public class MessageTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusIsNull() {
-            addCriterion("msg_status is null");
+        public Criteria andStatusIsNull() {
+            addCriterion("status is null");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusIsNotNull() {
-            addCriterion("msg_status is not null");
+        public Criteria andStatusIsNotNull() {
+            addCriterion("status is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusEqualTo(Byte value) {
-            addCriterion("msg_status =", value, "msgStatus");
+        public Criteria andStatusEqualTo(Short value) {
+            addCriterion("status =", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusNotEqualTo(Byte value) {
-            addCriterion("msg_status <>", value, "msgStatus");
+        public Criteria andStatusNotEqualTo(Short value) {
+            addCriterion("status <>", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusGreaterThan(Byte value) {
-            addCriterion("msg_status >", value, "msgStatus");
+        public Criteria andStatusGreaterThan(Short value) {
+            addCriterion("status >", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusGreaterThanOrEqualTo(Byte value) {
-            addCriterion("msg_status >=", value, "msgStatus");
+        public Criteria andStatusGreaterThanOrEqualTo(Short value) {
+            addCriterion("status >=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusLessThan(Byte value) {
-            addCriterion("msg_status <", value, "msgStatus");
+        public Criteria andStatusLessThan(Short value) {
+            addCriterion("status <", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusLessThanOrEqualTo(Byte value) {
-            addCriterion("msg_status <=", value, "msgStatus");
+        public Criteria andStatusLessThanOrEqualTo(Short value) {
+            addCriterion("status <=", value, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusIn(List<Byte> values) {
-            addCriterion("msg_status in", values, "msgStatus");
+        public Criteria andStatusIn(List<Short> values) {
+            addCriterion("status in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusNotIn(List<Byte> values) {
-            addCriterion("msg_status not in", values, "msgStatus");
+        public Criteria andStatusNotIn(List<Short> values) {
+            addCriterion("status not in", values, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusBetween(Byte value1, Byte value2) {
-            addCriterion("msg_status between", value1, value2, "msgStatus");
+        public Criteria andStatusBetween(Short value1, Short value2) {
+            addCriterion("status between", value1, value2, "status");
             return (Criteria) this;
         }
 
-        public Criteria andMsgStatusNotBetween(Byte value1, Byte value2) {
-            addCriterion("msg_status not between", value1, value2, "msgStatus");
+        public Criteria andStatusNotBetween(Short value1, Short value2) {
+            addCriterion("status not between", value1, value2, "status");
             return (Criteria) this;
         }
 
@@ -471,126 +471,6 @@ public class MessageTemplateExample {
 
         public Criteria andExpectPushTimeNotBetween(String value1, String value2) {
             addCriterion("expect_push_time not between", value1, value2, "expectPushTime");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeIsNull() {
-            addCriterion("id_type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeIsNotNull() {
-            addCriterion("id_type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeEqualTo(Byte value) {
-            addCriterion("id_type =", value, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeNotEqualTo(Byte value) {
-            addCriterion("id_type <>", value, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeGreaterThan(Byte value) {
-            addCriterion("id_type >", value, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeGreaterThanOrEqualTo(Byte value) {
-            addCriterion("id_type >=", value, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeLessThan(Byte value) {
-            addCriterion("id_type <", value, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeLessThanOrEqualTo(Byte value) {
-            addCriterion("id_type <=", value, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeIn(List<Byte> values) {
-            addCriterion("id_type in", values, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeNotIn(List<Byte> values) {
-            addCriterion("id_type not in", values, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeBetween(Byte value1, Byte value2) {
-            addCriterion("id_type between", value1, value2, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andIdTypeNotBetween(Byte value1, Byte value2) {
-            addCriterion("id_type not between", value1, value2, "idType");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelIsNull() {
-            addCriterion("send_channel is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelIsNotNull() {
-            addCriterion("send_channel is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelEqualTo(Byte value) {
-            addCriterion("send_channel =", value, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelNotEqualTo(Byte value) {
-            addCriterion("send_channel <>", value, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelGreaterThan(Byte value) {
-            addCriterion("send_channel >", value, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelGreaterThanOrEqualTo(Byte value) {
-            addCriterion("send_channel >=", value, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelLessThan(Byte value) {
-            addCriterion("send_channel <", value, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelLessThanOrEqualTo(Byte value) {
-            addCriterion("send_channel <=", value, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelIn(List<Byte> values) {
-            addCriterion("send_channel in", values, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelNotIn(List<Byte> values) {
-            addCriterion("send_channel not in", values, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelBetween(Byte value1, Byte value2) {
-            addCriterion("send_channel between", value1, value2, "sendChannel");
-            return (Criteria) this;
-        }
-
-        public Criteria andSendChannelNotBetween(Byte value1, Byte value2) {
-            addCriterion("send_channel not between", value1, value2, "sendChannel");
             return (Criteria) this;
         }
 

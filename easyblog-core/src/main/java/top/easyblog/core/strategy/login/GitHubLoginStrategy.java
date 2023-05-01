@@ -43,7 +43,7 @@ public class GitHubLoginStrategy extends AbstractLoginStrategy {
     public AuthenticationDetailsBean doLogin(LoginRequest request) {
         AccountBean accountBean = super.preLoginVerify(request);
         UserDetailsBean userDetailsBean = userService.queryUserDetails(QueryUserRequest.builder()
-                .id(accountBean.getUserId()).sections(LoginConstants.QUERY_HEADER_IMG).build());
+                .code(accountBean.getUserCode()).sections(LoginConstants.QUERY_HEADER_IMG).build());
         userDetailsBean.setCurrAccount(accountBean);
         log.info("GitHub user: {} login successfully!", request.getIdentifier());
         return AuthenticationDetailsBean.builder().user(userDetailsBean).build();

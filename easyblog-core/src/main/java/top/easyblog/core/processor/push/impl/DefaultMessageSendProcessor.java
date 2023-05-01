@@ -133,7 +133,7 @@ public class DefaultMessageSendProcessor extends AbstractMessageSendProcessor {
         Map<String, Object> titleParams = Maps.newHashMap();
         List<String> receivers = Lists.newArrayList();
         context.getConfigs().stream().filter(cfg -> Objects.nonNull(cfg) && Boolean.FALSE.equals(cfg.getDeleted())).forEach(config -> {
-            TemplateValueConfigBean templateValueConfigBean = config.getTemplateValueConfigBean();
+            TemplateValueConfigBean templateValueConfigBean = config.getTemplateValueConfig();
             TemplateParameterParseStrategy parameterParseStrategy = TemplateParameterParserStrategyContext.getMessageSendStrategy(Objects.requireNonNull(templateValueConfigBean, "Template value config can not be null").getType());
             if (Objects.isNull(parameterParseStrategy)) {
                 throw new BusinessException(EasyResultCode.ILLEGAL_TEMPLATE_VALUE_CONFIG);

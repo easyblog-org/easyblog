@@ -36,20 +36,12 @@ public class MessageTemplateSqlProvider {
             sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getMsgStatus() != null) {
-            sql.VALUES("msg_status", "#{msgStatus,jdbcType=TINYINT}");
+        if (record.getStatus() != null) {
+            sql.VALUES("status", "#{status,jdbcType=SMALLINT}");
         }
         
         if (record.getExpectPushTime() != null) {
             sql.VALUES("expect_push_time", "#{expectPushTime,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getIdType() != null) {
-            sql.VALUES("id_type", "#{idType,jdbcType=TINYINT}");
-        }
-        
-        if (record.getSendChannel() != null) {
-            sql.VALUES("send_channel", "#{sendChannel,jdbcType=TINYINT}");
         }
         
         if (record.getMsgType() != null) {
@@ -88,10 +80,8 @@ public class MessageTemplateSqlProvider {
         }
         sql.SELECT("template_code");
         sql.SELECT("name");
-        sql.SELECT("msg_status");
+        sql.SELECT("status");
         sql.SELECT("expect_push_time");
-        sql.SELECT("id_type");
-        sql.SELECT("send_channel");
         sql.SELECT("msg_type");
         sql.SELECT("shield_type");
         sql.SELECT("msg_content");
@@ -134,20 +124,12 @@ public class MessageTemplateSqlProvider {
             sql.SET("name = #{record.name,jdbcType=VARCHAR}");
         }
         
-        if (record.getMsgStatus() != null) {
-            sql.SET("msg_status = #{record.msgStatus,jdbcType=TINYINT}");
+        if (record.getStatus() != null) {
+            sql.SET("status = #{record.status,jdbcType=SMALLINT}");
         }
         
         if (record.getExpectPushTime() != null) {
             sql.SET("expect_push_time = #{record.expectPushTime,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getIdType() != null) {
-            sql.SET("id_type = #{record.idType,jdbcType=TINYINT}");
-        }
-        
-        if (record.getSendChannel() != null) {
-            sql.SET("send_channel = #{record.sendChannel,jdbcType=TINYINT}");
         }
         
         if (record.getMsgType() != null) {
@@ -185,10 +167,8 @@ public class MessageTemplateSqlProvider {
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("template_code = #{record.templateCode,jdbcType=VARCHAR}");
         sql.SET("name = #{record.name,jdbcType=VARCHAR}");
-        sql.SET("msg_status = #{record.msgStatus,jdbcType=TINYINT}");
+        sql.SET("status = #{record.status,jdbcType=SMALLINT}");
         sql.SET("expect_push_time = #{record.expectPushTime,jdbcType=VARCHAR}");
-        sql.SET("id_type = #{record.idType,jdbcType=TINYINT}");
-        sql.SET("send_channel = #{record.sendChannel,jdbcType=TINYINT}");
         sql.SET("msg_type = #{record.msgType,jdbcType=TINYINT}");
         sql.SET("shield_type = #{record.shieldType,jdbcType=TINYINT}");
         sql.SET("msg_content = #{record.msgContent,jdbcType=VARCHAR}");
@@ -213,20 +193,12 @@ public class MessageTemplateSqlProvider {
             sql.SET("name = #{name,jdbcType=VARCHAR}");
         }
         
-        if (record.getMsgStatus() != null) {
-            sql.SET("msg_status = #{msgStatus,jdbcType=TINYINT}");
+        if (record.getStatus() != null) {
+            sql.SET("status = #{status,jdbcType=SMALLINT}");
         }
         
         if (record.getExpectPushTime() != null) {
             sql.SET("expect_push_time = #{expectPushTime,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getIdType() != null) {
-            sql.SET("id_type = #{idType,jdbcType=TINYINT}");
-        }
-        
-        if (record.getSendChannel() != null) {
-            sql.SET("send_channel = #{sendChannel,jdbcType=TINYINT}");
         }
         
         if (record.getMsgType() != null) {

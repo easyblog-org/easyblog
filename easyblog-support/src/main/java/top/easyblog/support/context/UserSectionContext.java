@@ -25,15 +25,15 @@ import java.util.Optional;
 @NoArgsConstructor
 public class UserSectionContext {
     // 当前头像
-    private Map<Long, UserHeaderBean> userCurrentImagesMap;
+    private Map<String, UserHeaderBean> userCurrentImagesMap;
     // 历史头像
-    private Map<Long, List<UserHeaderBean>> userHistoryImagesMap;
+    private Map<String, List<UserHeaderBean>> userHistoryImagesMap;
     // 账户
-    private Map<Long, List<AccountBean>> accountsMap;
+    private Map<String, List<AccountBean>> accountsMap;
     // 角色
     private Map<Long, List<RolesBean>> rolesMap;
     // 登录记录
-    private Map<Long, List<LoginLogBean>> signInLogsMap;
+    private Map<String, List<LoginLogBean>> signInLogsMap;
 
 
 

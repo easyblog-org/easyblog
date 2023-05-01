@@ -37,14 +37,12 @@ public interface MessageTemplateMapper {
 
     @Insert({
         "insert into message_template (template_code, name, ",
-        "msg_status, expect_push_time, ",
-        "id_type, send_channel, ",
+        "status, expect_push_time, ",
         "msg_type, shield_type, ",
         "msg_content, deleted, ",
         "create_time, update_time)",
         "values (#{templateCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
-        "#{msgStatus,jdbcType=TINYINT}, #{expectPushTime,jdbcType=VARCHAR}, ",
-        "#{idType,jdbcType=TINYINT}, #{sendChannel,jdbcType=TINYINT}, ",
+        "#{status,jdbcType=SMALLINT}, #{expectPushTime,jdbcType=VARCHAR}, ",
         "#{msgType,jdbcType=TINYINT}, #{shieldType,jdbcType=TINYINT}, ",
         "#{msgContent,jdbcType=VARCHAR}, #{deleted,jdbcType=BIT}, ",
         "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
@@ -61,10 +59,8 @@ public interface MessageTemplateMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="template_code", property="templateCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="msg_status", property="msgStatus", jdbcType=JdbcType.TINYINT),
+        @Result(column="status", property="status", jdbcType=JdbcType.SMALLINT),
         @Result(column="expect_push_time", property="expectPushTime", jdbcType=JdbcType.VARCHAR),
-        @Result(column="id_type", property="idType", jdbcType=JdbcType.TINYINT),
-        @Result(column="send_channel", property="sendChannel", jdbcType=JdbcType.TINYINT),
         @Result(column="msg_type", property="msgType", jdbcType=JdbcType.TINYINT),
         @Result(column="shield_type", property="shieldType", jdbcType=JdbcType.TINYINT),
         @Result(column="msg_content", property="msgContent", jdbcType=JdbcType.VARCHAR),
@@ -76,8 +72,8 @@ public interface MessageTemplateMapper {
 
     @Select({
         "select",
-        "id, template_code, name, msg_status, expect_push_time, id_type, send_channel, ",
-        "msg_type, shield_type, msg_content, deleted, create_time, update_time",
+        "id, template_code, name, status, expect_push_time, msg_type, shield_type, msg_content, ",
+        "deleted, create_time, update_time",
         "from message_template",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -85,10 +81,8 @@ public interface MessageTemplateMapper {
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="template_code", property="templateCode", jdbcType=JdbcType.VARCHAR),
         @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
-        @Result(column="msg_status", property="msgStatus", jdbcType=JdbcType.TINYINT),
+        @Result(column="status", property="status", jdbcType=JdbcType.SMALLINT),
         @Result(column="expect_push_time", property="expectPushTime", jdbcType=JdbcType.VARCHAR),
-        @Result(column="id_type", property="idType", jdbcType=JdbcType.TINYINT),
-        @Result(column="send_channel", property="sendChannel", jdbcType=JdbcType.TINYINT),
         @Result(column="msg_type", property="msgType", jdbcType=JdbcType.TINYINT),
         @Result(column="shield_type", property="shieldType", jdbcType=JdbcType.TINYINT),
         @Result(column="msg_content", property="msgContent", jdbcType=JdbcType.VARCHAR),
@@ -111,10 +105,8 @@ public interface MessageTemplateMapper {
         "update message_template",
         "set template_code = #{templateCode,jdbcType=VARCHAR},",
           "name = #{name,jdbcType=VARCHAR},",
-          "msg_status = #{msgStatus,jdbcType=TINYINT},",
+          "status = #{status,jdbcType=SMALLINT},",
           "expect_push_time = #{expectPushTime,jdbcType=VARCHAR},",
-          "id_type = #{idType,jdbcType=TINYINT},",
-          "send_channel = #{sendChannel,jdbcType=TINYINT},",
           "msg_type = #{msgType,jdbcType=TINYINT},",
           "shield_type = #{shieldType,jdbcType=TINYINT},",
           "msg_content = #{msgContent,jdbcType=VARCHAR},",

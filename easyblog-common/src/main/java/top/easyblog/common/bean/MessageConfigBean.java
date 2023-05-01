@@ -14,11 +14,7 @@ public class MessageConfigBean {
 
     private String name;
 
-    private TemplateValueConfigBean templateValueConfigBean;
-
-    private String expression;
-
-    private String url;
+    private TemplateValueConfigBean templateValueConfig;
 
     private Boolean deleted;
 

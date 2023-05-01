@@ -1,6 +1,5 @@
 package top.easyblog.core.lisenter;
 
-import com.sun.org.apache.xml.internal.serializer.utils.Messages;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import top.easyblog.common.enums.MessageSendStatus;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordRequest;
 import top.easyblog.core.BusinessMessageRecordService;
-import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.core.processor.push.MessageSendProcessor;
-import top.easyblog.dao.auto.model.BusinessMessageRecord;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageConfigContext;
 import top.easyblog.support.context.MessageSendContext;

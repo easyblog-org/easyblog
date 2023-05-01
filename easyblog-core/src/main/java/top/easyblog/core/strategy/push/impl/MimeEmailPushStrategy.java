@@ -3,6 +3,7 @@ package top.easyblog.core.strategy.push.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -26,12 +27,12 @@ import java.util.List;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
 public class MimeEmailPushStrategy implements MessagePushStrategy {
 
-    private final JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender mailSender;
 
-    @Value("${message.email.sender}")
+    @Value("${custom.message.email.sender}")
     private String emailSender;
 
     @Override

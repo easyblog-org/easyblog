@@ -284,52 +284,62 @@ public class RolesExample {
             return (Criteria) this;
         }
 
-        public Criteria andNameEqualTo(Short value) {
+        public Criteria andNameEqualTo(String value) {
             addCriterion("name =", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotEqualTo(Short value) {
+        public Criteria andNameNotEqualTo(String value) {
             addCriterion("name <>", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThan(Short value) {
+        public Criteria andNameGreaterThan(String value) {
             addCriterion("name >", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameGreaterThanOrEqualTo(Short value) {
+        public Criteria andNameGreaterThanOrEqualTo(String value) {
             addCriterion("name >=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThan(Short value) {
+        public Criteria andNameLessThan(String value) {
             addCriterion("name <", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameLessThanOrEqualTo(Short value) {
+        public Criteria andNameLessThanOrEqualTo(String value) {
             addCriterion("name <=", value, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameIn(List<Short> values) {
+        public Criteria andNameLike(String value) {
+            addCriterion("name like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameNotLike(String value) {
+            addCriterion("name not like", value, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andNameIn(List<String> values) {
             addCriterion("name in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotIn(List<Short> values) {
+        public Criteria andNameNotIn(List<String> values) {
             addCriterion("name not in", values, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameBetween(Short value1, Short value2) {
+        public Criteria andNameBetween(String value1, String value2) {
             addCriterion("name between", value1, value2, "name");
             return (Criteria) this;
         }
 
-        public Criteria andNameNotBetween(Short value1, Short value2) {
+        public Criteria andNameNotBetween(String value1, String value2) {
             addCriterion("name not between", value1, value2, "name");
             return (Criteria) this;
         }

@@ -14,7 +14,7 @@ public class UserHeaderBean {
 
     private String headerImgUrl;
 
-    private Long userId;
+    private String userCode;
 
     private Boolean isCurrentHeader;
 

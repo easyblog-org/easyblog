@@ -45,9 +45,7 @@ public class RolesService {
                 .codes(Collections.singletonList(code)).build());
         if (CollectionUtils.isNotEmpty(rolesList)) {
             Roles role = rolesList.stream().filter(item -> {
-                //TODO name is string?
-                //return Objects.nonNull(item) && StringUtils.equalsIgnoreCase(item.getName(), code);
-                return true;
+                return Objects.nonNull(item) && StringUtils.equalsIgnoreCase(item.getName(), code);
             }).findAny().orElse(null);
             if (Objects.nonNull(role)) {
                 throw new BusinessException(EasyResultCode.ROLE_EXISTS);
@@ -58,8 +56,8 @@ public class RolesService {
     private Roles buildCreateRoles(CreateRolesRequest request) {
         Roles roles = new Roles();
         roles.setCode(request.getCode());
-        //roles.setName(request.getName());
-        roles.setDesc(request.getDescription());
+        roles.setName(request.getName());
+        roles.setDescription(request.getDescription());
         roles.setEnabled(request.getEnabled());
         return roles;
     }
@@ -74,12 +72,12 @@ public class RolesService {
         long count = atomicRolesService.countByRequest(request);
         if (Objects.equals(count, NumberUtils.LONG_ZERO)) {
             return PageResponse.<RolesBean>builder().data(Collections.emptyList())
-                    .limit(request.getLimit()).offset(request.getOffset()).build();
+                    .limit(request.getLimit()).offset(request.getOffset()).total(count).build();
         }
         List<Roles> roles = atomicRolesService.queryList(request);
         List<RolesBean> rolesBeanList = roles.stream().map(this::buildRolesBean).collect(Collectors.toList());
         return PageResponse.<RolesBean>builder().data(rolesBeanList)
-                .limit(request.getLimit()).offset(request.getOffset()).build();
+                .limit(request.getLimit()).offset(request.getOffset()).total(count).build();
     }
 
     public void updateRoles(String code, UpdateRolesRequest request) {
@@ -96,7 +94,7 @@ public class RolesService {
         Roles roles = new Roles();
         roles.setId(oldRoles.getId());
         //roles.setName(request.getName());
-        roles.setDesc(request.getDescription());
+        roles.setDescription(request.getDescription());
         roles.setEnabled(request.getEnabled());
         return roles;
     }
@@ -113,9 +111,9 @@ public class RolesService {
         RolesBean rolesBean = new RolesBean();
         rolesBean.setId(roles.getId());
         rolesBean.setCode(roles.getCode());
-        //rolesBean.setName(roles.getName());
+        rolesBean.setName(roles.getName());
         rolesBean.setEnabled(roles.getEnabled());
-        rolesBean.setDescription(roles.getDesc());
+        rolesBean.setDescription(roles.getDescription());
         rolesBean.setCreateTime(roles.getCreateTime().getTime());
         rolesBean.setUpdateTime(roles.getUpdateTime().getTime());
         return rolesBean;

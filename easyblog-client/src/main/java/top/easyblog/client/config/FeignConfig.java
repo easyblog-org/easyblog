@@ -56,9 +56,6 @@ public abstract class FeignConfig {
     @Value("${feign.custom.retry-max-attempts:3}")
     private int retryMaxAttempts;
 
-    @Value("${feign.excludes}")
-    private String excludesPath;
-
     @Bean
     public Request.Options options() {
         return new Request.Options(readTimeout, TimeUnit.MILLISECONDS, readTimeout, TimeUnit.MILLISECONDS, true);

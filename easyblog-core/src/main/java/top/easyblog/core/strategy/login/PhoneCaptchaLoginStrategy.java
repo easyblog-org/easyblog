@@ -48,7 +48,7 @@ public class PhoneCaptchaLoginStrategy extends PhoneLoginStrategy {
         request.setIdentifier(String.valueOf(phoneAuth.getId()));
         AccountBean accountBean = super.preLoginVerify(request);
         UserDetailsBean userDetailsBean = userService.queryUserDetails(QueryUserRequest.builder()
-                .id(accountBean.getUserId())
+                .code(accountBean.getUserCode())
                 .sections(LoginConstants.QUERY_HEADER_IMG)
                 .build());
         userDetailsBean.setCurrAccount(accountBean);

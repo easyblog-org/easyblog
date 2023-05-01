@@ -22,8 +22,6 @@ public class CreateMessageTemplateRequest {
 
     private String expectPushTime;
 
-    private Byte idType;
-
     private Byte sendChannel;
 
     private Byte msgType;

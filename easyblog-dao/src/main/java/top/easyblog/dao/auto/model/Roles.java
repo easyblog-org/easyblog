@@ -9,9 +9,9 @@ public class Roles {
 
     private String code;
 
-    private Short name;
+    private String name;
 
-    private String desc;
+    private String description;
 
     private Boolean enabled;
 

@@ -2,6 +2,7 @@ package top.easyblog.core.strategy.push.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,12 +21,12 @@ import top.easyblog.support.event.MessageSendSuccessEvent;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
 public class PlainEmailPushStrategy implements MessagePushStrategy {
 
-    private final JavaMailSender mailSender;
+    @Autowired
+    private JavaMailSender mailSender;
 
-    @Value("${message.email.sender}")
+    @Value("${custom.message.email.sender}")
     private String emailSender;
 
     @Override

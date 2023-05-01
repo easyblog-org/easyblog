@@ -101,10 +101,12 @@ public interface BeanMapper {
     @Mapping(target = "id", source = "id")
     TemplateValueConfig buildTemplateConfig(UpdateTemplateValueConfigRequest request, Long id);
 
+    @Mapping(target = "createTime", expression = "java(valueConfig.getCreateTime().getTime()/1000)")
+    @Mapping(target = "updateTime", expression = "java(valueConfig.getUpdateTime().getTime()/1000)")
+    TemplateValueConfigBean convertTemplateValueConfig2TemplateValueConfigBean(TemplateValueConfig valueConfig);
+
     @Mappings({
-            @Mapping(target = "templateValueConfigType", source = "templateValueConfig.type"),
-            @Mapping(target = "expression", source = "templateValueConfig.expression"),
-            @Mapping(target = "url", source = "templateValueConfig.url"),
+            @Mapping(target = "templateValueConfig", expression = "java(convertTemplateValueConfig2TemplateValueConfigBean(templateValueConfig))"),
             @Mapping(target = "type", source = "messageConfig.type"),
             @Mapping(target = "deleted", source = "messageConfig.deleted"),
             @Mapping(target = "createTime", expression = "java(messageConfig.getCreateTime().getTime()/1000)"),
@@ -122,6 +124,8 @@ public interface BeanMapper {
     MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
 
 
+    @Mapping(target = "createTime", expression = "java(template.getCreateTime().getTime()/1000)")
+    @Mapping(target = "updateTime", expression = "java(template.getUpdateTime().getTime()/1000)")
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
     @Mappings({
@@ -129,13 +133,13 @@ public interface BeanMapper {
             @Mapping(target = "businessModule",source = "msg.businessModule"),
             @Mapping(target = "businessEvent",source = "msg.businessEvent"),
             @Mapping(target = "businessMessage",source = "msg.businessMessage"),
-            @Mapping(target = "group",source = "messageConfigRule.group"),
+            @Mapping(target = "group",source = "messageConfigRule.msgGroup"),
             @Mapping(target = "priority",source = "messageConfigRule.priority"),
-            @Mapping(target = "channel",source = "messageTemplate.channel"),
+            @Mapping(target = "channel",source = "messageTemplate.sendChannel"),
             @Mapping(target = "idType",source = "messageTemplate.idType"),
             @Mapping(target = "msgType",source = "messageTemplate.msgType"),
             @Mapping(target = "shieldType",source = "messageTemplate.shieldType"),
-            @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgTemplateContent"),
+            @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgContent"),
             @Mapping(target = "configs",source = "messageConfigs")
     })
     MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg, MessageConfigRuleBean messageConfigRule,

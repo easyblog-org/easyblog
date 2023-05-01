@@ -120,25 +120,25 @@ public class UserService {
             QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
             List<UserHeaderBean> userHeaderBeans = userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
-            Map<Long, List<UserHeaderBean>> userHeaderBeanMap = userHeaderBeans.stream().filter(Objects::nonNull)
-                    .collect(Collectors.groupingBy(UserHeaderBean::getUserId));
+            Map<String, List<UserHeaderBean>> userHeaderBeanMap = userHeaderBeans.stream().filter(Objects::nonNull)
+                    .collect(Collectors.groupingBy(UserHeaderBean::getUserCode));
             context.setUserHistoryImagesMap(userHeaderBeanMap);
         }
         if (section.contains(UserQuerySection.QUERY_CURRENT_HEADER_IMG.getName())) {
             QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
             List<UserHeaderBean> userHeaderBeans = userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
-            Map<Long, UserHeaderBean> userHeaderBeanMap = userHeaderBeans.stream().
+            Map<String, UserHeaderBean> userHeaderBeanMap = userHeaderBeans.stream().
                     filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
-                    .collect(Collectors.toMap(UserHeaderBean::getUserId, Function.identity(), (x, y) -> x));
+                    .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(), (x, y) -> x));
             context.setUserCurrentImagesMap(userHeaderBeanMap);
         }
         if (section.contains(UserQuerySection.QUERY_ACCOUNTS.getName())) {
             QueryAccountListRequest queryAccountListRequest = QueryAccountListRequest.builder()
                     .userCodes(userCodes).build();
             List<AccountBean> accounts = accountService.queryListUnlimited(queryAccountListRequest);
-            Map<Long, List<AccountBean>> accountMap = accounts.stream().filter(Objects::nonNull)
-                    .collect(Collectors.groupingBy(AccountBean::getUserId));
+            Map<String, List<AccountBean>> accountMap = accounts.stream().filter(Objects::nonNull)
+                    .collect(Collectors.groupingBy(AccountBean::getUserCode));
             context.setAccountsMap(accountMap);
         }
         if (section.contains(UserQuerySection.QUERY_SIGN_LOG.getName())) {
@@ -147,7 +147,7 @@ public class UserService {
                     .limit(Constants.QUERY_LIMIT_ONE_THOUSAND).build();
             PageResponse<LoginLogBean> loginLogBeanPageResponse = loginLogService.queryLoginLogList(request);
             List<LoginLogBean> loginLogBeans = loginLogBeanPageResponse.getData();
-            Map<Long, List<LoginLogBean>> loginLogBeanMap = loginLogBeans.stream().filter(Objects::nonNull)
+            Map<String, List<LoginLogBean>> loginLogBeanMap = loginLogBeans.stream().filter(Objects::nonNull)
                     .collect(Collectors.groupingBy(LoginLogBean::getUserCode));
             context.setSignInLogsMap(loginLogBeanMap);
         }
@@ -200,11 +200,11 @@ public class UserService {
         UserSectionContext context = queryUserSectionSections(section, userIdCodesMap);
         Optional.ofNullable(context).ifPresent(ctx -> {
             userDetailsBeans.stream().filter(Objects::nonNull).forEach(userDetailsBean -> {
-                userDetailsBean.setUserCurrentImages(ctx.getSectionOptional(ctx.getUserCurrentImagesMap(), userDetailsBean.getId()));
-                userDetailsBean.setUserHistoryImages(ctx.getSectionOptional(ctx.getUserHistoryImagesMap(), userDetailsBean.getId()));
-                userDetailsBean.setAccounts(ctx.getSectionOptional(ctx.getAccountsMap(), userDetailsBean.getId()));
+                userDetailsBean.setUserCurrentImages(ctx.getSectionOptional(ctx.getUserCurrentImagesMap(), userDetailsBean.getCode()));
+                userDetailsBean.setUserHistoryImages(ctx.getSectionOptional(ctx.getUserHistoryImagesMap(), userDetailsBean.getCode()));
+                userDetailsBean.setAccounts(ctx.getSectionOptional(ctx.getAccountsMap(), userDetailsBean.getCode()));
                 userDetailsBean.setRoles(ctx.getSectionOptional(ctx.getRolesMap(), userDetailsBean.getId()));
-                userDetailsBean.setSignInLogs(ctx.getSectionOptional(ctx.getSignInLogsMap(), userDetailsBean.getId()));
+                userDetailsBean.setSignInLogs(ctx.getSectionOptional(ctx.getSignInLogsMap(), userDetailsBean.getCode()));
             });
         });
     }

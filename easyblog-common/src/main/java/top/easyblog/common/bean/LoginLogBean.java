@@ -15,9 +15,9 @@ public class LoginLogBean {
 
     private String code;
 
-    private Long userCode;
+    private String userCode;
 
-    private Long accountCode;
+    private String accountCode;
 
     private String token;
 
