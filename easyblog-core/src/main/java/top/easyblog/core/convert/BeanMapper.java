@@ -19,6 +19,8 @@ import top.easyblog.common.request.message.record.CreateBusinessMessageRecordReq
 import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordRequest;
 import top.easyblog.common.request.message.rule.CreateMessageConfigRuleRequest;
 import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
+import top.easyblog.common.request.message.template.CreateMessageTemplateRequest;
+import top.easyblog.common.request.message.template.UpdateMessageTemplateRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
@@ -35,36 +37,44 @@ import top.easyblog.support.context.MessageConfigContext;
 public interface BeanMapper {
 
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createTime", ignore = true)
-    @Mapping(target = "updateTime", ignore = true)
-    @Mapping(target = "code", ignore = true)
+    @Mappings({
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createTime", ignore = true),
+            @Mapping(target = "updateTime", ignore = true),
+            @Mapping(target = "code", ignore = true)
+    })
     Account convertAccountCreateReq2Account(CreateAccountRequest request);
 
 
     AccountBean convertAccount2AccountBean(Account account);
 
-    @Mapping(target = "userCode", ignore = true)
-    @Mapping(target = "createTime", ignore = true)
-    @Mapping(target = "updateTime", ignore = true)
-    @Mapping(target = "code", ignore = true)
-    @Mapping(target = "id", source = "accountId")
+   @Mappings({
+           @Mapping(target = "userCode", ignore = true),
+           @Mapping(target = "createTime", ignore = true),
+           @Mapping(target = "updateTime", ignore = true),
+           @Mapping(target = "code", ignore = true),
+           @Mapping(target = "id", source = "accountId")
+   })
     Account convertAccountUpdateReq2Account(Long accountId, UpdateAccountRequest request);
 
 
-    @Mapping(target = "ipAddress", source = "ip")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createTime", ignore = true)
-    @Mapping(target = "updateTime", ignore = true)
-    @Mapping(target = "code", ignore = true)
+   @Mappings({
+           @Mapping(target = "ipAddress", source = "ip"),
+           @Mapping(target = "id", ignore = true),
+           @Mapping(target = "createTime", ignore = true),
+           @Mapping(target = "updateTime", ignore = true),
+           @Mapping(target = "code", ignore = true),
+   })
     LoginLog convertLoginLogCreateReq2Account(CreateLoginLogRequest request);
 
 
     LoginLogBean convertLoginLog2LoginLogBean(LoginLog loginLog);
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "createTime", ignore = true)
-    @Mapping(target = "accountCode", ignore = true)
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "createTime", ignore = true),
+            @Mapping(target = "accountCode", ignore = true)
+    })
     LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateLoginLogRequest request);
 
 
@@ -136,7 +146,6 @@ public interface BeanMapper {
             @Mapping(target = "group",source = "messageConfigRule.msgGroup"),
             @Mapping(target = "priority",source = "messageConfigRule.priority"),
             @Mapping(target = "channel",source = "messageTemplate.sendChannel"),
-            @Mapping(target = "idType",source = "messageTemplate.idType"),
             @Mapping(target = "msgType",source = "messageTemplate.msgType"),
             @Mapping(target = "shieldType",source = "messageTemplate.shieldType"),
             @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgContent"),
@@ -151,6 +160,13 @@ public interface BeanMapper {
 
     BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
 
+    @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
+    MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(CreateMessageTemplateRequest request);
+
+    MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id,UpdateMessageTemplateRequest request);
+
     @Mapping(target = "id",source = "id")
     BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id,UpdateBusinessMessageRecordRequest request);
+
+
 }

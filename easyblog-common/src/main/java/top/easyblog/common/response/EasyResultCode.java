@@ -66,6 +66,10 @@ public enum EasyResultCode {
     INCORRECT_TEMPLATE_CODE,
     // 不正确的消息配置
     INCORRECT_MESSAGE_CONFIGS,
+    // 非法消息类型
+    ILLEGAL_MESSAGE_TYPE,
+    // 非法夜间屏蔽类型
+    ILLEGAL_MESSAGE_SHIELD_TYPE,
 
     // 发送消息失败
     SEND_MESSAGE_FAILED,
@@ -88,6 +92,8 @@ public enum EasyResultCode {
     PHONE_ACCOUNT_ALREADY_EXISTS,
     // 邮箱账号存在
     EMAIL_ACCOUNT_EXISTS,
+    // 模板已存在
+    TEMPLATE_ALREADY_EXISTS,
 
     // 账号不存在
     ACCOUNT_NOT_FOUND,

@@ -14,6 +14,11 @@ import java.util.List;
 public class QueryMessageTemplatesRequest {
     private List<String> templateCodes;
     private String name;
-    private String sendChannel;
-    private Long expectPushTime;
+    private List<Short> status;
+    private List<Byte> msgType;
+    private List<Byte> shieldType;
+    @Builder.Default
+    private Integer offset = 0;
+    @Builder.Default
+    private Integer limit = 10;
 }

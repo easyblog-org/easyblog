@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class QueryMessageTemplateRequest {
     private String templateCode;
+    private String name;
 }
