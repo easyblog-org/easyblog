@@ -36,6 +36,5 @@ public class CreateMessageConfigRuleRequest {
     @NotNull(message = "Required param 'channel' is not present.")
     private Byte channel;
 
-    @NotBlank(message = "Required param 'config_ids' is not present.")
     private String configIds;
 }

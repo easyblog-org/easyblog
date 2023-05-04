@@ -8,15 +8,17 @@
         <result column="deleted" jdbcType="BIT" property="deleted"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
-        <result column="template_value_config_type" jdbcType="TINYINT" property="templateValueConfigType"/>
-        <result column="expression" jdbcType="VARCHAR" property="expression"/>
-        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <association javaType="top.easyblog.common.bean.TemplateValueConfigBean" property="templateValueConfig">
+            <result column="template_value_config_type" jdbcType="TINYINT" property="url"/>
+            <result column="expression" jdbcType="VARCHAR" property="expression"/>
+            <result column="url" jdbcType="VARCHAR" property="url"/>
+        </association>
     </resultMap>
 
 
     <sql id="BASE_QUERY_COL">
         mc.code,mc.type,mc.name,mc.deleted,mc.create_time,mc.update_time,
-        tvc.type as template_value_config_type,  tvc.expression, tvc.url
+        tvc.type as template_value_config_type, tvc.expression, tvc.url
     </sql>
 
     <select id="selectListByRequest" resultMap="BaseResultMap"

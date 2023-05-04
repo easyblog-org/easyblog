@@ -134,6 +134,7 @@ public interface BeanMapper {
     MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
 
 
+    @Mapping(target = "status", source = "template.status")
     @Mapping(target = "createTime", expression = "java(template.getCreateTime().getTime()/1000)")
     @Mapping(target = "updateTime", expression = "java(template.getUpdateTime().getTime()/1000)")
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
@@ -145,7 +146,7 @@ public interface BeanMapper {
             @Mapping(target = "businessMessage",source = "msg.businessMessage"),
             @Mapping(target = "group",source = "messageConfigRule.msgGroup"),
             @Mapping(target = "priority",source = "messageConfigRule.priority"),
-            @Mapping(target = "channel",source = "messageTemplate.sendChannel"),
+            //@Mapping(target = "channel",source = "messageTemplate.sendChannel"),
             @Mapping(target = "msgType",source = "messageTemplate.msgType"),
             @Mapping(target = "shieldType",source = "messageTemplate.shieldType"),
             @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgContent"),
@@ -160,7 +161,7 @@ public interface BeanMapper {
 
     BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
 
-    @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
+    @Mapping(target = "templateCode", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
     MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(CreateMessageTemplateRequest request);
 
     MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id,UpdateMessageTemplateRequest request);

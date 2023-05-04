@@ -13,6 +13,8 @@ public class MessageConfigRule {
 
     private String templateCode;
 
+    private String channel;
+
     private String group;
 
     private Integer priority;

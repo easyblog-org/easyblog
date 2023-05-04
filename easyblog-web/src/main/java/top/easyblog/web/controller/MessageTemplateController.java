@@ -31,7 +31,7 @@ public class MessageTemplateController {
     }
 
     @ResponseWrapper
-    @PostMapping("/template/{code}")
+    @PutMapping("/template/{code}")
     public void updateMessageTemplate(@PathVariable("code") String code, @RequestBody UpdateMessageTemplateRequest request) {
         messageTemplateService.updateMessageTemplate(code, request);
     }

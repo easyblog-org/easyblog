@@ -10,13 +10,9 @@ public class MessageTemplateBean {
 
     private String name;
 
-    private Byte msgStatus;
+    private Short status;
 
     private String expectPushTime;
-
-    private Byte idType;
-
-    private Byte sendChannel;
 
     private Byte msgType;
 

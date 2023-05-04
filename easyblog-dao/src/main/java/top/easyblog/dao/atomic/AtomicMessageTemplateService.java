@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.easyblog.common.enums.MessageTemplateStatus;
 import top.easyblog.common.request.message.template.QueryMessageTemplateRequest;
 import top.easyblog.common.request.message.template.QueryMessageTemplatesRequest;
 import top.easyblog.dao.annotation.RecordNullable;
@@ -34,6 +35,7 @@ public class AtomicMessageTemplateService {
     public void insertOne(MessageTemplate template) {
         template.setCreateTime(new Date());
         template.setUpdateTime(new Date());
+        template.setStatus(MessageTemplateStatus.DRAFT.getCode());
         messageTemplateMapper.insertSelective(template);
         log.info("[DB]Insert new message template.Details==>{}", JsonUtils.toJSONString(template));
     }

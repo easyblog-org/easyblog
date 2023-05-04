@@ -14,5 +14,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class UpdateMessageTemplateRequest {
     private String msgContent;
+    private Short status;
     private Boolean deleted;
 }

@@ -83,7 +83,7 @@
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>-->
-        <table tableName="message_template">
+        <table tableName="message_config_rule">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>

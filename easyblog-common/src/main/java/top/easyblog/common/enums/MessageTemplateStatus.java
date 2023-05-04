@@ -19,20 +19,20 @@ public enum MessageTemplateStatus {
     /**
      * 草稿
      */
-    DRAFT((byte) 1),
+    DRAFT((short) 1),
 
     /**
      * 已发布
      */
-    RELEASE((byte) 2),
+    RELEASE((short) 2),
 
 
     ;
 
-    private final Byte code;
+    private final Short code;
 
 
-    public static MessageTemplateStatus codeOf(Byte status) {
+    public static MessageTemplateStatus codeOf(Short status) {
         if (Objects.isNull(status)) {
             return null;
         }
