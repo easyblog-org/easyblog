@@ -16,7 +16,7 @@ import top.easyblog.web.annotation.ResponseWrapper;
  * @author: frank.huang
  * @date: 2023-02-12 13:47
  */
-@RequestMapping("/v1/message")
+@RequestMapping("/v1/in/message")
 @RestController
 public class MessageSendRecordController {
 

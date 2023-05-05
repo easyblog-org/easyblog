@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * @date: 2023-02-06 19:06
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/in")
 public class MessageConfigRuleController {
 
     @Autowired

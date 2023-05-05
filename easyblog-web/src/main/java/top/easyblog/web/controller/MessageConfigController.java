@@ -15,7 +15,7 @@ import top.easyblog.web.annotation.ResponseWrapper;
  * @date: 2023-02-04 19:49
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/in")
 public class MessageConfigController {
 
     @Autowired
