@@ -1,4 +1,4 @@
-package top.easyblog.dao.custom;
+package top.easyblog.dao.custom.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

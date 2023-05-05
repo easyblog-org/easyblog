@@ -8,6 +8,7 @@ import top.easyblog.common.request.message.rule.QueryMessageConfigRuleRequest;
 import top.easyblog.common.request.message.rule.QueryMessageConfigRulesRequest;
 import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
 import top.easyblog.core.MessageConfigRuleService;
+import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
  * @date: 2023-02-06 19:06
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/in")
 public class MessageConfigRuleController {
 
     @Autowired
@@ -39,13 +40,13 @@ public class MessageConfigRuleController {
 
     @ResponseWrapper
     @GetMapping("/config-rule")
-    public MessageConfigRuleBean details(QueryMessageConfigRuleRequest request){
+    public MessageConfigRuleBean details(@RequestParamAlias QueryMessageConfigRuleRequest request){
        return messageConfigRuleService.details(request);
     }
 
     @ResponseWrapper
     @GetMapping("/config-rules")
-    public Object list(QueryMessageConfigRulesRequest request){
+    public Object list(@RequestParamAlias QueryMessageConfigRulesRequest request){
         return messageConfigRuleService.list(request);
     }
 }

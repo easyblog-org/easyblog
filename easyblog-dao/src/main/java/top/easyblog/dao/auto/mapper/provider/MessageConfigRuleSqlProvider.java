@@ -41,11 +41,11 @@ public class MessageConfigRuleSqlProvider {
         }
         
         if (record.getChannel() != null) {
-            sql.VALUES("channel", "#{channel,jdbcType=VARCHAR}");
+            sql.VALUES("channel", "#{channel,jdbcType=TINYINT}");
         }
         
-        if (record.getGroup() != null) {
-            sql.VALUES("group", "#{group,jdbcType=VARCHAR}");
+        if (record.getMsgGroup() != null) {
+            sql.VALUES("msg_group", "#{msgGroup,jdbcType=VARCHAR}");
         }
         
         if (record.getPriority() != null) {
@@ -82,7 +82,7 @@ public class MessageConfigRuleSqlProvider {
         sql.SELECT("business_event");
         sql.SELECT("template_code");
         sql.SELECT("channel");
-        sql.SELECT("group");
+        sql.SELECT("msg_group");
         sql.SELECT("priority");
         sql.SELECT("config_ids");
         sql.SELECT("deleted");
@@ -129,11 +129,11 @@ public class MessageConfigRuleSqlProvider {
         }
         
         if (record.getChannel() != null) {
-            sql.SET("channel = #{record.channel,jdbcType=VARCHAR}");
+            sql.SET("channel = #{record.channel,jdbcType=TINYINT}");
         }
         
-        if (record.getGroup() != null) {
-            sql.SET("group = #{record.group,jdbcType=VARCHAR}");
+        if (record.getMsgGroup() != null) {
+            sql.SET("msg_group = #{record.msgGroup,jdbcType=VARCHAR}");
         }
         
         if (record.getPriority() != null) {
@@ -168,8 +168,8 @@ public class MessageConfigRuleSqlProvider {
         sql.SET("business_module = #{record.businessModule,jdbcType=VARCHAR}");
         sql.SET("business_event = #{record.businessEvent,jdbcType=VARCHAR}");
         sql.SET("template_code = #{record.templateCode,jdbcType=VARCHAR}");
-        sql.SET("channel = #{record.channel,jdbcType=VARCHAR}");
-        sql.SET("group = #{record.group,jdbcType=VARCHAR}");
+        sql.SET("channel = #{record.channel,jdbcType=TINYINT}");
+        sql.SET("msg_group = #{record.msgGroup,jdbcType=VARCHAR}");
         sql.SET("priority = #{record.priority,jdbcType=INTEGER}");
         sql.SET("config_ids = #{record.configIds,jdbcType=VARCHAR}");
         sql.SET("deleted = #{record.deleted,jdbcType=BIT}");
@@ -198,11 +198,11 @@ public class MessageConfigRuleSqlProvider {
         }
         
         if (record.getChannel() != null) {
-            sql.SET("channel = #{channel,jdbcType=VARCHAR}");
+            sql.SET("channel = #{channel,jdbcType=TINYINT}");
         }
         
-        if (record.getGroup() != null) {
-            sql.SET("group = #{group,jdbcType=VARCHAR}");
+        if (record.getMsgGroup() != null) {
+            sql.SET("msg_group = #{msgGroup,jdbcType=VARCHAR}");
         }
         
         if (record.getPriority() != null) {

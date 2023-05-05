@@ -79,12 +79,19 @@ public class AtomicMessageConfigRuleService {
         if (CollectionUtils.isNotEmpty(request.getIds())) {
             criteria.andIdIn(request.getIds());
         }
+        if (StringUtils.isNotBlank(request.getTemplateCode())) {
+            criteria.andTemplateCodeEqualTo(request.getTemplateCode());
+        }
+        if (Objects.nonNull(request.getChannel())) {
+            criteria.andChannelEqualTo(request.getChannel());
+        }
         if (CollectionUtils.isNotEmpty(request.getBusinessEvents())) {
             criteria.andBusinessEventIn(request.getBusinessEvents());
         }
         if (CollectionUtils.isNotEmpty(request.getBusinessModules())) {
             criteria.andBusinessModuleIn(request.getBusinessModules());
         }
+        criteria.andDeletedEqualTo(Boolean.FALSE);
         if (Objects.nonNull(request.getDeleted())) {
             criteria.andDeletedEqualTo(request.getDeleted());
         }

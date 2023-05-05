@@ -22,6 +22,10 @@ public class QueryMessageConfigRulesRequest {
 
     private Boolean deleted;
 
+    private Byte channel;
+
+    private String templateCode;
+
     private List<String> businessEvents;
 
     private List<String> businessModules;

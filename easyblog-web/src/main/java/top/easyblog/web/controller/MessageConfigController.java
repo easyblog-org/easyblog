@@ -8,6 +8,7 @@ import top.easyblog.common.request.message.config.QueryMessageConfigRequest;
 import top.easyblog.common.request.message.config.QueryMessageConfigsRequest;
 import top.easyblog.common.request.message.config.UpdateMessageConfigRequest;
 import top.easyblog.core.MessageConfigService;
+import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 /**
@@ -15,7 +16,7 @@ import top.easyblog.web.annotation.ResponseWrapper;
  * @date: 2023-02-04 19:49
  */
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/in")
 public class MessageConfigController {
 
     @Autowired
@@ -52,7 +53,7 @@ public class MessageConfigController {
      */
     @ResponseWrapper
     @GetMapping("/message-config")
-    public MessageConfigBean details(QueryMessageConfigRequest request) {
+    public MessageConfigBean details(@RequestParamAlias QueryMessageConfigRequest request) {
         return messageConfigService.details(request);
     }
 
@@ -63,7 +64,7 @@ public class MessageConfigController {
      */
     @ResponseWrapper
     @GetMapping("/message-configs")
-    public Object list(QueryMessageConfigsRequest request) {
+    public Object list(@RequestParamAlias QueryMessageConfigsRequest request) {
         return messageConfigService.list(request);
     }
 

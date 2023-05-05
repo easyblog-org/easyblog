@@ -11,7 +11,7 @@ import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
 import top.easyblog.dao.auto.mapper.LoginLogMapper;
 import top.easyblog.dao.auto.model.LoginLog;
 import top.easyblog.dao.auto.model.example.LoginLogExample;
-import top.easyblog.dao.custom.MyLoginLogMapper;
+import top.easyblog.dao.custom.mapper.MyLoginLogMapper;
 import top.easyblog.support.util.IdGenerator;
 import top.easyblog.support.util.JsonUtils;
 

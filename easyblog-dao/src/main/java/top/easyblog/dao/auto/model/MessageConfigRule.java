@@ -13,9 +13,9 @@ public class MessageConfigRule {
 
     private String templateCode;
 
-    private String channel;
+    private Byte channel;
 
-    private String group;
+    private String msgGroup;
 
     private Integer priority;
 

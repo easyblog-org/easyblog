@@ -10,13 +10,14 @@ import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordReq
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.BusinessMessageRecordService;
 import top.easyblog.dao.auto.model.BusinessMessageRecord;
+import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 /**
  * @author: frank.huang
  * @date: 2023-02-12 13:47
  */
-@RequestMapping("/v1/message")
+@RequestMapping("/v1/in/message")
 @RestController
 public class MessageSendRecordController {
 
@@ -38,13 +39,13 @@ public class MessageSendRecordController {
 
     @ResponseWrapper
     @GetMapping("/record")
-    public BusinessMessageRecordBean details(QueryBusinessMessageRecordRequest request) {
+    public BusinessMessageRecordBean details(@RequestParamAlias QueryBusinessMessageRecordRequest request) {
         return messageSendRecordService.details(request);
     }
 
     @ResponseWrapper
     @GetMapping("/records")
-    public PageResponse<BusinessMessageRecordBean> list(QueryBusinessMessageRecordsRequest request) {
+    public PageResponse<BusinessMessageRecordBean> list(@RequestParamAlias QueryBusinessMessageRecordsRequest request) {
         return messageSendRecordService.list(request);
     }
 

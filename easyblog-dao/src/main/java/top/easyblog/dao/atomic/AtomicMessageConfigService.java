@@ -12,7 +12,7 @@ import top.easyblog.common.request.message.config.QueryMessageConfigsRequest;
 import top.easyblog.dao.auto.mapper.MessageConfigMapper;
 import top.easyblog.dao.auto.model.MessageConfig;
 import top.easyblog.dao.auto.model.example.MessageConfigExample;
-import top.easyblog.dao.custom.MyMessageConfigMapper;
+import top.easyblog.dao.custom.mapper.MyMessageConfigMapper;
 import top.easyblog.support.util.JsonUtils;
 
 import java.util.Collections;

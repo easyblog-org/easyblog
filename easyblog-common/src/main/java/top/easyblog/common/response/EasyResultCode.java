@@ -94,6 +94,9 @@ public enum EasyResultCode {
     EMAIL_ACCOUNT_EXISTS,
     // 模板已存在
     TEMPLATE_ALREADY_EXISTS,
+    //消息推送规则已经存在
+    MESSAGE_CONFIG_RULE_EXISTS,
+
 
     // 账号不存在
     ACCOUNT_NOT_FOUND,

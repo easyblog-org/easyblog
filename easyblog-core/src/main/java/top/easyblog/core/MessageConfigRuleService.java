@@ -19,6 +19,7 @@ import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
 import top.easyblog.common.request.message.template.QueryMessageTemplateRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
+import top.easyblog.core.annotation.Transaction;
 import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicMessageConfigRuleService;
 import top.easyblog.dao.atomic.AtomicMessageConfigService;
@@ -54,6 +55,7 @@ public class MessageConfigRuleService {
     private BeanMapper beanMapper;
 
 
+    @Transaction
     public void createConfigRule(CreateMessageConfigRuleRequest request) {
         checkRequestParmaValid(MessageConfigRuleContext.builder()
                 .configIds(Arrays.stream(StringUtils.split(request.getConfigIds(), Constants.COMMA)).collect(Collectors.toList()))
@@ -61,8 +63,19 @@ public class MessageConfigRuleService {
                 .templateCode(request.getTemplateCode())
                 .checkIfNonNull(Boolean.FALSE)
                 .build());
+
+        checkDuplicate(request);
         MessageConfigRule messageConfigRule = beanMapper.buildMessageConfigRule(request);
         messageConfigRuleService.insertOne(messageConfigRule);
+    }
+
+    private void checkDuplicate(CreateMessageConfigRuleRequest request) {
+        List<MessageConfigRule> messageConfigRules = messageConfigRuleService.queryListByRequest(QueryMessageConfigRulesRequest.builder()
+                .businessModules(Collections.singletonList(request.getBusinessModule()))
+                .businessEvents(Collections.singletonList(request.getBusinessEvent())).build());
+        if(!CollectionUtils.isEmpty(messageConfigRules)){
+            throw new BusinessException(EasyResultCode.MESSAGE_CONFIG_RULE_EXISTS);
+        }
     }
 
     private void checkRequestParmaValid(MessageConfigRuleContext context) {

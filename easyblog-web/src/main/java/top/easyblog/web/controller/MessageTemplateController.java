@@ -11,6 +11,7 @@ import top.easyblog.common.request.message.template.QueryMessageTemplatesRequest
 import top.easyblog.common.request.message.template.UpdateMessageTemplateRequest;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.MessageTemplateService;
+import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 /**
@@ -39,13 +40,13 @@ public class MessageTemplateController {
 
     @ResponseWrapper
     @GetMapping("/template")
-    public MessageTemplateBean details(QueryMessageTemplateRequest request) {
+    public MessageTemplateBean details(@RequestParamAlias QueryMessageTemplateRequest request) {
         return messageTemplateService.details(request);
     }
 
     @ResponseWrapper
     @GetMapping("/templates")
-    public PageResponse<MessageTemplateBean> list(QueryMessageTemplatesRequest request) {
+    public PageResponse<MessageTemplateBean> list(@RequestParamAlias QueryMessageTemplatesRequest request) {
         return messageTemplateService.list(request);
     }
 
