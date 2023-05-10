@@ -4,6 +4,8 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Map;
+
 /**
  * @author: frank.huang
  * @date: 2021-12-04 22:23
@@ -48,5 +50,15 @@ public class JsonUtils {
         return LOWER_CASE_GSON.fromJson(jsonStr, clazz);
     }
 
-
+    /**
+     * 将Json字符串转换为Map
+     *
+     * @param json
+     * @return
+     */
+    @SuppressWarnings("all")
+    public static Map<String, Object> jsonToMap(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Map.class);
+    }
 }

@@ -65,6 +65,7 @@ public class GlobalCustomExceptionAdvise {
      */
     @ExceptionHandler(DataAccessException.class)
     public BaseResponse<Object> handleDataBaseException(DataAccessException e) {
+        e.printStackTrace();
         return BaseResponse.fail(EasyResultCode.DATA_ACCESS_FAIL.getCode(), e.getCause().toString());
     }
 }

@@ -5,6 +5,9 @@ management:
     web:
       exposure:
         include: refresh,health
+logging:
+  config: classpath:spring-logback.xml
+
 spring:
   application:
     name: easyblog

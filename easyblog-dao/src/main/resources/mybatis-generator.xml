@@ -3,19 +3,40 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <!--mysql 连接数据库jar 这里选择自己本地位置-->
-    <!--
-        <classPathEntry location="D:\apache-maven-3.8.3\repository\mysql\mysql-connector-java\8.0.27\mysql-connector-java-8.0.27.jar" />
-    -->
     <context id="testTables" targetRuntime="MyBatis3">
+        <plugin type="com.itfsw.mybatis.generator.plugins.LimitPlugin">
+            <!-- 通过配置startPage影响Example中的page方法开始分页的页码，默认分页从0开始 -->
+            <property name="startPage" value="0"/>
+        </plugin>
+        <!-- Lombok插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.LombokPlugin">
+            <!-- @Data 默认开启,同时插件会对子类自动附加@EqualsAndHashCode(callSuper = true)，@ToString(callSuper = true) -->
+            <property name="@Data" value="true"/>
+            <!-- @Builder 必须在 Lombok 版本 >= 1.18.2 的情况下开启，对存在继承关系的类自动替换成@SuperBuilder -->
+            <property name="@Builder" value="false"/>
+            <!-- @NoArgsConstructor 和 @AllArgsConstructor 使用规则和Lombok一致 -->
+            <property name="@AllArgsConstructor" value="false"/>
+            <property name="@NoArgsConstructor" value="false"/>
+            <!-- @Getter、@Setter、@Accessors 等使用规则参见官方文档 -->
+            <property name="@Accessors(chain = true)" value="false"/>
+            <!-- 临时解决IDEA工具对@SuperBuilder的不支持问题，开启后(默认未开启)插件在遇到@SuperBuilder注解时会调用ModelBuilderPlugin来生成相应的builder代码 -->
+            <property name="supportSuperBuilderForIdea" value="false"/>
+        </plugin>
+        <!-- Mapper注解插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.MapperAnnotationPlugin">
+            <!-- @Mapper 默认开启 -->
+            <property name="@Mapper" value="true"/>
+            <!-- @Repository 开启后解决IDEA工具@Autowired报错 -->
+            <property name="@Repository" value="org.springframework.stereotype.Repository"/>
+        </plugin>
         <commentGenerator>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://124.221.78.126:3306/zeus_dev?useSSL=false"
-                        userId="zeus_dev_rw"
+                        connectionURL="jdbc:mysql://117.50.189.250:3306/easyblog_dev?allowPublicKeyRetrieval=true"
+                        userId="easyblog_dev_rw"
                         password="5TykjGsjuqQ">
         </jdbcConnection>
         <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
@@ -25,7 +46,7 @@
         </javaTypeResolver>
 
         <!-- targetProject:生成POJO类的位置 -->
-        <javaModelGenerator targetPackage="top.easyblog.titan.dao.auto.model"
+        <javaModelGenerator targetPackage="top.easyblog.dao.auto.model"
                             targetProject="src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
@@ -50,7 +71,7 @@
         type="XMLMAPPER", 生成SQLMap XML文件和独立的Mapper接口
         -->
         <javaClientGenerator type="ANNOTATEDMAPPER"
-                             targetPackage="top.easyblog.titan.dao.auto.mapper"
+                             targetPackage="top.easyblog.dao.auto.mapper"
                              targetProject="src/main/java">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
@@ -58,7 +79,11 @@
 
         <!--请根据自己数据库对应的表名进行配置修改，这里仅供参考-->
         <!--生成对应表及类名-->
-        <table tableName="phone_area_code">
+       <!-- <table tableName="roles">
+            <property name="useActualColumnNames" value="false"/>
+            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
+        </table>-->
+        <table tableName="message_config_rule">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>

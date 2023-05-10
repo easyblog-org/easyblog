@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.web.aspect.UnderlineToCamelArgumentResolver;
-import top.easyblog.web.converter.CustomGsonHttpMessageConverter;
+import top.easyblog.web.config.converter.CustomGsonHttpMessageConverter;
 import top.easyblog.web.interceptor.RequestLogInterceptor;
 
 import java.util.List;
