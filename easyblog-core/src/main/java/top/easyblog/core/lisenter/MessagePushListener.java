@@ -36,14 +36,12 @@ public class MessagePushListener implements SmartApplicationListener {
     @Autowired
     private BusinessMessageRecordService businessMessageRecordService;
 
-
     @Override
     public boolean supportsEventType(@NotNull Class<? extends ApplicationEvent> event) {
         return MessageSendPreparedEvent.class.isAssignableFrom(event) ||
                 MessageSendFailedEvent.class.isAssignableFrom(event) ||
                 MessageSendSuccessEvent.class.isAssignableFrom(event);
     }
-
 
     @Async
     @Override
@@ -77,7 +75,6 @@ public class MessagePushListener implements SmartApplicationListener {
             return;
         }
 
-
         String failReason = Optional.ofNullable(applicationEvent.getException()).map(e -> {
             if (e instanceof BusinessException) {
                 return ((BusinessException) e).getCode();
@@ -86,17 +83,22 @@ public class MessagePushListener implements SmartApplicationListener {
             }
         }).orElse("Unknown exception");
 
-        businessMessageRecordService.updateMessageRecord(context.getBusinessMessageRecordId(), UpdateBusinessMessageRecordRequest.builder()
-                .status(MessageSendStatus.FAILED.getCode()).failReason(failReason).build());
+        businessMessageRecordService.updateMessageRecord(context.getBusinessMessageRecordId(),
+                UpdateBusinessMessageRecordRequest.builder()
+                        .status(MessageSendStatus.FAILED.getCode()).failReason(failReason).build());
     }
 
     private void onMessageSendPreparedEvent(MessageSendPreparedEvent applicationEvent) {
-        BusinessMessageRecordContext message = applicationEvent.getMessage();
-        if (Objects.isNull(message)) {
+        BusinessMessageRecordContext context = applicationEvent.getMessage();
+        if (Objects.isNull(context)) {
             log.info("Message record context is null,ignore this message send prepared event");
             return;
         }
 
-        messageSendProcessor.send(message);
+        if (context.getIsSync()) {
+            messageSendProcessor.asyncSend(context);
+        } else {
+            messageSendProcessor.send(context);
+        }
     }
 }

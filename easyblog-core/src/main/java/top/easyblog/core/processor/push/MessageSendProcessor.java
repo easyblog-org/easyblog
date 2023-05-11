@@ -1,7 +1,6 @@
 package top.easyblog.core.processor.push;
 
 
-import top.easyblog.dao.auto.model.BusinessMessageRecord;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 
 /**

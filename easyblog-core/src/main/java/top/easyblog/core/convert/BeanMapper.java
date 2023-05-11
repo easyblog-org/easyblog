@@ -157,7 +157,8 @@ public interface BeanMapper {
 
     BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
 
-    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record);
+    @Mapping(target = "isSync",source = "isSync")
+    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record,Boolean isSync);
 
     BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
 
