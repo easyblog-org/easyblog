@@ -9,7 +9,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime" typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
         <association javaType="top.easyblog.common.bean.TemplateValueConfigBean" property="templateValueConfig">
-            <result column="template_value_config_type" jdbcType="TINYINT" property="url"/>
+            <result column="template_value_config_type" jdbcType="TINYINT" property="type"/>
             <result column="expression" jdbcType="VARCHAR" property="expression"/>
             <result column="url" jdbcType="VARCHAR" property="url"/>
         </association>

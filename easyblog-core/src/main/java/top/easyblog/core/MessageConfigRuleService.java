@@ -73,7 +73,7 @@ public class MessageConfigRuleService {
         List<MessageConfigRule> messageConfigRules = messageConfigRuleService.queryListByRequest(QueryMessageConfigRulesRequest.builder()
                 .businessModules(Collections.singletonList(request.getBusinessModule()))
                 .businessEvents(Collections.singletonList(request.getBusinessEvent())).build());
-        if(!CollectionUtils.isEmpty(messageConfigRules)){
+        if (!CollectionUtils.isEmpty(messageConfigRules)) {
             throw new BusinessException(EasyResultCode.MESSAGE_CONFIG_RULE_EXISTS);
         }
     }
@@ -102,9 +102,9 @@ public class MessageConfigRuleService {
         }
     }
 
-    public void updateConfigRule(String code, UpdateMessageConfigRuleRequest request) {
+    public void updateConfigRule(Long id, UpdateMessageConfigRuleRequest request) {
         MessageConfigRule messageConfigRule = messageConfigRuleService.queryByRequest(QueryMessageConfigRuleRequest.builder()
-                .code(code).build());
+                .id(id).build());
         if (Objects.isNull(messageConfigRule)) {
             throw new BusinessException(EasyResultCode.MESSAGE_CONFIG_RULE_NOT_FOUND);
         }

@@ -40,20 +40,18 @@ public class AtomicMessageConfigRuleService {
 
     @RecordNullable
     public MessageConfigRule queryByRequest(QueryMessageConfigRuleRequest request) {
-        if (queryParamAllEmpty(request)) {
-            return null;
-        }
         MessageConfigRuleExample example = new MessageConfigRuleExample();
         MessageConfigRuleExample.Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(request.getCode())) {
-            criteria.andTemplateCodeEqualTo(request.getCode());
+        if (Objects.nonNull(request.getId())) {
+            criteria.andIdEqualTo(request.getId());
+        }
+        if (StringUtils.isNotBlank(request.getBusinessEvent()) && StringUtils.isNotBlank(request.getBusinessModule())) {
+            criteria.andBusinessEventEqualTo(request.getBusinessEvent());
+            criteria.andBusinessModuleEqualTo(request.getBusinessModule());
         }
         return Iterables.getFirst(messageConfigRuleMapper.selectByExample(example), null);
     }
 
-    private boolean queryParamAllEmpty(QueryMessageConfigRuleRequest request) {
-        return StringUtils.isBlank(request.getCode());
-    }
 
     public void updateByPKSelective(MessageConfigRule record) {
         record.setUpdateTime(new Date());

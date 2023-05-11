@@ -21,7 +21,7 @@ import java.util.Objects;
  * @author: frank.huang
  * @date: 2022-02-12 17:12
  */
-public class AbstractCustomizeArgumentResolver implements HandlerMethodArgumentResolver {
+public abstract class AbstractCustomizeArgumentResolver implements HandlerMethodArgumentResolver {
     /**
      * 校验
      *
@@ -68,13 +68,17 @@ public class AbstractCustomizeArgumentResolver implements HandlerMethodArgumentR
         return !hasBindingResult;
     }
 
-    @Override
-    public boolean supportsParameter(@NotNull MethodParameter methodParameter) {
-        return false;
-    }
 
     @Override
-    public Object resolveArgument(@NotNull MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+    public Object resolveArgument(@NotNull MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
+                                  NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
+        Object org = handleParameterNames(methodParameter, nativeWebRequest);
+        valid(methodParameter, modelAndViewContainer, nativeWebRequest, webDataBinderFactory, org);
+        return org;
+    }
+
+
+    protected Object handleParameterNames(MethodParameter methodParameter, NativeWebRequest nativeWebRequest) {
         return null;
     }
 }

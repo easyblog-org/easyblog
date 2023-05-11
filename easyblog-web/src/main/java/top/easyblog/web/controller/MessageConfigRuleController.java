@@ -32,10 +32,10 @@ public class MessageConfigRuleController {
     }
 
     @ResponseWrapper
-    @PostMapping("/config-rule/{code}")
-    public void updateConfigRule(@PathVariable("code") String code ,
+    @PostMapping("/config-rule/{id}")
+    public void updateConfigRule(@PathVariable("id") Long id ,
                                  @RequestBody UpdateMessageConfigRuleRequest request) {
-        messageConfigRuleService.updateConfigRule(code, request);
+        messageConfigRuleService.updateConfigRule(id, request);
     }
 
     @ResponseWrapper
