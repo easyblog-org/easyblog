@@ -1,9 +1,17 @@
 package top.easyblog.core.strategy.template;
 
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+
 import top.easyblog.common.bean.MessageConfigBean;
 import top.easyblog.common.bean.TemplateValueConfigBean;
+import top.easyblog.common.enums.MessageTemplateType;
+import top.easyblog.common.enums.TemplateValueConfigType;
+import top.easyblog.common.exception.BusinessException;
+import top.easyblog.common.response.EasyResultCode;
+import top.easyblog.support.context.MessageParseContext;
 
 /**
  * @author: frank.huang
@@ -18,14 +26,27 @@ public interface TemplateParameterParseStrategy {
      */
     byte getParameterType();
 
-
     /**
      * 解析模板参数
      *
-     * @param templateValueConfigBean  参数Bean
+     * @param templateValueConfigBean 参数Bean
      * @return 模板参数name已经对应value
      */
-    Pair<String, Object> parse(MessageConfigBean templateValueConfigBean);
+    default Pair<String, Object> parse(MessageParseContext context) {
+        MessageConfigBean configBean = context.getConfig();
+        TemplateValueConfigBean templateValueConfig = null;
+        if (Objects.isNull(configBean) || Objects.isNull(templateValueConfig = configBean.getTemplateValueConfig())) {
+            throw new BusinessException(EasyResultCode.ILLEGAL_PARAM, "Message config bean can not be null");
+        }
 
+        if (Objects.equals(TemplateValueConfigType.DIRECT_JSON_VALUE.getCode(), templateValueConfig.getType()) ||
+                Objects.equals(TemplateValueConfigType.DIRECT_VALUE.getCode(), templateValueConfig.getType()) &&
+                        StringUtils.isBlank(context.getBusinessMessage())) {
+            throw new BusinessException(EasyResultCode.ILLEGAL_PARAM, "Biz message value can not be empty when template value is '" + templateValueConfig.getType() + "'");
+        }
+        return doParse(context);
+    }
+
+    Pair<String, Object> doParse(MessageParseContext context);
 
 }

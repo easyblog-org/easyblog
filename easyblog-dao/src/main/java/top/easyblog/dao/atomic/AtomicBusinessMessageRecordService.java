@@ -33,7 +33,6 @@ public class AtomicBusinessMessageRecordService {
     public void insertOne(BusinessMessageRecord record) {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());
-        record.setStatus(MessageSendStatus.UNSEND.getCode());
         mapper.insertSelective(record);
         log.info("[DB] Insert new bussiness message record.Details==>{}", JsonUtils.toJSONString(record));
     }

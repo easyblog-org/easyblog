@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotBlank;
-import java.io.InputStream;
-import java.util.List;
+import lombok.Builder.Default;
 
 /**
  * @author: frank.huang
@@ -22,4 +19,7 @@ public class CreateBusinessMessageRecordRequest {
     private String businessModule;
     private String businessEvent;
     private String businessMessage;
+    @Default
+    private Boolean isSync = false;
+    private Byte status;
 }

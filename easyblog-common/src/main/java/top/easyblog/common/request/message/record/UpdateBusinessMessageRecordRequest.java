@@ -14,10 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateBusinessMessageRecordRequest {
-    private String businessId;
-    private String businessModule;
-    private String businessEvent;
-    private String businessMessage;
+    private Long id;
     private Byte status;
     private Integer retryTimes;
     private String failReason;
