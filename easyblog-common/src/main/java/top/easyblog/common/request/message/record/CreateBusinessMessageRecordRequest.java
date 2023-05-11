@@ -21,4 +21,5 @@ public class CreateBusinessMessageRecordRequest {
     private String businessMessage;
     @Default
     private Boolean isSync = false;
+    private Byte status;
 }

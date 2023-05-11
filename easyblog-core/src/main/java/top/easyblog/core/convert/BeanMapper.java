@@ -146,15 +146,16 @@ public interface BeanMapper {
             @Mapping(target = "businessMessage",source = "msg.businessMessage"),
             @Mapping(target = "group",source = "messageConfigRule.msgGroup"),
             @Mapping(target = "priority",source = "messageConfigRule.priority"),
-            //@Mapping(target = "channel",source = "messageTemplate.sendChannel"),
+            @Mapping(target = "channel",source = "messageConfigRule.channel"),
             @Mapping(target = "msgType",source = "messageTemplate.msgType"),
             @Mapping(target = "shieldType",source = "messageTemplate.shieldType"),
             @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgContent"),
+            @Mapping(target = "title",source = "messageTemplate.name"),
             @Mapping(target = "configs",source = "messageConfigs")
     })
     MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg, MessageConfigRuleBean messageConfigRule,
             MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
-
+       
     BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
 
     @Mapping(target = "isSync",source = "isSync")

@@ -53,9 +53,10 @@ public class BusinessMessageRecordService {
      * @return
      */
     public BusinessMessageRecord createMessageRecord(CreateBusinessMessageRecordRequest request) {
+        request.setStatus(MessageSendStatus.UNSEND.getCode());
         BusinessMessageRecord record = beanMapper.convertMessageSendRecordCreateReq2MessageSendRecord(request);
-        BusinessMessageRecordContext messageRecordContext = beanMapper.convertMessageSendRecord2MessageSendRecordContext(record,request.getIsSync());
         atomicBusinessMessageRecordService.insertOne(record);
+        BusinessMessageRecordContext messageRecordContext = beanMapper.convertMessageSendRecord2MessageSendRecordContext(record,request.getIsSync());
         applicationEventPublisher.publishEvent(new MessageSendPreparedEvent(messageRecordContext));
         return record;
     }

@@ -8,11 +8,11 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import lombok.extern.slf4j.Slf4j;
-import top.easyblog.core.processor.push.MessageSendProcessor;
+import top.easyblog.core.processor.push.MessagePushProcessor;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 
 @Slf4j
-public class AbstractMessageSendProcessor implements MessageSendProcessor {
+public class AbstractMessagePushProcessor implements MessagePushProcessor {
 
     @Autowired
     private ExecutorService messageProcessor;

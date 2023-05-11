@@ -35,8 +35,6 @@ public class MessageConfigContext {
 
     private String expectPushTime;
 
-    private Byte idType;
-
     private Byte msgType;
 
     private Byte shieldType;

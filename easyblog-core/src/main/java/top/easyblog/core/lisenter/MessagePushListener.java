@@ -11,7 +11,7 @@ import top.easyblog.common.enums.MessageSendStatus;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordRequest;
 import top.easyblog.core.BusinessMessageRecordService;
-import top.easyblog.core.processor.push.MessageSendProcessor;
+import top.easyblog.core.processor.push.MessagePushProcessor;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageConfigContext;
 import top.easyblog.support.context.MessageSendContext;
@@ -31,7 +31,7 @@ import java.util.Optional;
 public class MessagePushListener implements SmartApplicationListener {
 
     @Autowired
-    private MessageSendProcessor messageSendProcessor;
+    private MessagePushProcessor messageSendProcessor;
 
     @Autowired
     private BusinessMessageRecordService businessMessageRecordService;

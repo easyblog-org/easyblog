@@ -1,11 +1,18 @@
 package top.easyblog.core.strategy.template.impl;
 
+import java.util.List;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
+
+import com.jayway.jsonpath.JsonPath;
+
 import top.easyblog.common.bean.MessageConfigBean;
 import top.easyblog.common.bean.TemplateValueConfigBean;
 import top.easyblog.common.enums.TemplateValueConfigType;
 import top.easyblog.core.strategy.template.TemplateParameterParseStrategy;
+import top.easyblog.support.context.MessageParseContext;
+import top.easyblog.support.util.DocumentUtils;
 
 /**
  * @author: frank.huang
@@ -20,7 +27,10 @@ public class DirectJsonValueParameterParseStrategy implements TemplateParameterP
     }
 
     @Override
-    public Pair<String, Object> parse(MessageConfigBean templateValueConfigBean) {
-        return null;
+    public Pair<String, Object> doParse(MessageParseContext context) {
+        MessageConfigBean configBean = context.getConfig();
+        TemplateValueConfigBean templateValueConfig = configBean.getTemplateValueConfig();
+        String values = DocumentUtils.parse(context.getBusinessMessage(), templateValueConfig.getExpression());
+        return Pair.of(configBean.getName(), values);
     }
 }
