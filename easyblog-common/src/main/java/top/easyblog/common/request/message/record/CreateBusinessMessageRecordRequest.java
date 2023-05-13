@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Builder.Default;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author: frank.huang
  * @date: 2023-02-12 13:10
@@ -16,8 +18,11 @@ import lombok.Builder.Default;
 @NoArgsConstructor
 public class CreateBusinessMessageRecordRequest {
     private String businessId;
+    @NotBlank(message = "Required param 'business_module' is not present.")
     private String businessModule;
+    @NotBlank(message = "Required param 'business_event' is not present.")
     private String businessEvent;
+    @NotBlank(message = "Required param 'business_message' is not present.")
     private String businessMessage;
     @Default
     private Boolean isSync = false;

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.easyblog.client.config.CommonFeignConfig;
+import top.easyblog.client.internal.Verify;
 import top.easyblog.client.model.request.QueryGiteeAuthTokenRequest;
 import top.easyblog.client.model.response.dto.GiteeAuthDTO;
 import top.easyblog.client.model.response.dto.GiteeAuthTokenDTO;
@@ -18,7 +19,7 @@ import top.easyblog.client.model.response.dto.GiteeAuthTokenDTO;
  * @date: 2022-03-06 11:54
  */
 @FeignClient(name = "gitee", url = "${urls.gitee}", configuration = CommonFeignConfig.class)
-public interface GiteeClient {
+public interface GiteeClient extends Verify {
 
     /**
      * 获取Gitee access_token

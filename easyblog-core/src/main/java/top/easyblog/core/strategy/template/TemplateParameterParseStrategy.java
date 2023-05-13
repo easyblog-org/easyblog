@@ -29,7 +29,7 @@ public interface TemplateParameterParseStrategy {
     /**
      * 解析模板参数
      *
-     * @param templateValueConfigBean 参数Bean
+     * @param context 参数Bean
      * @return 模板参数name已经对应value
      */
     default Pair<String, Object> parse(MessageParseContext context) {

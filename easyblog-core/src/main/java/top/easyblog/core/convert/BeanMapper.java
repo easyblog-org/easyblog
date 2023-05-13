@@ -48,23 +48,23 @@ public interface BeanMapper {
 
     AccountBean convertAccount2AccountBean(Account account);
 
-   @Mappings({
-           @Mapping(target = "userCode", ignore = true),
-           @Mapping(target = "createTime", ignore = true),
-           @Mapping(target = "updateTime", ignore = true),
-           @Mapping(target = "code", ignore = true),
-           @Mapping(target = "id", source = "accountId")
-   })
+    @Mappings({
+            @Mapping(target = "userCode", ignore = true),
+            @Mapping(target = "createTime", ignore = true),
+            @Mapping(target = "updateTime", ignore = true),
+            @Mapping(target = "code", ignore = true),
+            @Mapping(target = "id", source = "accountId")
+    })
     Account convertAccountUpdateReq2Account(Long accountId, UpdateAccountRequest request);
 
 
-   @Mappings({
-           @Mapping(target = "ipAddress", source = "ip"),
-           @Mapping(target = "id", ignore = true),
-           @Mapping(target = "createTime", ignore = true),
-           @Mapping(target = "updateTime", ignore = true),
-           @Mapping(target = "code", ignore = true),
-   })
+    @Mappings({
+            @Mapping(target = "ipAddress", source = "ip"),
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createTime", ignore = true),
+            @Mapping(target = "updateTime", ignore = true),
+            @Mapping(target = "code", ignore = true),
+    })
     LoginLog convertLoginLogCreateReq2Account(CreateLoginLogRequest request);
 
 
@@ -140,36 +140,38 @@ public interface BeanMapper {
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
     @Mappings({
-            @Mapping(target = "businessMessageRecordId",source = "msg.id"),
-            @Mapping(target = "businessModule",source = "msg.businessModule"),
-            @Mapping(target = "businessEvent",source = "msg.businessEvent"),
-            @Mapping(target = "businessMessage",source = "msg.businessMessage"),
-            @Mapping(target = "group",source = "messageConfigRule.msgGroup"),
-            @Mapping(target = "priority",source = "messageConfigRule.priority"),
-            @Mapping(target = "channel",source = "messageConfigRule.channel"),
-            @Mapping(target = "msgType",source = "messageTemplate.msgType"),
-            @Mapping(target = "shieldType",source = "messageTemplate.shieldType"),
-            @Mapping(target = "msgTemplateContent",source = "messageTemplate.msgContent"),
-            @Mapping(target = "title",source = "messageTemplate.name"),
-            @Mapping(target = "configs",source = "messageConfigs")
+            @Mapping(target = "businessMessageRecordId", source = "msg.id"),
+            @Mapping(target = "businessModule", source = "msg.businessModule"),
+            @Mapping(target = "businessEvent", source = "msg.businessEvent"),
+            @Mapping(target = "businessMessage", source = "msg.businessMessage"),
+            @Mapping(target = "group", source = "messageConfigRule.msgGroup"),
+            @Mapping(target = "priority", source = "messageConfigRule.priority"),
+            @Mapping(target = "channel", source = "messageConfigRule.channel"),
+            @Mapping(target = "msgType", source = "messageTemplate.msgType"),
+            @Mapping(target = "shieldType", source = "messageTemplate.shieldType"),
+            @Mapping(target = "msgTemplateContent", source = "messageTemplate.msgContent"),
+            @Mapping(target = "title", source = "messageTemplate.name"),
+            @Mapping(target = "configs", source = "messageConfigs")
     })
     MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg, MessageConfigRuleBean messageConfigRule,
-            MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
-       
+                                                   MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
+
     BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
 
-    @Mapping(target = "isSync",source = "isSync")
-    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record,Boolean isSync);
+    @Mapping(target = "isSync", source = "isSync")
+    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record, Boolean isSync);
 
+    @Mapping(target = "createTime", expression = "java(record.getCreateTime().getTime()/1000)")
+    @Mapping(target = "updateTime", expression = "java(record.getUpdateTime().getTime()/1000)")
     BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
 
     @Mapping(target = "templateCode", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
     MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(CreateMessageTemplateRequest request);
 
-    MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id,UpdateMessageTemplateRequest request);
+    MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id, UpdateMessageTemplateRequest request);
 
-    @Mapping(target = "id",source = "id")
-    BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id,UpdateBusinessMessageRecordRequest request);
+    @Mapping(target = "id", source = "id")
+    BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id, UpdateBusinessMessageRecordRequest request);
 
 
 }

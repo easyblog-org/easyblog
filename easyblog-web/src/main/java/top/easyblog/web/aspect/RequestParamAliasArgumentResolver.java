@@ -55,9 +55,9 @@ public class RequestParamAliasArgumentResolver extends AbstractCustomizeArgument
             String originalParam = paramNames.next();
             String formattedParam = underLineToCamel(originalParam);
             if (wrapper.isWritableProperty(formattedParam)) {
-                Field field = fieldMap.get(originalParam);
+                Field field = fieldMap.get(formattedParam);
                 Object value = webRequest.getParameter(originalParam);
-                if (List.class.isAssignableFrom(field.getType())) {
+                if (Objects.nonNull(field) && List.class.isAssignableFrom(field.getType())) {
                     value = Lists.newArrayList(Objects.requireNonNull(StringUtils.split((String) value, Constants.COMMA)));
                 }
                 log.debug("Handle request param underline to camel ==> {}={}", originalParam, value);

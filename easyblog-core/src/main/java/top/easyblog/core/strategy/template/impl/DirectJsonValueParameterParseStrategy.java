@@ -1,12 +1,7 @@
 package top.easyblog.core.strategy.template.impl;
 
-import java.util.List;
-
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
-
-import com.jayway.jsonpath.JsonPath;
-
 import top.easyblog.common.bean.MessageConfigBean;
 import top.easyblog.common.bean.TemplateValueConfigBean;
 import top.easyblog.common.enums.TemplateValueConfigType;

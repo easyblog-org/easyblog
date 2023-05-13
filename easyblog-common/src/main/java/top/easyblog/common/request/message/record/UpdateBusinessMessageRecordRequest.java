@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateBusinessMessageRecordRequest {
-    private Long id;
     private Byte status;
     private Integer retryTimes;
     private String failReason;
     private Boolean deleted;
+    private String businessMessage;
 }

@@ -34,7 +34,7 @@ public class AtomicBusinessMessageRecordService {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());
         mapper.insertSelective(record);
-        log.info("[DB] Insert new bussiness message record.Details==>{}", JsonUtils.toJSONString(record));
+        log.info("[DB] Insert new business message record.Details==>{}", JsonUtils.toJSONString(record));
     }
 
     @RecordNullable
@@ -49,7 +49,7 @@ public class AtomicBusinessMessageRecordService {
             criteria.andBusinessEventEqualTo(request.getBusinessEvent());
             criteria.andBusinessModuleEqualTo(request.getBusinessModule());
         }
-        return Iterables.getFirst(mapper.selectByExample(example), null);
+        return Iterables.getFirst(mapper.selectByExampleWithBLOBs(example), null);
     }
 
     public void updateByPrimaryKeySelective(BusinessMessageRecord record) {
@@ -66,7 +66,7 @@ public class AtomicBusinessMessageRecordService {
         BusinessMessageRecordExample example = generateExamples(request);
         example.setLimit(request.getLimit());
         example.setOffset(request.getOffset());
-        return mapper.selectByExample(example);
+        return mapper.selectByExampleWithBLOBs(example);
     }
 
     private BusinessMessageRecordExample generateExamples(QueryBusinessMessageRecordsRequest request) {
