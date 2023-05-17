@@ -83,7 +83,6 @@ buildDockerImage(){
       --build-arg LOG_BASE_DIR="${LOG_BASE_DIR}" \
       --build-arg JAR_FILE_PATH="${JAR_FILE_PATH}" \
       --build-arg SERVER_PORT="${SERVER_PORT}" \
-      --build-arg BASE_DIR="${BASE_DIR}" \
       -t "${ARTIFACT}" .
 }
 
