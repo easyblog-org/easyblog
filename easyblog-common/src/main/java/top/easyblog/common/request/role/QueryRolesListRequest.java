@@ -18,6 +18,7 @@ import java.util.List;
 public class QueryRolesListRequest {
     private List<Long> ids;
     private List<String> codes;
+    private List<String> names;
     //模糊查询
     private String name;
     private Boolean enabled;

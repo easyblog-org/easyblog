@@ -59,9 +59,9 @@ public class AtomicRolesService {
         if (Objects.nonNull(request.getId())) {
             criteria.andIdEqualTo(request.getId());
         }
-       /* if (Objects.nonNull(request.getName())) {
-            criteria.andNameLike("%"+request.getName()+"%");
-        }*/
+        if (Objects.nonNull(request.getName())) {
+            criteria.andNameEqualTo(request.getName());
+        }
         return Iterables.getFirst(mapper.selectByExample(example), null);
     }
 
@@ -87,9 +87,12 @@ public class AtomicRolesService {
         if (CollectionUtils.isNotEmpty(request.getIds())) {
             criteria.andIdIn(request.getIds());
         }
-       /* if (StringUtils.isNotBlank(request.getName())) {
+        if (StringUtils.isNotBlank(request.getName())) {
             criteria.andNameLike("%" + request.getName() + "%");
-        }*/
+        }
+        if (CollectionUtils.isNotEmpty(request.getNames())) {
+            criteria.andNameIn(request.getNames());
+        }
         if (Objects.nonNull(request.getEnabled())) {
             criteria.andEnabledEqualTo(request.getEnabled());
         }

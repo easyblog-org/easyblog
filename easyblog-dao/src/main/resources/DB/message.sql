@@ -5,10 +5,8 @@ CREATE TABLE IF NOT EXISTS `message_template`
     `id`               bigint(20)    NOT NULL AUTO_INCREMENT,
     `template_code`    varchar(36) COMMENT '消息模板Code',
     `name`             varchar(100)  NOT NULL DEFAULT '' COMMENT '标题',
-    `msg_status`       tinyint(4)    NOT NULL DEFAULT '0' COMMENT '当前消息状态: 1.新建 2.停用 3.启用 4.等待发送 5.发送中 6.发送成功 7.发送失败',
+    `status`           tinyint(4)    NOT NULL DEFAULT '0' COMMENT '当前消息状态: 0 草稿；1 已发布',
     `expect_push_time` varchar(100) COMMENT '期望发送时间: 0:立即发送 1:定时任务 2:周期任务:cron表达式',
-    `id_type`          tinyint(4)    NOT NULL DEFAULT '0' COMMENT '消息的发送ID类型: 1. userId 2.手机号 3.openId 4.email 5.企业微信userId',
-    `send_channel`     tinyint(4)    NOT NULL DEFAULT '0' COMMENT '消息发送渠道: 1.SMS 2.IM 3.Email 4.Email 5.公众号',
     `msg_type`         tinyint(4)    NOT NULL DEFAULT '0' COMMENT '1.通知类消息 2.营销类消息 3.验证码类消息',
     `shield_type`      tinyint(4)    NOT NULL DEFAULT '0' COMMENT '1.夜间不屏蔽 2.夜间屏蔽 3.夜间屏蔽(次日早上9点发送)',
     `msg_content`      varchar(4096) NOT NULL DEFAULT '' COMMENT '消息内容 占位符用$.var表示',
@@ -16,12 +14,11 @@ CREATE TABLE IF NOT EXISTS `message_template`
     `create_time`      timestamp     NOT NULL DEFAULT current_timestamp COMMENT '创建时间',
     `update_time`      timestamp     NOT NULL DEFAULT current_timestamp on update current_timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_tc` (`template_code`),
-    KEY `idx_channel` (`send_channel`),
+    UNIQUE KEY `uk_tc` (`template_code`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='消息模板信息';
 
-CREATE TABLE IF NOT EXISTS  `business_message_record`
+CREATE TABLE IF NOT EXISTS `business_message_record`
 (
     `id`               bigint(20)   NOT NULL AUTO_INCREMENT,
     `business_id`      varchar(36)  NOT NULL DEFAULT 0 COMMENT '业务id',
@@ -35,28 +32,29 @@ CREATE TABLE IF NOT EXISTS  `business_message_record`
     `create_time`      timestamp    NOT NULL DEFAULT current_timestamp COMMENT '创建时间',
     `update_time`      timestamp    NOT NULL DEFAULT current_timestamp on update current_timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_module_event` (`business_module`,`business_event`)
+    KEY `idx_module_event` (`business_module`, `business_event`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='消息通知表';
 
-CREATE TABLE IF NOT EXISTS  `message_config_rule`
+CREATE TABLE IF NOT EXISTS `message_config_rule`
 (
     `id`              bigint(20)   NOT NULL AUTO_INCREMENT,
     `business_module` varchar(128) NOT NULL DEFAULT '' COMMENT '业务模块',
     `business_event`  varchar(36)  NOT NULL DEFAULT '' COMMENT '业务消息事件',
     `template_code`   varchar(36)  NOT NULL DEFAULT '' COMMENT '模板Code',
-    `group`           varchar(36)  NOT NULL DEFAULT '' COMMENT '消息分组',
+    `channel`         tinyint      NOT NULL DEFAULT 10 COMMENT '消息发送渠道',
+    `msg_group`       varchar(36)  NOT NULL DEFAULT '' COMMENT '消息分组',
     `priority`        int          NOT NULL DEFAULT 0 COMMENT '优先级',
-    `config_ids`      varchar(256) NOT NULL DEFAULT 1 COMMENT '消息发送参数配置,一个消息一组message_config',
+    `config_ids`      varchar(256) NOT NULL DEFAULT '' COMMENT '消息发送参数配置,一个消息一组message_config',
     `deleted`         bit          NOT NULL DEFAULT 0 COMMENT '是否删除: 0.未删除 1.已删除',
     `create_time`     timestamp    NOT NULL DEFAULT current_timestamp COMMENT '创建时间',
     `update_time`     timestamp    NOT NULL DEFAULT current_timestamp on update current_timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_module_event` (`business_module`,`business_event`)
+    UNIQUE KEY `uk_module_event` (`business_module`, `business_event`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='消息通知规则表';
 
-CREATE TABLE IF NOT EXISTS  `message_config`
+CREATE TABLE IF NOT EXISTS `message_config`
 (
     `id`                       bigint(20)  NOT NULL AUTO_INCREMENT,
     `code`                     varchar(8)  NOT NULL DEFAULT 0 COMMENT 'code',
@@ -72,7 +70,7 @@ CREATE TABLE IF NOT EXISTS  `message_config`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='消息通知参数配置';
 
-CREATE TABLE IF NOT EXISTS  `template_value_config`
+CREATE TABLE IF NOT EXISTS `template_value_config`
 (
     `id`          bigint(20)   NOT NULL AUTO_INCREMENT,
     `type`        tinyint(4)   NOT NULL DEFAULT 1 COMMENT '取值方式: 1.直接值; 2 json 直接值（需解析）; 3 接口直接值; 4 接口 json直接值(需解析)',

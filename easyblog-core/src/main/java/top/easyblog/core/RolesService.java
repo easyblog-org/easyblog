@@ -35,17 +35,17 @@ public class RolesService {
 
 
     public Roles create(CreateRolesRequest request) {
-        checkRoleNameExists(request.getCode());
+        checkRoleNameExists(request.getName());
         return atomicRolesService.insertOne(buildCreateRoles(request));
     }
 
 
-    private void checkRoleNameExists(String code) {
+    private void checkRoleNameExists(String roleName) {
         List<Roles> rolesList = atomicRolesService.queryList(QueryRolesListRequest.builder()
-                .codes(Collections.singletonList(code)).build());
+                .names(Collections.singletonList(roleName)).build());
         if (CollectionUtils.isNotEmpty(rolesList)) {
             Roles role = rolesList.stream().filter(item -> {
-                return Objects.nonNull(item) && StringUtils.equalsIgnoreCase(item.getName(), code);
+                return Objects.nonNull(item) && StringUtils.equalsIgnoreCase(item.getName(), roleName);
             }).findAny().orElse(null);
             if (Objects.nonNull(role)) {
                 throw new BusinessException(EasyResultCode.ROLE_EXISTS);
@@ -55,7 +55,6 @@ public class RolesService {
 
     private Roles buildCreateRoles(CreateRolesRequest request) {
         Roles roles = new Roles();
-        roles.setCode(request.getCode());
         roles.setName(request.getName());
         roles.setDescription(request.getDescription());
         roles.setEnabled(request.getEnabled());
@@ -93,7 +92,7 @@ public class RolesService {
     private Roles buildUpdateRoles(Roles oldRoles, UpdateRolesRequest request) {
         Roles roles = new Roles();
         roles.setId(oldRoles.getId());
-        //roles.setName(request.getName());
+        roles.setName(request.getName());
         roles.setDescription(request.getDescription());
         roles.setEnabled(request.getEnabled());
         return roles;

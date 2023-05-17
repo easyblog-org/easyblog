@@ -17,10 +17,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CreateRolesRequest {
     /**
-     * 角色唯一标识
-     */
-    private String code;
-    /**
      * 角色名称
      */
     @NotBlank(message = "Required param 'name' is not present.")
