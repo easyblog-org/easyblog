@@ -1,6 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
  * @author: frank.huang
  * @date: 2023-02-19 15:57
  */
-@Slf4j
 @Service
 public class RolesService {
 

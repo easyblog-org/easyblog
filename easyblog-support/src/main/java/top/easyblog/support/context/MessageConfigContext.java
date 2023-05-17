@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.easyblog.common.bean.MessageConfigBean;
-import top.easyblog.common.bean.TemplateValueConfigBean;
-
 import java.util.List;
 
 /**

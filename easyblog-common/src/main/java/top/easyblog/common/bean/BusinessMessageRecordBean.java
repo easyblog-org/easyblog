@@ -2,7 +2,6 @@ package top.easyblog.common.bean;
 
 import lombok.Data;
 
-import java.util.Date;
 
 /**
  * @author: frank.huang

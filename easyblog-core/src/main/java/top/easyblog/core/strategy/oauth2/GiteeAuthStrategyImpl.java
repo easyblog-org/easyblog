@@ -3,7 +3,8 @@ package top.easyblog.core.strategy.oauth2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import top.easyblog.client.GiteeClient;
+
+import top.easyblog.client.clients.GiteeClient;
 import top.easyblog.client.model.request.QueryGiteeAuthTokenRequest;
 import top.easyblog.client.model.response.dto.GiteeAuthDTO;
 import top.easyblog.client.model.response.dto.GiteeAuthTokenDTO;

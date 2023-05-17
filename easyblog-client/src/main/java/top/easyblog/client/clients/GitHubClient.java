@@ -1,4 +1,4 @@
-package top.easyblog.client;
+package top.easyblog.client.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.util.MultiValueMap;

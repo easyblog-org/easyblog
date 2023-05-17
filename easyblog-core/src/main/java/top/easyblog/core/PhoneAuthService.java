@@ -1,6 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import java.util.Objects;
  * @author: frank.huang
  * @date: 2022-02-10 23:10
  */
-@Slf4j
 @Service
 public class PhoneAuthService {
 

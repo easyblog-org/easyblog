@@ -1,6 +1,5 @@
 package top.easyblog.dao.aspect;
 
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,7 +15,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author: frank.huang
  * @date: 2023-02-25 20:38
  */
-@Slf4j
 @Aspect
 @Component
 public class RecordNullableAspect {

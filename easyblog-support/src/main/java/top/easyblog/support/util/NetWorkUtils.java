@@ -1,14 +1,10 @@
 package top.easyblog.support.util;
 
-
-import lombok.extern.slf4j.Slf4j;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author frank.huang
  */
-@Slf4j
 public final class NetWorkUtils {
 
     private NetWorkUtils(){}

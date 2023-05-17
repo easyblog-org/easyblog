@@ -1,7 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -28,7 +26,6 @@ import top.easyblog.dao.auto.model.MessageTemplate;
  * @author: frank.huang
  * @date: 2023-02-11 14:50
  */
-@Slf4j
 @Service
 public class MessageTemplateService {
 

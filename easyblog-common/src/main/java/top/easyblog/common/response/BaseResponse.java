@@ -3,7 +3,6 @@ package top.easyblog.common.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import top.easyblog.common.constant.Constants;
 
@@ -15,7 +14,6 @@ import java.io.Serializable;
  * @author: frank.huang
  * @date: 2021-11-01 08:28
  */
-@Slf4j
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
