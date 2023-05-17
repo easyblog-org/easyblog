@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author: frank.huang
@@ -16,8 +17,9 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateMessageConfigRuleRequest {
+    @NotBlank
     private String businessModule;
-
+    @NotBlank
     private String businessEvent;
 
     private String templateCode;

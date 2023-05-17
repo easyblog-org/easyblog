@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QueryMessageConfigRuleRequest {
-    private String code;
+    private Long id;
     private String businessModule;
     private String businessEvent;
 }

@@ -6,7 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.easyblog.common.enums.MessageSendStatus;
 import top.easyblog.common.request.message.record.QueryBusinessMessageRecordRequest;
 import top.easyblog.common.request.message.record.QueryBusinessMessageRecordsRequest;
 import top.easyblog.dao.annotation.RecordNullable;
@@ -33,9 +32,8 @@ public class AtomicBusinessMessageRecordService {
     public void insertOne(BusinessMessageRecord record) {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());
-        record.setStatus(MessageSendStatus.UNSEND.getCode());
         mapper.insertSelective(record);
-        log.info("[DB] Insert new bussiness message record.Details==>{}", JsonUtils.toJSONString(record));
+        log.info("[DB] Insert new business message record.Details==>{}", JsonUtils.toJSONString(record));
     }
 
     @RecordNullable
@@ -50,7 +48,7 @@ public class AtomicBusinessMessageRecordService {
             criteria.andBusinessEventEqualTo(request.getBusinessEvent());
             criteria.andBusinessModuleEqualTo(request.getBusinessModule());
         }
-        return Iterables.getFirst(mapper.selectByExample(example), null);
+        return Iterables.getFirst(mapper.selectByExampleWithBLOBs(example), null);
     }
 
     public void updateByPrimaryKeySelective(BusinessMessageRecord record) {
@@ -67,7 +65,7 @@ public class AtomicBusinessMessageRecordService {
         BusinessMessageRecordExample example = generateExamples(request);
         example.setLimit(request.getLimit());
         example.setOffset(request.getOffset());
-        return mapper.selectByExample(example);
+        return mapper.selectByExampleWithBLOBs(example);
     }
 
     private BusinessMessageRecordExample generateExamples(QueryBusinessMessageRecordsRequest request) {

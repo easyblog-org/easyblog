@@ -27,13 +27,13 @@ public class MessageSendRecordController {
 
     @ResponseWrapper
     @PostMapping("/record")
-    public BusinessMessageRecord createBusinessRecord(CreateBusinessMessageRecordRequest request) {
+    public BusinessMessageRecord createBusinessRecord(@RequestBody CreateBusinessMessageRecordRequest request) {
         return messageSendRecordService.createMessageRecord(request);
     }
 
     @ResponseWrapper
     @PutMapping("/record/{id}")
-    public void updateBusinessRecord(@PathVariable("id") Long id, UpdateBusinessMessageRecordRequest request) {
+    public void updateBusinessRecord(@PathVariable("id") Long id,@RequestBody UpdateBusinessMessageRecordRequest request) {
         messageSendRecordService.updateMessageRecord(id, request);
     }
 

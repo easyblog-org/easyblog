@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.response.EasyResultCode;
-import top.easyblog.web.aspect.UnderlineToCamelArgumentResolver;
+import top.easyblog.web.aspect.RequestParamAliasArgumentResolver;
 import top.easyblog.web.config.converter.CustomGsonHttpMessageConverter;
 import top.easyblog.web.interceptor.RequestLogInterceptor;
 
@@ -46,7 +46,7 @@ public class WebAppConfigurer implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         //将Get  请求的下划线转化成驼峰样式
-        argumentResolvers.add(new UnderlineToCamelArgumentResolver());
+        argumentResolvers.add(new RequestParamAliasArgumentResolver());
     }
 
     @Bean

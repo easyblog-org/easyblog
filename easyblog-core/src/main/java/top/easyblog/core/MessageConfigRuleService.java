@@ -1,6 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,6 @@ import java.util.stream.Collectors;
  * @author: frank.huang
  * @date: 2023-02-06 19:05
  */
-@Slf4j
 @Service
 public class MessageConfigRuleService {
 
@@ -73,7 +71,7 @@ public class MessageConfigRuleService {
         List<MessageConfigRule> messageConfigRules = messageConfigRuleService.queryListByRequest(QueryMessageConfigRulesRequest.builder()
                 .businessModules(Collections.singletonList(request.getBusinessModule()))
                 .businessEvents(Collections.singletonList(request.getBusinessEvent())).build());
-        if(!CollectionUtils.isEmpty(messageConfigRules)){
+        if (!CollectionUtils.isEmpty(messageConfigRules)) {
             throw new BusinessException(EasyResultCode.MESSAGE_CONFIG_RULE_EXISTS);
         }
     }
@@ -102,9 +100,9 @@ public class MessageConfigRuleService {
         }
     }
 
-    public void updateConfigRule(String code, UpdateMessageConfigRuleRequest request) {
+    public void updateConfigRule(Long id, UpdateMessageConfigRuleRequest request) {
         MessageConfigRule messageConfigRule = messageConfigRuleService.queryByRequest(QueryMessageConfigRuleRequest.builder()
-                .code(code).build());
+                .id(id).build());
         if (Objects.isNull(messageConfigRule)) {
             throw new BusinessException(EasyResultCode.MESSAGE_CONFIG_RULE_NOT_FOUND);
         }

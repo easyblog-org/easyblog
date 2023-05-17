@@ -1,6 +1,5 @@
 package top.easyblog.web.aspect;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +14,6 @@ import top.easyblog.common.response.EasyResultCode;
  * @author: frank.huang
  * @date: 2021-11-01 17:40
  */
-@Slf4j
 @ResponseBody
 @ControllerAdvice
 public class GlobalCustomExceptionAdvise {

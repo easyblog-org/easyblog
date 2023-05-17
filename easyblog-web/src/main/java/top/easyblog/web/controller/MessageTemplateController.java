@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import top.easyblog.common.bean.MessageTemplateBean;
-import top.easyblog.common.bean.TemplateValueConfigBean;
 import top.easyblog.common.request.message.template.CreateMessageTemplateRequest;
 import top.easyblog.common.request.message.template.QueryMessageTemplateRequest;
 import top.easyblog.common.request.message.template.QueryMessageTemplatesRequest;

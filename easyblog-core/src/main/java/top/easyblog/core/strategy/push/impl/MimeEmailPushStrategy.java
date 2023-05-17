@@ -1,19 +1,15 @@
 package top.easyblog.core.strategy.push.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import top.easyblog.common.enums.MessageSendChannel;
 import top.easyblog.core.strategy.push.MessagePushStrategy;
 import top.easyblog.support.context.MessageSendContext;
-import top.easyblog.support.event.MessageSendSuccessEvent;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
@@ -57,5 +53,6 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
         }
         // 发送邮件
         mailSender.send(mimeMessage);
+        log.info("Send html e-mail to {} success!", context.getReceiver());;
     }
 }

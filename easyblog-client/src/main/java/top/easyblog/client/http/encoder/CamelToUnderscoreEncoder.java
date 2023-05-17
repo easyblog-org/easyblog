@@ -4,7 +4,6 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.Maps;
 import feign.QueryMapEncoder;
 import feign.codec.EncodeException;
-import lombok.extern.slf4j.Slf4j;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -20,7 +19,6 @@ import java.util.Objects;
  * @author: frank.huang
  * @date: 2022-03-01 20:55
  */
-@Slf4j
 public class CamelToUnderscoreEncoder implements QueryMapEncoder {
 
 

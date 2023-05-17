@@ -1,6 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,7 +25,6 @@ import java.util.stream.Collectors;
  * @author: frank.huang
  * @date: 2023-02-19 15:57
  */
-@Slf4j
 @Service
 public class RolesService {
 
@@ -35,17 +33,17 @@ public class RolesService {
 
 
     public Roles create(CreateRolesRequest request) {
-        checkRoleNameExists(request.getCode());
+        checkRoleNameExists(request.getName());
         return atomicRolesService.insertOne(buildCreateRoles(request));
     }
 
 
-    private void checkRoleNameExists(String code) {
+    private void checkRoleNameExists(String roleName) {
         List<Roles> rolesList = atomicRolesService.queryList(QueryRolesListRequest.builder()
-                .codes(Collections.singletonList(code)).build());
+                .names(Collections.singletonList(roleName)).build());
         if (CollectionUtils.isNotEmpty(rolesList)) {
             Roles role = rolesList.stream().filter(item -> {
-                return Objects.nonNull(item) && StringUtils.equalsIgnoreCase(item.getName(), code);
+                return Objects.nonNull(item) && StringUtils.equalsIgnoreCase(item.getName(), roleName);
             }).findAny().orElse(null);
             if (Objects.nonNull(role)) {
                 throw new BusinessException(EasyResultCode.ROLE_EXISTS);
@@ -55,7 +53,6 @@ public class RolesService {
 
     private Roles buildCreateRoles(CreateRolesRequest request) {
         Roles roles = new Roles();
-        roles.setCode(request.getCode());
         roles.setName(request.getName());
         roles.setDescription(request.getDescription());
         roles.setEnabled(request.getEnabled());
@@ -93,7 +90,7 @@ public class RolesService {
     private Roles buildUpdateRoles(Roles oldRoles, UpdateRolesRequest request) {
         Roles roles = new Roles();
         roles.setId(oldRoles.getId());
-        //roles.setName(request.getName());
+        roles.setName(request.getName());
         roles.setDescription(request.getDescription());
         roles.setEnabled(request.getEnabled());
         return roles;

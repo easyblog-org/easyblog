@@ -2,10 +2,11 @@ package top.easyblog.core.strategy.template.impl;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
+
 import top.easyblog.common.bean.MessageConfigBean;
-import top.easyblog.common.bean.TemplateValueConfigBean;
 import top.easyblog.common.enums.TemplateValueConfigType;
 import top.easyblog.core.strategy.template.TemplateParameterParseStrategy;
+import top.easyblog.support.context.MessageParseContext;
 
 /**
  * @author: frank.huang
@@ -19,8 +20,10 @@ public class DirectValueParameterParseStrategy implements TemplateParameterParse
         return TemplateValueConfigType.DIRECT_VALUE.getCode();
     }
 
+   
     @Override
-    public Pair<String, Object> parse(MessageConfigBean templateValueConfigBean) {
-        return null;
+    public Pair<String, Object> doParse(MessageParseContext context) {
+        MessageConfigBean configBean = context.getConfig();
+        return Pair.of(configBean.getName(), context.getBusinessMessage());
     }
 }

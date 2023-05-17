@@ -37,4 +37,6 @@ public class BusinessMessageRecordContext {
     private Date updateTime;
 
     private String businessMessage;
+
+    private Boolean isSync;
 }

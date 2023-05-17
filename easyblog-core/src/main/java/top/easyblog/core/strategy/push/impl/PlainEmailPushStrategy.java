@@ -1,17 +1,14 @@
 package top.easyblog.core.strategy.push.impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import top.easyblog.common.enums.MessageSendChannel;
 import top.easyblog.core.strategy.push.MessagePushStrategy;
 import top.easyblog.support.context.MessageSendContext;
-import top.easyblog.support.event.MessageSendSuccessEvent;
 
 /**
  * 纯文本邮件
@@ -42,6 +39,7 @@ public class PlainEmailPushStrategy implements MessagePushStrategy {
         simpleMailMessage.setTo(context.getReceiver());
         simpleMailMessage.setText(context.getContent());
         mailSender.send(simpleMailMessage);
+        log.info("Send plain e-mail to {} success!", context.getReceiver());;
     }
 
 }

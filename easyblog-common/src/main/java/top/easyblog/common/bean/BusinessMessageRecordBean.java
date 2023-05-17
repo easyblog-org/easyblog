@@ -2,7 +2,6 @@ package top.easyblog.common.bean;
 
 import lombok.Data;
 
-import java.util.Date;
 
 /**
  * @author: frank.huang
@@ -26,9 +25,9 @@ public class BusinessMessageRecordBean {
 
     private Boolean deleted;
 
-    private Date createTime;
+    private Long createTime;
 
-    private Date updateTime;
+    private Long updateTime;
 
     private String businessMessage;
 }
