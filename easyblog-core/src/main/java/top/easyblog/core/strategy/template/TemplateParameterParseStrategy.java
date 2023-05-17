@@ -7,7 +7,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import top.easyblog.common.bean.MessageConfigBean;
 import top.easyblog.common.bean.TemplateValueConfigBean;
-import top.easyblog.common.enums.MessageTemplateType;
 import top.easyblog.common.enums.TemplateValueConfigType;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.response.EasyResultCode;

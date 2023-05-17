@@ -1,6 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
  * @author: frank.huang
  * @date: 2023-02-12 12:33
  */
-@Slf4j
 @Service
 public class BusinessMessageRecordService {
 

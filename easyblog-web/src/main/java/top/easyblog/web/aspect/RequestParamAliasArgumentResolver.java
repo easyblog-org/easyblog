@@ -12,7 +12,6 @@ import top.easyblog.common.constant.Constants;
 import top.easyblog.web.annotation.RequestParamAlias;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;

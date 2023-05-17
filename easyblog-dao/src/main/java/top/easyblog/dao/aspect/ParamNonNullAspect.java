@@ -1,6 +1,5 @@
 package top.easyblog.dao.aspect;
 
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -15,7 +14,6 @@ import java.util.Optional;
  * @author: frank.huang
  * @date: 2023-02-25 20:38
  */
-@Slf4j
 @Aspect
 @Component
 public class ParamNonNullAspect {

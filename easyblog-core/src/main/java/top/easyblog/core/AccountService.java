@@ -1,6 +1,5 @@
 package top.easyblog.core;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.AccountBean;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
  * @author frank.huang
  * @date 2022/01/30 13:33
  */
-@Slf4j
 @Service
 public class AccountService {
 
