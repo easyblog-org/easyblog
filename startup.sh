@@ -15,7 +15,7 @@ ARTIFACT_VERSION='1.0.0'
 BUILD_VERSION='1.0.0'
 BASE_DIR='/data/app/${ARTIFACT}'
 LOG_BASE_DIR="/data/${ARTIFACT}/logs"
-JAR_FILE_PATH="`pwd`/${ARTIFACT}-web/target/${ARTIFACT}-web-1.0.0.jar"
+JAR_FILE_PATH="./${ARTIFACT}-web/target/${ARTIFACT}-web-1.0.0.jar"
 if [ ! -d $LOG_BASE_DIR ]; then
   mkdir -p $LOG_BASE_DIR
 fi
@@ -74,6 +74,19 @@ do
 done
 
 #===========================================================================================
+# Build Docker Image
+#===========================================================================================
+buildDockerImage(){
+  echo ">>>>>> Start to build docker image: ${ARTIFACT}"
+  docker build --no-cache \
+      --build-arg WORK_HOME="${BASE_DIR}" \
+      --build-arg LOG_BASE_DIR="${LOG_BASE_DIR}" \
+      --build-arg JAR_FILE_PATH="${JAR_FILE_PATH}" \
+      --build-arg SERVER_PORT="${SERVER_PORT}" \
+      -t "${ARTIFACT}" .
+}
+
+#===========================================================================================
 # Packing
 #===========================================================================================
 echo ">>>>>> Start package the project..."
@@ -84,6 +97,9 @@ if [ "$?" -ne 0 ]; then
     exit 1
 fi
 mvn clean package
+if [ ${USE_DOCKER} == "true" ]; then
+ buildDockerImage
+fi
 echo ">>>>>> Package the project successfully!"
 
 
@@ -108,21 +124,6 @@ JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${ACTIVE_PROFILE}"
 
 
 #===========================================================================================
-# Build Docker Image
-#===========================================================================================
-buildDockerImage(){
-  echo ">>>>>> Start to build docker image: ${ARTIFACT}"
-  docker build --no-cache \
-      --build-arg WORK_HOME="${BASE_DIR}" \
-      --build-arg LOG_BASE_DIR="${LOG_BASE_DIR}" \
-      --build-arg JAR_FILE_PATH="${JAR_FILE_PATH}" \
-      --build-arg SERVER_PORT="${SERVER_PORT}" \
-      --build-arg BASE_DIR="${BASE_DIR}" \
-      -t "${ACTIVE_PROFILE}" .
-}
-
-
-#===========================================================================================
 # Run applicaton on Dcoker
 #===========================================================================================
 runOnDocker(){
@@ -135,8 +136,10 @@ runOnDocker(){
 
    #启动新实例
   latest_image="${ARTIFACT}"
-  docker run -e JVM_PARAMS="${JVM_PARAMS}" -e JAVA_OPTS="${JAVA_OPTS}" --name ${ARTIFACT}-${SERVER_PORT} -p ${SERVER_PORT}:${SERVER_PORT} -d "${latest_image}"
-  echo "Start application on port ${SERVER_PORT} successfully! You can check /data/${LOG_BASE_DIR}/${ARTIFACT}/logs/info.log"
+  uuid=`cat /proc/sys/kernel/random/uuid`
+  random_version=${uuid:0:8}
+  docker run -e JVM_PARAMS="${JVM_PARAMS}" -e JAVA_OPTS="${JAVA_OPTS}" --name ${ARTIFACT}-${Srandom_version} -p ${SERVER_PORT}:${SERVER_PORT} -d "${latest_image}"
+  echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/${ARTIFACT}/logs/info.log"
 }
 
 
