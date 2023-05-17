@@ -84,6 +84,9 @@ if [ "$?" -ne 0 ]; then
     exit 1
 fi
 mvn clean package
+if [ ${USE_DOCKER} == "true" ]; then
+ buildDockerImage
+fi
 echo ">>>>>> Package the project successfully!"
 
 
