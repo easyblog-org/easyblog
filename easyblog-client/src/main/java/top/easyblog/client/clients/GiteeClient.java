@@ -1,4 +1,4 @@
-package top.easyblog.client;
+package top.easyblog.client.clients;
 
 import feign.Headers;
 import org.springframework.cloud.openfeign.FeignClient;

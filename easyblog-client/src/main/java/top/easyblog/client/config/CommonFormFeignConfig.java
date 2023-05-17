@@ -10,7 +10,6 @@ import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import top.easyblog.client.http.converter.CustomGsonHttpMessageConverter;
 import top.easyblog.client.http.converter.FormHttpMessageConverter;
 import top.easyblog.common.exception.BusinessException;

@@ -5,8 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
-import top.easyblog.client.GitHubClient;
-import top.easyblog.client.GitHubOpenApiClient;
+
+import top.easyblog.client.clients.GitHubClient;
+import top.easyblog.client.clients.GitHubOpenApiClient;
 import top.easyblog.client.model.request.QueryGitHubAuthTokenRequest;
 import top.easyblog.client.model.response.dto.GitHubAuthDTO;
 import top.easyblog.common.bean.AuthenticationDetailsBean;
