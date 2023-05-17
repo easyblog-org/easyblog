@@ -23,25 +23,24 @@ ARG ACTIVE_PROFILE
 # ---------------
 ARG SERVER_PORT
 
-# BUILD ARG: applicatgion run home dir
-# ---------------
-ARG WORK_HOME
-
 # BUILD ARG: applicatgion log home dir
 # ---------------
 ARG LOG_BASE_DIR
 
-WORKDIR  $WORK_HOME
+ENV WORK_HOME='/usr/local/app'
+
+WORKDIR  ${WORK_HOME}
+
 #挂载宿主机${WORK_HOME}/data/logs目录
 VOLUME ["${LOG_BASE_DIR}","/data/logs"]
 
 # Add files required to build this image
 # ---------------
-COPY  $JAR_FILE_PATH  $WORK_HOME/app.jar
+COPY  $JAR_FILE_PATH  app.jar
 
 # Expose default port
 # ---------------
-EXPOSE $SERVER_PORT
+EXPOSE ${SERVER_PORT}
 
 # Container entry
-ENTRYPOINT ["sh","-c","java ${JAVA_OPTS} ${JVM_PARAMS} -jar  ${WORK_HOME}/app.jar"]
+ENTRYPOINT ["java","${JAVA_OPTS}","${JVM_PARAMS}","-jar"," app.jar"]
