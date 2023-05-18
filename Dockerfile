@@ -43,4 +43,4 @@ COPY  $JAR_FILE_PATH  app.jar
 EXPOSE ${SERVER_PORT}
 
 # Container entry
-ENTRYPOINT ["java","${JAVA_OPTS}","${JVM_PARAMS}","-jar"," app.jar"]
+ENTRYPOINT ["java","${JAVA_OPTS}","${JVM_PARAMS}","-jar","/app.jar"]
