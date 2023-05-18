@@ -79,7 +79,6 @@ done
 buildDockerImage(){
   echo ">>>>>> Start to build docker image: ${ARTIFACT}"
   docker build --no-cache \
-      --build-arg WORK_HOME="${BASE_DIR}" \
       --build-arg LOG_BASE_DIR="${LOG_BASE_DIR}" \
       --build-arg JAR_FILE_PATH="${JAR_FILE_PATH}" \
       --build-arg SERVER_PORT="${SERVER_PORT}" \
@@ -106,7 +105,7 @@ echo ">>>>>> Package the project successfully!"
 #===========================================================================================
 # JVM Configuration
 #===========================================================================================
-JVM_PARAMS="${JVM_PARAMS} -XX:+UseG1GC"
+JVM_PARAMS="-XX:+UseG1GC"
 JVM_PARAMS="${JVM_PARAMS} -Xms512M -Xmx512M"
 JVM_PARAMS="${JVM_PARAMS} -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps"
 JVM_PARAMS="${JVM_PARAMS} -Xloggc:/data/logs/gc.log"
@@ -117,10 +116,10 @@ JVM_PARAMS="${JVM_PARAMS} -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data
 #===========================================================================================
 # Runing Configuration
 #===========================================================================================
+JAVA_OPTS="-Dspring.profiles.active=${ACTIVE_PROFILE}"
 JAVA_OPTS="${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom"
 JAVA_OPTS="${JAVA_OPTS} -Dlog4j2.formatMsgNoLookups=true"
 JAVA_OPTS="${JAVA_OPTS} -Dfile.encoding=UTF-8"
-JAVA_OPTS="${JAVA_OPTS} -Dspring.profiles.active=${ACTIVE_PROFILE}"
 
 
 #===========================================================================================
@@ -138,8 +137,12 @@ runOnDocker(){
   latest_image="${ARTIFACT}"
   uuid=`cat /proc/sys/kernel/random/uuid`
   random_version=${uuid:0:6}
-  docker run -e "JVM_PARAMS=${JVM_PARAMS}" -e "JAVA_OPTS=${JAVA_OPTS}" --name ${ARTIFACT}-${random_version} -p ${SERVER_PORT}:${SERVER_PORT} -d "${latest_image}"
-  echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/${ARTIFACT}/logs/info.log"
+  docker run --name ${ARTIFACT}-${random_version} \
+             -p ${SERVER_PORT}:${SERVER_PORT} \
+             -e "JVM_PARAMS=${JVM_PARAMS}" \
+             -e "JAVA_OPTS=${JAVA_OPTS}"  \
+             -d "${latest_image}"
+  echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/info.log"
 }
 
 
