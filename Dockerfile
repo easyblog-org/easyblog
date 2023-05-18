@@ -27,10 +27,7 @@ ARG SERVER_PORT
 # ---------------
 ARG LOG_BASE_DIR
 
-WORKDIR  '/usr/local/app'
-
-#挂载宿主机${WORK_HOME}/data/logs目录
-VOLUME ["${LOG_BASE_DIR}","/data/logs"]
+WORKDIR  "/usr/local/app"
 
 # Add files required to build this image
 # ---------------
@@ -41,4 +38,5 @@ COPY  ${JAR_FILE_PATH}  app.jar
 EXPOSE ${SERVER_PORT}
 
 # Container entry
-ENTRYPOINT ["java","${JAVA_OPTS}","${JVM_PARAMS}","-jar","/app.jar"]
+CMD ["${JAVA_OPTS}","${JVM_PARAMS}"]
+ENTRYPOINT java -jar ${JAVA_OPTS} ${JVM_PARAMS} app.jar
