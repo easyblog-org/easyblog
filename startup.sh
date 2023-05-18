@@ -137,11 +137,11 @@ runOnDocker(){
   latest_image="${ARTIFACT}"
   uuid=`cat /proc/sys/kernel/random/uuid`
   random_version=${uuid:0:6}
-  docker run --name ${ARTIFACT}-${random_version} \
-             -p ${SERVER_PORT}:${SERVER_PORT} \
-             -e "JVM_PARAMS=${JVM_PARAMS}" \
-             -e "JAVA_OPTS=${JAVA_OPTS}"  \
-             -d "${latest_image}"
+  docker run  --name ${ARTIFACT}-${random_version} -p ${SERVER_PORT}:${SERVER_PORT} \
+              -e "JVM_PARAMS=${JVM_PARAMS}" \
+              -e "JAVA_OPTS=${JAVA_OPTS}" \
+              -d "${latest_image}"  \
+              -v "${LOG_BASE_DIR}":/data/logs
   echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/info.log"
 }
 
