@@ -27,20 +27,18 @@ ARG SERVER_PORT
 # ---------------
 ARG LOG_BASE_DIR
 
-ENV WORK_HOME='/usr/local/app'
-
-WORKDIR  ${WORK_HOME}
+WORKDIR  '/usr/local/app'
 
 #挂载宿主机${WORK_HOME}/data/logs目录
 VOLUME ["${LOG_BASE_DIR}","/data/logs"]
 
 # Add files required to build this image
 # ---------------
-COPY  $JAR_FILE_PATH  app.jar
+COPY  ${JAR_FILE_PATH}  app.jar
 
 # Expose default port
 # ---------------
 EXPOSE ${SERVER_PORT}
 
 # Container entry
-ENTRYPOINT ["java","${JAVA_OPTS}","${JVM_PARAMS}","-jar"," app.jar"]
+ENTRYPOINT ["java","${JAVA_OPTS}","${JVM_PARAMS}","-jar","/app.jar"]
