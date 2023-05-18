@@ -117,6 +117,7 @@ JVM_PARAMS="${JVM_PARAMS} -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data
 # Runing Configuration
 #===========================================================================================
 JAVA_OPTS="-Dspring.profiles.active=${ACTIVE_PROFILE}"
+JAVA_OPTS="${JAVA_OPTS} -Dserver.port=${SERVER_PORT}"
 JAVA_OPTS="${JAVA_OPTS} -Djava.security.egd=file:/dev/./urandom"
 JAVA_OPTS="${JAVA_OPTS} -Dlog4j2.formatMsgNoLookups=true"
 JAVA_OPTS="${JAVA_OPTS} -Dfile.encoding=UTF-8"
