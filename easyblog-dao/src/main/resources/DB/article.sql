@@ -4,12 +4,13 @@
 CREATE TABLE article
 (
     id             BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '文章ID，递增自增',
+    code           varchar(32) NOT NULL DEFAULT '' COMMENT '文章code',
     author_id      VARCHAR(10) COMMENT '作者ID，关联user表主键',
     title          VARCHAR(255) COMMENT '文章标题',
-    category       BIGINT DEFAULT 0 COMMENT '文章分类',
+    category       BIGINT               DEFAULT 0 COMMENT '文章分类',
     featured_image VARCHAR(255) COMMENT '文章首图',
-    status         VARCHAR(20) COMMENT '文章状态',
-    is_top         BIT    DEFAULT false COMMENT '文章是否置顶，默认为false',
+    status         VARCHAR(20) NOT NULL DEFAULT 'DRAFT' COMMENT '文章状态: DRAFT;PUBLISHED;DELETING;DELETED',
+    is_top         BIT                  DEFAULT false COMMENT '文章是否置顶，默认为false',
     content_id     INT COMMENT '文章内容ID，关联article_content表主键',
     create_time    DATETIME COMMENT '创建时间',
     update_time    DATETIME COMMENT '更新时间',
