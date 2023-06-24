@@ -120,6 +120,8 @@ public enum EasyResultCode {
     AUTH_TOKEN_NOT_FOUND,
     //发送记录未找到
     MESSAGE_RECORD_NOT_FOUND,
+    // 文章已经被删除
+    ARTICLE_ALREADY_DELETED,
 
     // 无法识别的大洲编码
     UNKNOWN_CONTINENT_CODE,

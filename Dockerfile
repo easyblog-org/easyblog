@@ -9,7 +9,7 @@ FROM java:8
 
 # Maintainer
 # ----------
-MAINTAINER Frank.HUANG <hx981230@163.com>
+LABEL "Maintainer"="Frank.HUANG <huangxin981230@163.com>"
 
 # BUILD ARG: target application file path
 # ---------------

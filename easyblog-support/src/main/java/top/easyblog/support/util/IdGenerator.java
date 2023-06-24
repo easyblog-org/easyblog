@@ -1,5 +1,8 @@
 package top.easyblog.support.util;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
+
 import java.util.Random;
 import java.util.UUID;
 
@@ -10,6 +13,8 @@ import java.util.UUID;
 public class IdGenerator {
 
     private static final String ALPHANUMERIC = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHLJKLMNOPQRSTUVWXYZ";
+
+    private static final Snowflake SNOWFLAKE = IdUtil.createSnowflake(1, 1);
 
     public static final int DEFAULT_LENGTH = 10;
 
@@ -40,6 +45,11 @@ public class IdGenerator {
             sb.append(ALPHANUMERIC.charAt(index));
         }
         return sb.toString();
+    }
+
+
+    public static String getSnowflakeNextId() {
+        return SNOWFLAKE.nextIdStr();
     }
 
 }
