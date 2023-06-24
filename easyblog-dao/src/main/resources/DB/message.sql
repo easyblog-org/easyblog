@@ -1,4 +1,4 @@
---消息发送相关
+-- 消息发送相关
 
 CREATE TABLE IF NOT EXISTS `message_template`
 (
