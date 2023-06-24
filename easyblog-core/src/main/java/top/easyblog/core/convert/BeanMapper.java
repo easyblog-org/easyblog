@@ -8,6 +8,8 @@ import org.mapstruct.Mappings;
 import top.easyblog.common.bean.*;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
+import top.easyblog.common.request.article.CreateArticleRequest;
+import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
@@ -174,4 +176,22 @@ public interface BeanMapper {
     BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id, UpdateBusinessMessageRecordRequest request);
 
 
+    @Mappings({
+            @Mapping(target = "updateTime", ignore = true),
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "createTime", ignore = true),
+            @Mapping(target = "contentId", source = "contentId"),
+            @Mapping(target = "status", expression = "java(request.getStatus().toUpperCase())"),
+            @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.getSnowflakeNextId())"),
+    })
+    Article convertArticleCreateReq2Article(CreateArticleRequest request, Long contentId);
+
+    @Mapping(target = "id", source = "articleId")
+    @Mapping(target = "contentId", source = "contentId")
+    @Mapping(target = "status", expression = "java(java.util.Optional.ofNullable(request.getStatus()).map(String::toUpperCase).orElse(null))")
+    Article convertArticleUpdateReq2Article(UpdateArticleRequest request, Long articleId, Long contentId);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "content", source = "content")
+    ArticleContent buildArticleContent(String content);
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.easyblog.dao.custom.mapper.MyArticleMapper">
+    <resultMap id="BaseResultMap" type="top.easyblog.common.bean.ArticleBean">
+        <result column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="author_id" jdbcType="VARCHAR" property="authorId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="category" jdbcType="BIGINT" property="category"/>
+        <result column="featured_image" jdbcType="VARCHAR" property="featuredImage"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="is_top" jdbcType="BOOLEAN" property="isTop"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="content_id" jdbcType="BIGINT" property="contentId"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"
+                typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"
+                typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
+    </resultMap>
+
+
+    <sql id="BASE_QUERY_COL">
+        a.id,a.code,a.author_id,a.title,a.category,a.featured_image,a.status,a.is_top,a.create_time,a.update_time,
+        a.content_id,ac.content
+    </sql>
+
+    <select id="selectListByRequest" resultMap="BaseResultMap"
+            parameterType="top.easyblog.common.request.article.QueryArticlesRequest">
+        select
+        <include refid="BASE_QUERY_COL"/>
+        from article a left join article_content ac on a.content_id = ac.id
+        <where>
+            <include refid="article_where_condition"/>
+        </where>
+        group by a.id
+        <if test="request.limit!=null">
+            <if test="request.offset!=null">
+                limit #{request.offset},#{request.limit}
+            </if>
+            <if test="request.offset==null">
+                limit #{request.limit}
+            </if>
+        </if>
+    </select>
+
+    <select id="countByRequest" resultType="long"
+            parameterType="top.easyblog.common.request.article.QueryArticlesRequest">
+        select count(*)
+        from article a left join article_content ac on a.content_id = ac.id
+        <where>
+            <include refid="article_where_condition"/>
+        </where>
+    </select>
+
+    <sql id="article_where_condition">
+        <if test="request.codes!=null and request.codes.size()>0">
+            and a.code in
+            <foreach collection="request.codes" item="code" open="(" separator="," close=")">
+                #{code}
+            </foreach>
+        </if>
+        <if test="request.status!=null and request.status.size()>0">
+            and a.status in
+            <foreach collection="request.status" item="sta" open="(" separator="," close=")">
+                #{sta}
+            </foreach>
+        </if>
+        <if test="request.isTop!=null">
+            and a.is_top=#{isTop}
+        </if>
+        <if test="request.authorId!=null">
+            and a.author_id=#{authorId}
+        </if>
+        <if test="request.title!=null">
+            and a.title like %#{title}%
+        </if>
+    </sql>
+
+
+</mapper>

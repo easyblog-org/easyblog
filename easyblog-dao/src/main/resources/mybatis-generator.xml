@@ -87,13 +87,5 @@
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>
-        <table tableName="article_content">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
-        <table tableName="article_category">
-            <property name="useActualColumnNames" value="false"/>
-            <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
-        </table>
     </context>
 </generatorConfiguration>

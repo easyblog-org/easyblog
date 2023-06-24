@@ -2,7 +2,6 @@ package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.ibatis.jdbc.SQL;
 import top.easyblog.dao.auto.model.Article;
 import top.easyblog.dao.auto.model.example.ArticleExample.Criteria;
@@ -28,43 +27,47 @@ public class ArticleSqlProvider {
     public String insertSelective(Article record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("article");
-
+        
         if (record.getAuthorId() != null) {
             sql.VALUES("author_id", "#{authorId,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getTitle() != null) {
             sql.VALUES("title", "#{title,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getCategory() != null) {
             sql.VALUES("category", "#{category,jdbcType=BIGINT}");
         }
-
+        
         if (record.getFeaturedImage() != null) {
             sql.VALUES("featured_image", "#{featuredImage,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getStatus() != null) {
             sql.VALUES("status", "#{status,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getIsTop() != null) {
             sql.VALUES("is_top", "#{isTop,jdbcType=BIT}");
         }
-
+        
         if (record.getContentId() != null) {
             sql.VALUES("content_id", "#{contentId,jdbcType=INTEGER}");
         }
-
+        
         if (record.getCreateTime() != null) {
             sql.VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
-
+        
+        if (record.getCode() != null) {
+            sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
+        }
+        
         return sql.toString();
     }
 
@@ -84,9 +87,10 @@ public class ArticleSqlProvider {
         sql.SELECT("content_id");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
+        sql.SELECT("code");
         sql.FROM("article");
         applyWhere(sql, example, false);
-
+        
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
@@ -104,50 +108,54 @@ public class ArticleSqlProvider {
     public String updateByExampleSelective(Map<String, Object> parameter) {
         Article record = (Article) parameter.get("record");
         ArticleExample example = (ArticleExample) parameter.get("example");
-
+        
         SQL sql = new SQL();
         sql.UPDATE("article");
-
+        
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
-
+        
         if (record.getAuthorId() != null) {
             sql.SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getTitle() != null) {
             sql.SET("title = #{record.title,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getCategory() != null) {
             sql.SET("category = #{record.category,jdbcType=BIGINT}");
         }
-
+        
         if (record.getFeaturedImage() != null) {
             sql.SET("featured_image = #{record.featuredImage,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getStatus() != null) {
             sql.SET("status = #{record.status,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getIsTop() != null) {
             sql.SET("is_top = #{record.isTop,jdbcType=BIT}");
         }
-
+        
         if (record.getContentId() != null) {
             sql.SET("content_id = #{record.contentId,jdbcType=INTEGER}");
         }
-
+        
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
-
+        
+        if (record.getCode() != null) {
+            sql.SET("code = #{record.code,jdbcType=VARCHAR}");
+        }
+        
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -155,7 +163,7 @@ public class ArticleSqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("article");
-
+        
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         sql.SET("title = #{record.title,jdbcType=VARCHAR}");
@@ -166,7 +174,8 @@ public class ArticleSqlProvider {
         sql.SET("content_id = #{record.contentId,jdbcType=INTEGER}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-
+        sql.SET("code = #{record.code,jdbcType=VARCHAR}");
+        
         ArticleExample example = (ArticleExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -175,45 +184,49 @@ public class ArticleSqlProvider {
     public String updateByPrimaryKeySelective(Article record) {
         SQL sql = new SQL();
         sql.UPDATE("article");
-
+        
         if (record.getAuthorId() != null) {
             sql.SET("author_id = #{authorId,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getTitle() != null) {
             sql.SET("title = #{title,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getCategory() != null) {
             sql.SET("category = #{category,jdbcType=BIGINT}");
         }
-
+        
         if (record.getFeaturedImage() != null) {
             sql.SET("featured_image = #{featuredImage,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getStatus() != null) {
             sql.SET("status = #{status,jdbcType=VARCHAR}");
         }
-
+        
         if (record.getIsTop() != null) {
             sql.SET("is_top = #{isTop,jdbcType=BIT}");
         }
-
+        
         if (record.getContentId() != null) {
             sql.SET("content_id = #{contentId,jdbcType=INTEGER}");
         }
-
+        
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
         }
-
+        
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
-
+        
+        if (record.getCode() != null) {
+            sql.SET("code = #{code,jdbcType=VARCHAR}");
+        }
+        
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
-
+        
         return sql.toString();
     }
 
@@ -221,7 +234,7 @@ public class ArticleSqlProvider {
         if (example == null) {
             return;
         }
-
+        
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -243,7 +256,7 @@ public class ArticleSqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-
+        
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -255,7 +268,7 @@ public class ArticleSqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-
+                
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -266,14 +279,14 @@ public class ArticleSqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-
+                    
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -304,7 +317,7 @@ public class ArticleSqlProvider {
                 sb.append(')');
             }
         }
-
+        
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }

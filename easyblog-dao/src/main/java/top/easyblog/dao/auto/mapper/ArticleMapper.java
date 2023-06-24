@@ -39,11 +39,13 @@ public interface ArticleMapper {
         "insert into article (author_id, title, ",
         "category, featured_image, ",
         "status, is_top, content_id, ",
-        "create_time, update_time)",
+        "create_time, update_time, ",
+        "code)",
         "values (#{authorId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, ",
         "#{category,jdbcType=BIGINT}, #{featuredImage,jdbcType=VARCHAR}, ",
         "#{status,jdbcType=VARCHAR}, #{isTop,jdbcType=BIT}, #{contentId,jdbcType=INTEGER}, ",
-        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, ",
+        "#{code,jdbcType=VARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
     int insert(Article record);
@@ -63,14 +65,15 @@ public interface ArticleMapper {
         @Result(column="is_top", property="isTop", jdbcType=JdbcType.BIT),
         @Result(column="content_id", property="contentId", jdbcType=JdbcType.INTEGER),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
     })
     List<Article> selectByExample(ArticleExample example);
 
     @Select({
         "select",
         "id, author_id, title, category, featured_image, status, is_top, content_id, ",
-        "create_time, update_time",
+        "create_time, update_time, code",
         "from article",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -84,7 +87,8 @@ public interface ArticleMapper {
         @Result(column="is_top", property="isTop", jdbcType=JdbcType.BIT),
         @Result(column="content_id", property="contentId", jdbcType=JdbcType.INTEGER),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
     })
     Article selectByPrimaryKey(Long id);
 
@@ -107,7 +111,8 @@ public interface ArticleMapper {
           "is_top = #{isTop,jdbcType=BIT},",
           "content_id = #{contentId,jdbcType=INTEGER},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
-          "update_time = #{updateTime,jdbcType=TIMESTAMP}",
+          "update_time = #{updateTime,jdbcType=TIMESTAMP},",
+          "code = #{code,jdbcType=VARCHAR}",
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(Article record);
