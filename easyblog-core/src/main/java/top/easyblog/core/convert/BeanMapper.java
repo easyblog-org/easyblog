@@ -8,7 +8,9 @@ import org.mapstruct.Mappings;
 import top.easyblog.common.bean.*;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
+import top.easyblog.common.request.article.CreateArticleCategoryRequest;
 import top.easyblog.common.request.article.CreateArticleRequest;
+import top.easyblog.common.request.article.UpdateArticleCategoryRequest;
 import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
@@ -194,4 +196,11 @@ public interface BeanMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "content", source = "content")
     ArticleContent buildArticleContent(String content);
+
+    ArticleCategoryBean convertArticleCategory2ArticleCategoryBean(ArticleCategory articleCategory);
+
+    @Mapping(target = "id", source = "id")
+    ArticleCategory convertArticleCategoryUpdateReq2AeticleCategory(Long id, UpdateArticleCategoryRequest request);
+
+    ArticleCategory convertArticleCategoryCreateReq2AeticleCategory(CreateArticleCategoryRequest request);
 }

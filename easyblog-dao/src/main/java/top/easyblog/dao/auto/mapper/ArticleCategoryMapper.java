@@ -36,10 +36,10 @@ public interface ArticleCategoryMapper {
     int deleteByPrimaryKey(Long id);
 
     @Insert({
-        "insert into article_category (pid, create_time, ",
-        "update_time, name)",
-        "values (#{pid,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, ",
-        "#{updateTime,jdbcType=TIMESTAMP}, #{name,jdbcType=VARBINARY})"
+        "insert into article_category (pid, name, ",
+        "create_time, update_time)",
+        "values (#{pid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, ",
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
     int insert(ArticleCategory record);
@@ -48,20 +48,11 @@ public interface ArticleCategoryMapper {
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
     int insertSelective(ArticleCategory record);
 
-    @SelectProvider(type=ArticleCategorySqlProvider.class, method="selectByExampleWithBLOBs")
-    @Results({
-        @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
-        @Result(column="pid", property="pid", jdbcType=JdbcType.BIGINT),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="name", property="name", jdbcType=JdbcType.VARBINARY)
-    })
-    List<ArticleCategory> selectByExampleWithBLOBs(ArticleCategoryExample example);
-
     @SelectProvider(type=ArticleCategorySqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="pid", property="pid", jdbcType=JdbcType.BIGINT),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
@@ -69,24 +60,21 @@ public interface ArticleCategoryMapper {
 
     @Select({
         "select",
-        "id, pid, create_time, update_time, name",
+        "id, pid, name, create_time, update_time",
         "from article_category",
         "where id = #{id,jdbcType=BIGINT}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
         @Result(column="pid", property="pid", jdbcType=JdbcType.BIGINT),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="name", property="name", jdbcType=JdbcType.VARBINARY)
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
     })
     ArticleCategory selectByPrimaryKey(Long id);
 
     @UpdateProvider(type=ArticleCategorySqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") ArticleCategory record, @Param("example") ArticleCategoryExample example);
-
-    @UpdateProvider(type=ArticleCategorySqlProvider.class, method="updateByExampleWithBLOBs")
-    int updateByExampleWithBLOBs(@Param("record") ArticleCategory record, @Param("example") ArticleCategoryExample example);
 
     @UpdateProvider(type=ArticleCategorySqlProvider.class, method="updateByExample")
     int updateByExample(@Param("record") ArticleCategory record, @Param("example") ArticleCategoryExample example);
@@ -97,16 +85,7 @@ public interface ArticleCategoryMapper {
     @Update({
         "update article_category",
         "set pid = #{pid,jdbcType=BIGINT},",
-          "create_time = #{createTime,jdbcType=TIMESTAMP},",
-          "update_time = #{updateTime,jdbcType=TIMESTAMP},",
-          "name = #{name,jdbcType=VARBINARY}",
-        "where id = #{id,jdbcType=BIGINT}"
-    })
-    int updateByPrimaryKeyWithBLOBs(ArticleCategory record);
-
-    @Update({
-        "update article_category",
-        "set pid = #{pid,jdbcType=BIGINT},",
+          "name = #{name,jdbcType=VARCHAR},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=BIGINT}"

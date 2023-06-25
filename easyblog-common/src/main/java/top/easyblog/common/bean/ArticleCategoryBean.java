@@ -1,10 +1,15 @@
-package top.easyblog.dao.auto.model;
+package top.easyblog.common.bean;
 
-import java.util.Date;
 import lombok.Data;
 
+import java.util.Date;
+
+/**
+ * @author: frank.huang
+ * @date: 2023-06-25 20:47
+ */
 @Data
-public class ArticleCategory {
+public class ArticleCategoryBean {
     private Long id;
 
     private Long pid;
