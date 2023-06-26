@@ -17,9 +17,21 @@ public class ArticleBean {
 
     private String authorId;
 
+    /**
+     * 作者信息
+     */
+    private UserDetailsBean author;
+
+    /**
+     * 作者信息头像
+     */
+    private UserHeaderBean authorAvatar;
+
     private String title;
 
-    private Long category;
+    private Long categoryId;
+
+    private ArticleCategoryBean category;
 
     private String featuredImage;
 

@@ -38,8 +38,9 @@ public class ArticleController {
 
     @ResponseWrapper
     @GetMapping("/{code}")
-    public ArticleBean details(@PathVariable("code") String code) {
-        return articleService.details(code);
+    public ArticleBean details(@PathVariable("code") String code,
+                               @RequestParam("sections") String sections) {
+        return articleService.details(code, sections);
     }
 
     @ResponseWrapper

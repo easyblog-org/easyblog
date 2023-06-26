@@ -19,18 +19,18 @@ import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.annotation.Transaction;
 import top.easyblog.core.convert.BeanMapper;
-import top.easyblog.dao.atomic.AtomicArticleCategoryService;
 import top.easyblog.dao.atomic.AtomicArticleContentService;
 import top.easyblog.dao.atomic.AtomicArticleService;
 import top.easyblog.dao.atomic.AtomicUserService;
 import top.easyblog.dao.auto.model.Article;
 import top.easyblog.dao.auto.model.ArticleContent;
 import top.easyblog.dao.auto.model.User;
+import top.easyblog.service.section.IArticleSectionInquireService;
+import top.easyblog.support.context.ArticleSectionContext;
+import top.easyblog.support.util.ConcurrentUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author: frank.huang
@@ -51,6 +51,9 @@ public class ArticleService {
 
     @Autowired
     private BeanMapper beanMapper;
+
+    @Autowired
+    List<IArticleSectionInquireService> articleSectionInquireServices;
 
     /**
      * 保存文章
@@ -94,7 +97,7 @@ public class ArticleService {
      * @param request
      */
     public void updateArticle(String code, UpdateArticleRequest request) {
-        ArticleBean articleBean = details(code);
+        ArticleBean articleBean = details(code, null);
         checkUpdateReqValid(request, articleBean);
         Assert.notNull(articleBean, "Article of code+" + code + "+ not found!");
 
@@ -139,10 +142,12 @@ public class ArticleService {
      * @param code
      * @return
      */
-    public ArticleBean details(String code) {
+    public ArticleBean details(String code, String sections) {
         List<ArticleBean> articleBeans = atomicArticleService.queryListByRequest(QueryArticlesRequest.builder()
                 .codes(Collections.singletonList(code)).build());
-        return CollectionUtils.isEmpty(articleBeans) ? null : Iterables.getFirst(articleBeans, null);
+        ArticleBean articleBean = CollectionUtils.isEmpty(articleBeans) ? null : Iterables.getFirst(articleBeans, null);
+        fillSections(sections, Collections.singletonList(articleBean));
+        return articleBean;
     }
 
     /**
@@ -163,7 +168,28 @@ public class ArticleService {
         }
 
         List<ArticleBean> articleBeans = atomicArticleService.queryListByRequest(request);
+        fillSections(request.getSections(), articleBeans);
         pageResponse.setData(articleBeans);
         return pageResponse;
+    }
+
+    private void fillSections(String sections, List<ArticleBean> articleBeans) {
+        ArticleSectionContext ctx = queryArticleSectionInfo(sections, articleBeans);
+        articleBeans.forEach(articleBean -> {
+            articleBean.setCategory(Optional.ofNullable(ctx.getArticleCategoryBeanMap()).map(map -> map.get(articleBean.getCategoryId())).orElse(null));
+            articleBean.setAuthor(Optional.ofNullable(ctx.getAuthorMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
+            articleBean.setAuthorAvatar(Optional.ofNullable(ctx.getAuthorAvatarBeanMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
+        });
+    }
+
+    private ArticleSectionContext queryArticleSectionInfo(String sections, List<ArticleBean> articleBeans) {
+        ArticleSectionContext ctx = new ArticleSectionContext();
+        List<Runnable> tasks = new ArrayList<>();
+        articleSectionInquireServices.forEach(executor -> {
+            tasks.add(() -> executor.execute(sections, ctx, articleBeans, true));
+        });
+
+        ConcurrentUtils.executeTaskInBlockModel(tasks, null);
+        return ctx;
     }
 }

@@ -1,13 +1,16 @@
 package top.easyblog.core;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.UserHeaderBean;
 import top.easyblog.common.constant.Constants;
+import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.enums.Status;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.header.QueryUserHeaderImgRequest;
@@ -16,11 +19,11 @@ import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicUserHeaderService;
 import top.easyblog.dao.auto.model.UserHeader;
+import top.easyblog.service.section.IArticleSectionInquireService;
+import top.easyblog.support.context.ArticleSectionContext;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -28,7 +31,7 @@ import java.util.stream.Collectors;
  * @date 2022/01/30 13:19
  */
 @Service
-public class UserHeaderService {
+public class UserHeaderService implements IArticleSectionInquireService {
 
     @Autowired
     private AtomicUserHeaderService headerImgService;
@@ -52,7 +55,7 @@ public class UserHeaderService {
             request.setHeaderImgUrl(defaultHeaderImg);
         }
 
-        UserHeader userHeader=beanMapper.convertUserHeaderCreateReq2UserHeader(request);
+        UserHeader userHeader = beanMapper.convertUserHeaderCreateReq2UserHeader(request);
         headerImgService.createUserHeaderImgSelective(userHeader);
     }
 
@@ -106,5 +109,20 @@ public class UserHeaderService {
 
     public String getDefaultUserHeaderImg() {
         return defaultHeaderImg;
+    }
+
+    @Override
+    public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList, boolean queryWhenSectionEmpty) {
+        if (CollectionUtils.isEmpty(articleBeanList)) return;
+        List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).collect(Collectors.toList());
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR_AVATAR.name(), section) || queryWhenSectionEmpty) {
+            QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
+                    .userCodes(authorIds).status(Status.ENABLE.getCode()).build();
+            List<UserHeaderBean> userHeaderBeans = queryUserHeaderBeans(queryUserHeadersRequest);
+            Map<String, UserHeaderBean> userHeaderBeanMap = userHeaderBeans.stream().
+                    filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
+                    .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(), (e1, e2) -> e1));
+            ctx.setAuthorAvatarBeanMap(userHeaderBeanMap);
+        }
     }
 }

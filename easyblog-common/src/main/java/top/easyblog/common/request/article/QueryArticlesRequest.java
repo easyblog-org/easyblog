@@ -26,6 +26,8 @@ public class QueryArticlesRequest {
 
     private String authorId;
 
+    private String sections;
+
     @Builder.Default
     private Integer limit = 10;
 
