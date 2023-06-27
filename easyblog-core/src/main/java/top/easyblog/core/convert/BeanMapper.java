@@ -209,5 +209,5 @@ public interface BeanMapper {
     UpdateUserRequest buildUserCreateRequest(UpdateUserAccountRequest request);
 
     @Mapping(target = "configIds", source = "configIds")
-    UpdateMessageConfigRuleRequest buildMessageRuleConfigUpdateReq(UpdateMessagePushRuleRequest request, String configIdStr);
+    UpdateMessageConfigRuleRequest buildMessageRuleConfigUpdateReq(UpdateMessagePushRuleRequest request, String configIds);
 }

@@ -24,6 +24,8 @@ public class CreateBusinessMessageRecordRequest {
     private String businessEvent;
     @NotBlank(message = "Required param 'business_message' is not present.")
     private String businessMessage;
+    @NotBlank(message = "Required param 'template_code' is not present.")
+    private String templateCode;
     @Default
     private Boolean isSync = false;
     private Byte status;
