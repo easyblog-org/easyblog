@@ -26,7 +26,6 @@ import top.easyblog.support.context.ArticleSectionContext;
 import top.easyblog.support.context.UserSectionContext;
 
 import java.util.*;
-import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,7 +34,8 @@ import java.util.stream.Collectors;
  * @date 2022/01/30 13:19
  */
 @Service
-public class UserHeaderService implements IArticleSectionInquireService, IUserSectionInquireService {
+public class UserHeaderService implements
+        IArticleSectionInquireService, IUserSectionInquireService {
 
     @Autowired
     private AtomicUserHeaderService headerImgService;
@@ -77,7 +77,7 @@ public class UserHeaderService implements IArticleSectionInquireService, IUserSe
             // 不分页，默认查询1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
             request.setLimit(
-                    Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
+                    Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_MAX_THOUSAND : request.getLimit());
             List<UserHeaderBean> userHeaderImgBeans = queryUserHeaderBeans(request);
             return PageResponse.<UserHeaderBean>builder()
                     .limit(request.getLimit())
@@ -121,7 +121,7 @@ public class UserHeaderService implements IArticleSectionInquireService, IUserSe
         List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).collect(Collectors.toList());
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR_AVATAR.name(), section)
                 || queryWhenSectionEmpty) {
-            ctx.setAuthorAvatarBeanMap(buildUserAvatarMap(authorIds,(userHeaderBeans) -> userHeaderBeans.stream()
+            ctx.setAuthorAvatarBeanMap(buildUserAvatarMap(authorIds, (userHeaderBeans) -> userHeaderBeans.stream()
                     .filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
                     .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(), (e1, e2) -> e1))));
         }

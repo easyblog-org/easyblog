@@ -24,7 +24,6 @@ import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.annotation.Transaction;
 import top.easyblog.core.convert.BeanMapper;
-import top.easyblog.dao.atomic.AtomicUserRolesService;
 import top.easyblog.dao.atomic.AtomicUserService;
 import top.easyblog.dao.auto.model.User;
 import top.easyblog.service.section.IArticleSectionInquireService;
@@ -254,7 +253,7 @@ public class UserService implements IArticleSectionInquireService {
             // 没有分页参数，默认查询1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
             request.setLimit(
-                    Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
+                    Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_MAX_THOUSAND : request.getLimit());
             List<UserDetailsBean> userDetailsBeans = buildUserDetailsBeanList(request);
             return PageResponse.<UserDetailsBean>builder().limit(request.getLimit())
                     .offset(request.getOffset()).total((long) userDetailsBeans.size()).data(userDetailsBeans).build();

@@ -5,13 +5,11 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import top.easyblog.common.bean.AccountBean;
 import top.easyblog.common.bean.LoginLogBean;
 import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.enums.Status;
 import top.easyblog.common.exception.BusinessException;
-import top.easyblog.common.request.account.QueryAccountListRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogListRequest;
 import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
@@ -94,7 +92,7 @@ public class LoginLogService implements IUserSectionInquireService {
         if (section.contains(QuerySection.QUERY_SIGN_LOG.getName())) {
             QueryLoginLogListRequest request = QueryLoginLogListRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode().intValue()).offset(NumberUtils.INTEGER_ZERO)
-                    .limit(Constants.QUERY_LIMIT_ONE_THOUSAND).build();
+                    .limit(Constants.QUERY_LIMIT_MAX_THOUSAND).build();
             PageResponse<LoginLogBean> loginLogBeanPageResponse = queryLoginLogList(request);
             List<LoginLogBean> loginLogBeans = loginLogBeanPageResponse.getData();
             Map<String, List<LoginLogBean>> loginLogBeanMap = loginLogBeans.stream().filter(Objects::nonNull)

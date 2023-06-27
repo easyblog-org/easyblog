@@ -68,7 +68,7 @@ public class MobileAreaService {
         if (Objects.isNull(request.getOffset()) || Objects.isNull(request.getLimit())) {
             //不分页,默认查询前1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
-            request.setLimit(Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
+            request.setLimit(Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_MAX_THOUSAND : request.getLimit());
             List<MobileAreBean> phoneAreaCodeBeans = buildMobileAreaBeanList(request);
             return PageResponse.<MobileAreBean>builder()
                     .total((long) phoneAreaCodeBeans.size()).data(phoneAreaCodeBeans).limit(request.getLimit()).offset(request.getOffset()).build();

@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>easyblog-web</artifactId>
+	<artifactId>easyblog-platform</artifactId>
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>easyblog-web</name>
+	<name>easyblog-platform</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -22,13 +22,9 @@
 	</properties>
 
 	<dependencies>
-		 <dependency>
-            <groupId>top.easyblog</groupId>
-            <artifactId>easyblog-core</artifactId>
-        </dependency>
 		<dependency>
             <groupId>top.easyblog</groupId>
-            <artifactId>easyblog-platform</artifactId>
+            <artifactId>easyblog-core</artifactId>
         </dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -84,18 +80,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-			<plugin>
-            <!-- Build an executable JAR -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <executions>
-		       <execution>
-                    <goals>
-                        <goal>repackage</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
         </plugins>
     </build>
 

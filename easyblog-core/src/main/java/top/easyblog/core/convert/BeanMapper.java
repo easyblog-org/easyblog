@@ -28,7 +28,10 @@ import top.easyblog.common.request.message.template.UpdateMessageTemplateRequest
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
+import top.easyblog.common.request.user.CreateUserAccountRequest;
 import top.easyblog.common.request.user.CreateUserRequest;
+import top.easyblog.common.request.user.UpdateUserAccountRequest;
+import top.easyblog.common.request.user.UpdateUserRequest;
 import top.easyblog.dao.auto.model.*;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageConfigContext;
@@ -40,167 +43,167 @@ import top.easyblog.support.context.MessageConfigContext;
 @Mapper(componentModel = "spring")
 public interface BeanMapper {
 
+        @Mappings({
+                        @Mapping(target = "id", ignore = true),
+                        @Mapping(target = "createTime", ignore = true),
+                        @Mapping(target = "updateTime", ignore = true),
+                        @Mapping(target = "code", ignore = true)
+        })
+        Account convertAccountCreateReq2Account(CreateAccountRequest request);
 
-    @Mappings({
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createTime", ignore = true),
-            @Mapping(target = "updateTime", ignore = true),
-            @Mapping(target = "code", ignore = true)
-    })
-    Account convertAccountCreateReq2Account(CreateAccountRequest request);
+        AccountBean convertAccount2AccountBean(Account account);
 
+        @Mappings({
+                        @Mapping(target = "userCode", ignore = true),
+                        @Mapping(target = "createTime", ignore = true),
+                        @Mapping(target = "updateTime", ignore = true),
+                        @Mapping(target = "code", ignore = true),
+                        @Mapping(target = "id", source = "accountId")
+        })
+        Account convertAccountUpdateReq2Account(Long accountId, UpdateAccountRequest request);
 
-    AccountBean convertAccount2AccountBean(Account account);
+        @Mappings({
+                        @Mapping(target = "ipAddress", source = "ip"),
+                        @Mapping(target = "id", ignore = true),
+                        @Mapping(target = "createTime", ignore = true),
+                        @Mapping(target = "updateTime", ignore = true),
+                        @Mapping(target = "code", ignore = true),
+        })
+        LoginLog convertLoginLogCreateReq2Account(CreateLoginLogRequest request);
 
-    @Mappings({
-            @Mapping(target = "userCode", ignore = true),
-            @Mapping(target = "createTime", ignore = true),
-            @Mapping(target = "updateTime", ignore = true),
-            @Mapping(target = "code", ignore = true),
-            @Mapping(target = "id", source = "accountId")
-    })
-    Account convertAccountUpdateReq2Account(Long accountId, UpdateAccountRequest request);
+        LoginLogBean convertLoginLog2LoginLogBean(LoginLog loginLog);
 
+        @Mappings({
+                        @Mapping(target = "id", source = "id"),
+                        @Mapping(target = "createTime", ignore = true),
+                        @Mapping(target = "accountCode", ignore = true)
+        })
+        LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateLoginLogRequest request);
 
-    @Mappings({
-            @Mapping(target = "ipAddress", source = "ip"),
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createTime", ignore = true),
-            @Mapping(target = "updateTime", ignore = true),
-            @Mapping(target = "code", ignore = true),
-    })
-    LoginLog convertLoginLogCreateReq2Account(CreateLoginLogRequest request);
+        MobileAreaCode convertMobileAreaCodeCreateReq2MobileArea(CreateMobileAreaRequest request);
 
+        MobileAreBean convertMobileArea2MobileAreaBean(MobileAreaCode item);
 
-    LoginLogBean convertLoginLog2LoginLogBean(LoginLog loginLog);
+        MobileAreaCode convertMobileAreaUpdateReq2MobileArea(Long id, UpdateMobileAreaRequest request);
 
-    @Mappings({
-            @Mapping(target = "id", source = "id"),
-            @Mapping(target = "createTime", ignore = true),
-            @Mapping(target = "accountCode", ignore = true)
-    })
-    LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateLoginLogRequest request);
+        PhoneAuth convertPhoneAuthCreateReq2PhoneAuth(CreatePhoneAuthRequest request);
 
+        UserHeader convertUserHeaderCreateReq2UserHeader(CreateUserHeaderRequest request);
 
-    MobileAreaCode convertMobileAreaCodeCreateReq2MobileArea(CreateMobileAreaRequest request);
+        UserDetailsBean convertUser2UserBean(User user);
 
+        User convertUserCreateReq2User(CreateUserRequest request);
 
-    MobileAreBean convertMobileArea2MobileAreaBean(MobileAreaCode item);
+        @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(6))")
+        @Mapping(target = "templateValueConfigId", source = "templateValueConfigId")
+        MessageConfig buildMessageConfig(CreateMessageConfigRequest request, Long templateValueConfigId);
 
+        @Mapping(target = "id", source = "id")
+        MessageConfig buildMessageConfig(UpdateMessageConfigRequest request, Long id);
 
-    MobileAreaCode convertMobileAreaUpdateReq2MobileArea(Long id, UpdateMobileAreaRequest request);
+        TemplateValueConfig buildTemplateConfig(CreateTemplateValueConfigRequest request);
 
+        @Mapping(target = "id", source = "id")
+        TemplateValueConfig buildTemplateConfig(UpdateTemplateValueConfigRequest request, Long id);
 
-    PhoneAuth convertPhoneAuthCreateReq2PhoneAuth(CreatePhoneAuthRequest request);
+        @Mapping(target = "createTime", expression = "java(valueConfig.getCreateTime().getTime()/1000)")
+        @Mapping(target = "updateTime", expression = "java(valueConfig.getUpdateTime().getTime()/1000)")
+        TemplateValueConfigBean convertTemplateValueConfig2TemplateValueConfigBean(TemplateValueConfig valueConfig);
 
+        @Mappings({
+                        @Mapping(target = "templateValueConfig", expression = "java(convertTemplateValueConfig2TemplateValueConfigBean(templateValueConfig))"),
+                        @Mapping(target = "type", source = "messageConfig.type"),
+                        @Mapping(target = "deleted", source = "messageConfig.deleted"),
+                        @Mapping(target = "createTime", expression = "java(messageConfig.getCreateTime().getTime()/1000)"),
+                        @Mapping(target = "updateTime", expression = "java(messageConfig.getUpdateTime().getTime()/1000)")
+        })
+        MessageConfigBean buildMessageConfigBean(MessageConfig messageConfig, TemplateValueConfig templateValueConfig);
 
-    UserHeader convertUserHeaderCreateReq2UserHeader(CreateUserHeaderRequest request);
+        MessageConfigRule buildMessageConfigRule(CreateMessageConfigRuleRequest request);
 
+        @Mapping(target = "id", source = "id")
+        MessageConfigRule buildMessageConfigRule(UpdateMessageConfigRuleRequest request, Long id);
 
-    UserDetailsBean convertUser2UserBean(User user);
+        @Mapping(target = "createTime", expression = "java(messageConfigRule.getCreateTime().getTime()/1000)")
+        @Mapping(target = "updateTime", expression = "java(messageConfigRule.getUpdateTime().getTime()/1000)")
+        MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
 
+        @Mapping(target = "status", source = "template.status")
+        @Mapping(target = "createTime", expression = "java(template.getCreateTime().getTime()/1000)")
+        @Mapping(target = "updateTime", expression = "java(template.getUpdateTime().getTime()/1000)")
+        MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
-    User convertUserCreateReq2User(CreateUserRequest request);
+        @Mappings({
+                        @Mapping(target = "businessMessageRecordId", source = "msg.id"),
+                        @Mapping(target = "businessModule", source = "msg.businessModule"),
+                        @Mapping(target = "businessEvent", source = "msg.businessEvent"),
+                        @Mapping(target = "businessMessage", source = "msg.businessMessage"),
+                        @Mapping(target = "group", source = "messageConfigRule.msgGroup"),
+                        @Mapping(target = "priority", source = "messageConfigRule.priority"),
+                        @Mapping(target = "channel", source = "messageConfigRule.channel"),
+                        @Mapping(target = "msgType", source = "messageTemplate.msgType"),
+                        @Mapping(target = "shieldType", source = "messageTemplate.shieldType"),
+                        @Mapping(target = "msgTemplateContent", source = "messageTemplate.msgContent"),
+                        @Mapping(target = "title", source = "messageTemplate.name"),
+                        @Mapping(target = "configs", source = "messageConfigs")
+        })
+        MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg,
+                        MessageConfigRuleBean messageConfigRule,
+                        MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
 
+        BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(
+                        CreateBusinessMessageRecordRequest request);
 
-    @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(6))")
-    @Mapping(target = "templateValueConfigId", source = "templateValueConfigId")
-    MessageConfig buildMessageConfig(CreateMessageConfigRequest request, Long templateValueConfigId);
+        @Mapping(target = "isSync", source = "isSync")
+        BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record,
+                        Boolean isSync);
 
-    @Mapping(target = "id", source = "id")
-    MessageConfig buildMessageConfig(UpdateMessageConfigRequest request, Long id);
+        @Mapping(target = "createTime", expression = "java(record.getCreateTime().getTime()/1000)")
+        @Mapping(target = "updateTime", expression = "java(record.getUpdateTime().getTime()/1000)")
+        BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
 
-    TemplateValueConfig buildTemplateConfig(CreateTemplateValueConfigRequest request);
+        @Mapping(target = "templateCode", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
+        MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(
+                        CreateMessageTemplateRequest request);
 
-    @Mapping(target = "id", source = "id")
-    TemplateValueConfig buildTemplateConfig(UpdateTemplateValueConfigRequest request, Long id);
+        MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id,
+                        UpdateMessageTemplateRequest request);
 
-    @Mapping(target = "createTime", expression = "java(valueConfig.getCreateTime().getTime()/1000)")
-    @Mapping(target = "updateTime", expression = "java(valueConfig.getUpdateTime().getTime()/1000)")
-    TemplateValueConfigBean convertTemplateValueConfig2TemplateValueConfigBean(TemplateValueConfig valueConfig);
+        @Mapping(target = "id", source = "id")
+        BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id,
+                        UpdateBusinessMessageRecordRequest request);
 
-    @Mappings({
-            @Mapping(target = "templateValueConfig", expression = "java(convertTemplateValueConfig2TemplateValueConfigBean(templateValueConfig))"),
-            @Mapping(target = "type", source = "messageConfig.type"),
-            @Mapping(target = "deleted", source = "messageConfig.deleted"),
-            @Mapping(target = "createTime", expression = "java(messageConfig.getCreateTime().getTime()/1000)"),
-            @Mapping(target = "updateTime", expression = "java(messageConfig.getUpdateTime().getTime()/1000)")
-    })
-    MessageConfigBean buildMessageConfigBean(MessageConfig messageConfig, TemplateValueConfig templateValueConfig);
+        @Mappings({
+                        @Mapping(target = "updateTime", ignore = true),
+                        @Mapping(target = "id", ignore = true),
+                        @Mapping(target = "createTime", ignore = true),
+                        @Mapping(target = "contentId", source = "contentId"),
+                        @Mapping(target = "status", expression = "java(request.getStatus().toUpperCase())"),
+                        @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.getSnowflakeNextId())"),
+        })
+        Article convertArticleCreateReq2Article(CreateArticleRequest request, Long contentId);
 
-    MessageConfigRule buildMessageConfigRule(CreateMessageConfigRuleRequest request);
+        @Mapping(target = "id", source = "articleId")
+        @Mapping(target = "contentId", source = "contentId")
+        @Mapping(target = "status", expression = "java(java.util.Optional.ofNullable(request.getStatus()).map(String::toUpperCase).orElse(null))")
+        Article convertArticleUpdateReq2Article(UpdateArticleRequest request, Long articleId, Long contentId);
 
-    @Mapping(target = "id", source = "id")
-    MessageConfigRule buildMessageConfigRule(UpdateMessageConfigRuleRequest request, Long id);
+        @Mapping(target = "id", ignore = true)
+        @Mapping(target = "content", source = "content")
+        ArticleContent buildArticleContent(String content);
 
-    @Mapping(target = "createTime", expression = "java(messageConfigRule.getCreateTime().getTime()/1000)")
-    @Mapping(target = "updateTime", expression = "java(messageConfigRule.getUpdateTime().getTime()/1000)")
-    MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
+        ArticleCategoryBean convertArticleCategory2ArticleCategoryBean(ArticleCategory articleCategory);
 
+        @Mapping(target = "id", source = "id")
+        ArticleCategory convertArticleCategoryUpdateReq2AeticleCategory(Long id, UpdateArticleCategoryRequest request);
 
-    @Mapping(target = "status", source = "template.status")
-    @Mapping(target = "createTime", expression = "java(template.getCreateTime().getTime()/1000)")
-    @Mapping(target = "updateTime", expression = "java(template.getUpdateTime().getTime()/1000)")
-    MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
+        ArticleCategory convertArticleCategoryCreateReq2AeticleCategory(CreateArticleCategoryRequest request);
 
-    @Mappings({
-            @Mapping(target = "businessMessageRecordId", source = "msg.id"),
-            @Mapping(target = "businessModule", source = "msg.businessModule"),
-            @Mapping(target = "businessEvent", source = "msg.businessEvent"),
-            @Mapping(target = "businessMessage", source = "msg.businessMessage"),
-            @Mapping(target = "group", source = "messageConfigRule.msgGroup"),
-            @Mapping(target = "priority", source = "messageConfigRule.priority"),
-            @Mapping(target = "channel", source = "messageConfigRule.channel"),
-            @Mapping(target = "msgType", source = "messageTemplate.msgType"),
-            @Mapping(target = "shieldType", source = "messageTemplate.shieldType"),
-            @Mapping(target = "msgTemplateContent", source = "messageTemplate.msgContent"),
-            @Mapping(target = "title", source = "messageTemplate.name"),
-            @Mapping(target = "configs", source = "messageConfigs")
-    })
-    MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg, MessageConfigRuleBean messageConfigRule,
-                                                   MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
+        CreateUserRequest buildUserCreateRequest(CreateUserAccountRequest request);
 
-    BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
+        CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request, String code);
 
-    @Mapping(target = "isSync", source = "isSync")
-    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record, Boolean isSync);
+        UpdateAccountRequest buildAccountUpdateRequest(UpdateUserAccountRequest request);
 
-    @Mapping(target = "createTime", expression = "java(record.getCreateTime().getTime()/1000)")
-    @Mapping(target = "updateTime", expression = "java(record.getUpdateTime().getTime()/1000)")
-    BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
-
-    @Mapping(target = "templateCode", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
-    MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(CreateMessageTemplateRequest request);
-
-    MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id, UpdateMessageTemplateRequest request);
-
-    @Mapping(target = "id", source = "id")
-    BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id, UpdateBusinessMessageRecordRequest request);
-
-
-    @Mappings({
-            @Mapping(target = "updateTime", ignore = true),
-            @Mapping(target = "id", ignore = true),
-            @Mapping(target = "createTime", ignore = true),
-            @Mapping(target = "contentId", source = "contentId"),
-            @Mapping(target = "status", expression = "java(request.getStatus().toUpperCase())"),
-            @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.getSnowflakeNextId())"),
-    })
-    Article convertArticleCreateReq2Article(CreateArticleRequest request, Long contentId);
-
-    @Mapping(target = "id", source = "articleId")
-    @Mapping(target = "contentId", source = "contentId")
-    @Mapping(target = "status", expression = "java(java.util.Optional.ofNullable(request.getStatus()).map(String::toUpperCase).orElse(null))")
-    Article convertArticleUpdateReq2Article(UpdateArticleRequest request, Long articleId, Long contentId);
-
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "content", source = "content")
-    ArticleContent buildArticleContent(String content);
-
-    ArticleCategoryBean convertArticleCategory2ArticleCategoryBean(ArticleCategory articleCategory);
-
-    @Mapping(target = "id", source = "id")
-    ArticleCategory convertArticleCategoryUpdateReq2AeticleCategory(Long id, UpdateArticleCategoryRequest request);
-
-    ArticleCategory convertArticleCategoryCreateReq2AeticleCategory(CreateArticleCategoryRequest request);
+        UpdateUserRequest buildUserCreateRequest(UpdateUserAccountRequest request);
 }

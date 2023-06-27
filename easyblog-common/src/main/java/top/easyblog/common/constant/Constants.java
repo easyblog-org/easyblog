@@ -41,5 +41,11 @@ public final class Constants {
     public static final long TEN_MINUS = 10*60*1000;
 
     // 查询分页大小 1000
-    public static final int QUERY_LIMIT_ONE_THOUSAND = 1000;
+    public static final int QUERY_LIMIT_MAX_THOUSAND = 1000;
+
+    // 请求认证token
+    public static final String AUTH_TOKEN = "Authorization";
+
+    //默认分页查询大小
+    public static final Integer DEFAULT_PAGE_SIZE = 100;
 }
