@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * 系统枚举静态数据服务
+ *
  * @author: frank.huang
  * @date: 2023-02-26 21:03
  */
@@ -67,7 +69,7 @@ public class StaticService {
                 .map(item -> {
                     StaticOption option = new StaticOption();
                     option.setKey(item.getCode());
-                    //option.setValue(item.getDesc());
+                    option.setValue(item.getDesc());
                     return option;
                 }).distinct().collect(Collectors.toList());
     }
@@ -77,7 +79,7 @@ public class StaticService {
                 .map(item -> {
                     StaticOption option = new StaticOption();
                     option.setKey(item.name().toLowerCase());
-                    //option.setValue(item.getDesc());
+                    option.setValue(item.getDesc());
                     return option;
                 }).distinct().collect(Collectors.toList());
     }
@@ -87,7 +89,7 @@ public class StaticService {
                 .map(item -> {
                     StaticOption option = new StaticOption();
                     option.setKey(item.getCode());
-                    //option.setValue(item.getDesc());
+                    option.setValue(item.getDesc());
                     return option;
                 }).distinct().collect(Collectors.toList());
     }
@@ -97,7 +99,7 @@ public class StaticService {
                 .map(item -> {
                     StaticOption option = new StaticOption();
                     option.setKey(item.getCode());
-                    //option.setValue(item.getDesc());
+                    option.setValue(item.getDesc());
                     return option;
                 }).distinct().collect(Collectors.toList());
     }

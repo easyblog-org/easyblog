@@ -13,27 +13,27 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 public enum MessageSendChannel {
-
     /**
      * 纯文本邮件
      */
-    PLAIN_EMAIL((byte) 10),
+    PLAIN_EMAIL((byte) 10, "纯文本邮件"),
     /**
      * 带附件的邮件 attachment
      */
-    ATTACHMENT_EMAIL((byte) 11),
+    ATTACHMENT_EMAIL((byte) 11, "HTML邮件"),
     /**
      * 短信
      */
-    SMS((byte) 20),
+    SMS((byte) 20, "短信"),
     /**
      * 微信通知
      */
-    WX((byte) 30),
+    WX((byte) 30, "微信通知"),
 
     ;
 
     private final byte code;
+    private final String desc;
 
 
     public static MessageSendChannel codeOf(Byte code) {

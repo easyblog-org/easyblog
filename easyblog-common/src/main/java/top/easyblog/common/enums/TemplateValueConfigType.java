@@ -16,23 +16,24 @@ public enum TemplateValueConfigType {
     /**
      * 直接值
      */
-    DIRECT_VALUE((byte) 1),
+    DIRECT_VALUE((byte) 1, "直接值"),
     /**
      * JSON 直接值
      */
-    DIRECT_JSON_VALUE((byte) 2),
+    DIRECT_JSON_VALUE((byte) 2, "Json直接值"),
     /**
      * 接口直接值
      */
-    INTERFACE_DIRECT_VALUE((byte) 3),
+    INTERFACE_DIRECT_VALUE((byte) 3, "接口直接值"),
     /**
      * 接口 JSON 值
      */
-    INTERFACE_JSON_VALUE((byte) 4),
+    INTERFACE_JSON_VALUE((byte) 4, "接口Json取值"),
 
     ;
 
     private final byte code;
+    private final String desc;
 
     public static TemplateValueConfigType codeOf(Byte configType) {
         if (Objects.isNull(configType)) {

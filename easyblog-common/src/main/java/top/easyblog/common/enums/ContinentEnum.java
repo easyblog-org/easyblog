@@ -18,6 +18,7 @@ import java.util.Optional;
 @Getter
 @AllArgsConstructor
 public enum ContinentEnum {
+    GLOBAL(null, "全部"),
     AFRICA("AF", "Africa"),
     ANTARCTICA("AN", "Antarctica"),
     ASIA("AS", "Asia"),
