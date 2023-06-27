@@ -1,7 +1,5 @@
 package top.easyblog.core;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
@@ -11,16 +9,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+
 import top.easyblog.common.bean.*;
 import top.easyblog.common.constant.Constants;
-import top.easyblog.common.enums.Status;
 import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.exception.BusinessException;
-import top.easyblog.common.request.account.QueryAccountListRequest;
-import top.easyblog.common.request.header.QueryUserHeadersRequest;
-import top.easyblog.common.request.loginlog.QueryLoginLogListRequest;
-import top.easyblog.common.request.role.QueryRolesListRequest;
-import top.easyblog.common.request.role.QueryUserRolesListRequest;
 import top.easyblog.common.request.user.CreateUserRequest;
 import top.easyblog.common.request.user.QueryUserListRequest;
 import top.easyblog.common.request.user.QueryUserRequest;
@@ -32,17 +27,17 @@ import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicUserRolesService;
 import top.easyblog.dao.atomic.AtomicUserService;
 import top.easyblog.dao.auto.model.User;
-import top.easyblog.dao.auto.model.UserRoleRelationship;
 import top.easyblog.service.section.IArticleSectionInquireService;
+import top.easyblog.service.section.IUserSectionInquireService;
 import top.easyblog.support.context.ArticleSectionContext;
 import top.easyblog.support.context.CreateOrRefreshUserRoleContext;
 import top.easyblog.support.context.UserSectionContext;
 import top.easyblog.support.event.UserCreateOrUpdateEvent;
+import top.easyblog.support.util.ConcurrentUtils;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
 
 /**
  * @author frank.huang
@@ -56,19 +51,7 @@ public class UserService implements IArticleSectionInquireService {
     private AtomicUserService atomicUserService;
 
     @Autowired
-    private AtomicUserRolesService atomicUserRolesService;
-
-    @Autowired
-    private UserHeaderService userHeaderService;
-
-    @Autowired
-    private AccountService accountService;
-
-    @Autowired
-    private LoginLogService loginLogService;
-
-    @Autowired
-    private RolesService rolesService;
+    private List<IUserSectionInquireService> userSectionsInquireServices;
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -84,15 +67,14 @@ public class UserService implements IArticleSectionInquireService {
      */
     @Transaction
     public UserDetailsBean queryUserDetails(QueryUserRequest request) {
-        //1.根据request查询user基本信息
+        // 1.根据request查询user基本信息
         return Optional.ofNullable(atomicUserService.queryByRequest(request)).map(user -> {
             UserDetailsBean userDetailsBean = buildUserDetailsBean(user);
-            //查询其他选项参数
+            // 查询其他选项参数
             fillSection(request.getSections(), Collections.singletonList(userDetailsBean));
             return userDetailsBean;
         }).orElse(null);
     }
-
 
     private UserDetailsBean buildUserDetailsBean(User user) {
         if (Objects.isNull(user)) {
@@ -102,7 +84,6 @@ public class UserService implements IArticleSectionInquireService {
         userDetailsBean.setIsNewUser(Boolean.FALSE);
         return userDetailsBean;
     }
-
 
     /**
      * 查看可选值
@@ -116,72 +97,95 @@ public class UserService implements IArticleSectionInquireService {
             return context;
         }
 
-        List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
-        List<Long> userIds = new ArrayList<>(userIdCodesMap.keySet());
-        if (section.contains(QuerySection.QUERY_HEADER_IMG.getName())) {
-            QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
-                    .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
-            List<UserHeaderBean> userHeaderBeans = userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
-            Map<String, List<UserHeaderBean>> userHeaderBeanMap = userHeaderBeans.stream().filter(Objects::nonNull)
-                    .collect(Collectors.groupingBy(UserHeaderBean::getUserCode));
-            context.setUserHistoryImagesMap(userHeaderBeanMap);
-        }
-        if (section.contains(QuerySection.QUERY_CURRENT_HEADER_IMG.getName())) {
-            QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
-                    .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
-            List<UserHeaderBean> userHeaderBeans = userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
-            Map<String, UserHeaderBean> userHeaderBeanMap = userHeaderBeans.stream().
-                    filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
-                    .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(), (x, y) -> x));
-            context.setUserCurrentImagesMap(userHeaderBeanMap);
-        }
-        if (section.contains(QuerySection.QUERY_ACCOUNTS.getName())) {
-            QueryAccountListRequest queryAccountListRequest = QueryAccountListRequest.builder()
-                    .userCodes(userCodes).build();
-            List<AccountBean> accounts = accountService.queryListUnlimited(queryAccountListRequest);
-            Map<String, List<AccountBean>> accountMap = accounts.stream().filter(Objects::nonNull)
-                    .collect(Collectors.groupingBy(AccountBean::getUserCode));
-            context.setAccountsMap(accountMap);
-        }
-        if (section.contains(QuerySection.QUERY_SIGN_LOG.getName())) {
-            QueryLoginLogListRequest request = QueryLoginLogListRequest.builder()
-                    .userCodes(userCodes).status(Status.ENABLE.getCode().intValue()).offset(NumberUtils.INTEGER_ZERO)
-                    .limit(Constants.QUERY_LIMIT_ONE_THOUSAND).build();
-            PageResponse<LoginLogBean> loginLogBeanPageResponse = loginLogService.queryLoginLogList(request);
-            List<LoginLogBean> loginLogBeans = loginLogBeanPageResponse.getData();
-            Map<String, List<LoginLogBean>> loginLogBeanMap = loginLogBeans.stream().filter(Objects::nonNull)
-                    .collect(Collectors.groupingBy(LoginLogBean::getUserCode));
-            context.setSignInLogsMap(loginLogBeanMap);
-        }
-        if (section.contains(QuerySection.QUERY_ROLE.getName())) {
-            List<UserRoleRelationship> userRoleRelationships = atomicUserRolesService.queryList(QueryUserRolesListRequest.builder()
-                    .userIds(userIds).enabled(Boolean.TRUE).build());
+        // List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
+        // List<Long> userIds = new ArrayList<>(userIdCodesMap.keySet());
+        // if (section.contains(QuerySection.QUERY_HEADER_IMG.getName())) {
+        // QueryUserHeadersRequest queryUserHeadersRequest =
+        // QueryUserHeadersRequest.builder()
+        // .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
+        // List<UserHeaderBean> userHeaderBeans =
+        // userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
+        // Map<String, List<UserHeaderBean>> userHeaderBeanMap =
+        // userHeaderBeans.stream().filter(Objects::nonNull)
+        // .collect(Collectors.groupingBy(UserHeaderBean::getUserCode));
+        // context.setUserHistoryImagesMap(userHeaderBeanMap);
+        // }
+        // if (section.contains(QuerySection.QUERY_CURRENT_HEADER_IMG.getName())) {
+        // QueryUserHeadersRequest queryUserHeadersRequest =
+        // QueryUserHeadersRequest.builder()
+        // .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
+        // List<UserHeaderBean> userHeaderBeans =
+        // userHeaderService.queryUserHeaderBeans(queryUserHeadersRequest);
+        // Map<String, UserHeaderBean> userHeaderBeanMap = userHeaderBeans.stream().
+        // filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
+        // .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(),
+        // (x, y) -> x));
+        // context.setUserCurrentImagesMap(userHeaderBeanMap);
+        // }
+        // if (section.contains(QuerySection.QUERY_ACCOUNTS.getName())) {
+        // QueryAccountListRequest queryAccountListRequest =
+        // QueryAccountListRequest.builder()
+        // .userCodes(userCodes).build();
+        // List<AccountBean> accounts =
+        // accountService.queryListUnlimited(queryAccountListRequest);
+        // Map<String, List<AccountBean>> accountMap =
+        // accounts.stream().filter(Objects::nonNull)
+        // .collect(Collectors.groupingBy(AccountBean::getUserCode));
+        // context.setAccountsMap(accountMap);
+        // }
+        // if (section.contains(QuerySection.QUERY_SIGN_LOG.getName())) {
+        // QueryLoginLogListRequest request = QueryLoginLogListRequest.builder()
+        // .userCodes(userCodes).status(Status.ENABLE.getCode().intValue()).offset(NumberUtils.INTEGER_ZERO)
+        // .limit(Constants.QUERY_LIMIT_ONE_THOUSAND).build();
+        // PageResponse<LoginLogBean> loginLogBeanPageResponse =
+        // loginLogService.queryLoginLogList(request);
+        // List<LoginLogBean> loginLogBeans = loginLogBeanPageResponse.getData();
+        // Map<String, List<LoginLogBean>> loginLogBeanMap =
+        // loginLogBeans.stream().filter(Objects::nonNull)
+        // .collect(Collectors.groupingBy(LoginLogBean::getUserCode));
+        // context.setSignInLogsMap(loginLogBeanMap);
+        // }
+        // if (section.contains(QuerySection.QUERY_ROLE.getName())) {
+        // List<UserRoleRelationship> userRoleRelationships =
+        // atomicUserRolesService.queryList(QueryUserRolesListRequest.builder()
+        // .userIds(userIds).enabled(Boolean.TRUE).build());
 
-            if (CollectionUtils.isNotEmpty(userRoleRelationships)) {
-                Map<String, UserRoleRelationship> userRoleIdMap = userRoleRelationships.stream().filter(Objects::nonNull)
-                        .collect(Collectors.toMap(item -> String.format("%s-%s", item.getRoleId(), item.getUserId()), Function.identity(), (x, y) -> x));
-                List<Long> roleIds = userRoleRelationships.stream().map(UserRoleRelationship::getRoleId).collect(Collectors.toList());
-                PageResponse<RolesBean> rolesBeanPageResponse = rolesService.queryRolesList(QueryRolesListRequest.builder()
-                        .ids(roleIds).build());
-                List<RolesBean> rolesBeans = rolesBeanPageResponse.getData();
-                Map<Long, List<RolesBean>> rolesIdMap = rolesBeans.stream().filter(Objects::nonNull).collect(Collectors.groupingBy(RolesBean::getId));
-                Map<Long, List<RolesBean>> userIdRoleMap = Maps.newHashMap();
-                userRoleIdMap.forEach((roleUserId, userRole) -> {
-                    userIdRoleMap.compute(userRole.getUserId(), (k, v) -> {
-                        if (v == null) {
-                            v = Lists.newArrayList();
-                        }
-                        List<RolesBean> rolesBeanList = rolesIdMap.get(userRole.getRoleId());
-                        if (CollectionUtils.isNotEmpty(rolesBeanList)) {
-                            v.addAll(rolesBeanList);
-                        }
-                        return v;
-                    });
-                });
-                context.setRolesMap(userIdRoleMap);
-            }
-        }
+        // if (CollectionUtils.isNotEmpty(userRoleRelationships)) {
+        // Map<String, UserRoleRelationship> userRoleIdMap =
+        // userRoleRelationships.stream().filter(Objects::nonNull)
+        // .collect(Collectors.toMap(item -> String.format("%s-%s", item.getRoleId(),
+        // item.getUserId()), Function.identity(), (x, y) -> x));
+        // List<Long> roleIds =
+        // userRoleRelationships.stream().map(UserRoleRelationship::getRoleId).collect(Collectors.toList());
+        // PageResponse<RolesBean> rolesBeanPageResponse =
+        // rolesService.queryRolesList(QueryRolesListRequest.builder()
+        // .ids(roleIds).build());
+        // List<RolesBean> rolesBeans = rolesBeanPageResponse.getData();
+        // Map<Long, List<RolesBean>> rolesIdMap =
+        // rolesBeans.stream().filter(Objects::nonNull).collect(Collectors.groupingBy(RolesBean::getId));
+        // Map<Long, List<RolesBean>> userIdRoleMap = Maps.newHashMap();
+        // userRoleIdMap.forEach((roleUserId, userRole) -> {
+        // userIdRoleMap.compute(userRole.getUserId(), (k, v) -> {
+        // if (v == null) {
+        // v = Lists.newArrayList();
+        // }
+        // List<RolesBean> rolesBeanList = rolesIdMap.get(userRole.getRoleId());
+        // if (CollectionUtils.isNotEmpty(rolesBeanList)) {
+        // v.addAll(rolesBeanList);
+        // }
+        // return v;
+        // });
+        // });
+        // context.setRolesMap(userIdRoleMap);
+        // }
+        // }
 
+        List<Runnable> tasks = Lists.newArrayList();
+        userSectionsInquireServices.forEach(service -> {
+            tasks.add(() -> service.execute(context, userIdCodesMap));
+        });
+
+        ConcurrentUtils.executeTaskInBlockModel(tasks, null);
         return context;
     }
 
@@ -202,15 +206,17 @@ public class UserService implements IArticleSectionInquireService {
         UserSectionContext context = queryUserSectionSections(section, userIdCodesMap);
         Optional.ofNullable(context).ifPresent(ctx -> {
             userDetailsBeans.stream().filter(Objects::nonNull).forEach(userDetailsBean -> {
-                userDetailsBean.setUserCurrentImages(ctx.getSectionOptional(ctx.getUserCurrentImagesMap(), userDetailsBean.getCode()));
-                userDetailsBean.setUserHistoryImages(ctx.getSectionOptional(ctx.getUserHistoryImagesMap(), userDetailsBean.getCode()));
+                userDetailsBean.setUserCurrentImages(
+                        ctx.getSectionOptional(ctx.getUserCurrentImagesMap(), userDetailsBean.getCode()));
+                userDetailsBean.setUserHistoryImages(
+                        ctx.getSectionOptional(ctx.getUserHistoryImagesMap(), userDetailsBean.getCode()));
                 userDetailsBean.setAccounts(ctx.getSectionOptional(ctx.getAccountsMap(), userDetailsBean.getCode()));
                 userDetailsBean.setRoles(ctx.getSectionOptional(ctx.getRolesMap(), userDetailsBean.getId()));
-                userDetailsBean.setSignInLogs(ctx.getSectionOptional(ctx.getSignInLogsMap(), userDetailsBean.getCode()));
+                userDetailsBean
+                        .setSignInLogs(ctx.getSectionOptional(ctx.getSignInLogsMap(), userDetailsBean.getCode()));
             });
         });
     }
-
 
     /**
      * 更新用户信息
@@ -229,7 +235,7 @@ public class UserService implements IArticleSectionInquireService {
         BeanUtils.copyProperties(request, newUser);
         atomicUserService.updateUserByPrimaryKey(newUser);
 
-        //异步更新User和Role的关系
+        // 异步更新User和Role的关系
         CreateOrRefreshUserRoleContext context = CreateOrRefreshUserRoleContext.builder()
                 .userId(newUser.getId()).roles(request.getRoles()).build();
         applicationEventPublisher.publishEvent(new UserCreateOrUpdateEvent(context));
@@ -245,9 +251,10 @@ public class UserService implements IArticleSectionInquireService {
     @Transaction
     public PageResponse<UserDetailsBean> queryUserListPage(QueryUserListRequest request) {
         if (Objects.isNull(request.getOffset()) || Objects.isNull(request.getLimit())) {
-            //没有分页参数，默认查询1000条数据
+            // 没有分页参数，默认查询1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
-            request.setLimit(Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
+            request.setLimit(
+                    Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
             List<UserDetailsBean> userDetailsBeans = buildUserDetailsBeanList(request);
             return PageResponse.<UserDetailsBean>builder().limit(request.getLimit())
                     .offset(request.getOffset()).total((long) userDetailsBeans.size()).data(userDetailsBeans).build();
@@ -265,16 +272,16 @@ public class UserService implements IArticleSectionInquireService {
     }
 
     private List<UserDetailsBean> buildUserDetailsBeanList(QueryUserListRequest request) {
-        List<UserDetailsBean> userDetailsBeans = atomicUserService.queryUserListByRequest(request).stream().map(user -> {
-            UserDetailsBean userDetailsBean = new UserDetailsBean();
-            BeanUtils.copyProperties(user, userDetailsBean);
-            return userDetailsBean;
-        }).collect(Collectors.toList());
+        List<UserDetailsBean> userDetailsBeans = atomicUserService.queryUserListByRequest(request).stream()
+                .map(user -> {
+                    UserDetailsBean userDetailsBean = new UserDetailsBean();
+                    BeanUtils.copyProperties(user, userDetailsBean);
+                    return userDetailsBean;
+                }).collect(Collectors.toList());
 
         fillSection(request.getSections(), userDetailsBeans);
         return userDetailsBeans;
     }
-
 
     /**
      * 创建用户
@@ -311,10 +318,13 @@ public class UserService implements IArticleSectionInquireService {
      * @param queryWhenSectionEmpty 是否在选项名称为空时继续执行查询
      */
     @Override
-    public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList, boolean queryWhenSectionEmpty) {
-        if (CollectionUtils.isEmpty(articleBeanList)) return;
+    public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList,
+            boolean queryWhenSectionEmpty) {
+        if (CollectionUtils.isEmpty(articleBeanList))
+            return;
         List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).collect(Collectors.toList());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR.name(), section) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR.name(), section)
+                || queryWhenSectionEmpty) {
             List<User> userList = atomicUserService.queryUserListByRequest(QueryUserListRequest.builder()
                     .codes(authorIds).limit(null).offset(null).build());
             Map<String, UserDetailsBean> userMap = userList.stream().filter(Objects::nonNull)

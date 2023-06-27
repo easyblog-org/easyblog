@@ -1,11 +1,14 @@
 package top.easyblog.service.section;
 
+import java.util.Map;
+
+import top.easyblog.support.context.UserSectionContext;
+
 /**
  * @author: frank.huang
- * @date: 2023-06-25 21:38
+ * @date: 2023-06-27 21:32
  */
-public interface ISectionInfoInquireService<T, CTX> {
-
+public interface IUserSectionInquireService {
     /**
      * 执行选项信息查询
      *
@@ -15,7 +18,7 @@ public interface ISectionInfoInquireService<T, CTX> {
      * @param queryWhenSectionEmpty 是否在选项名称为空时继续执行查询
      * @return
      */
-    void execute(String section, CTX ctx, T queryParams, boolean queryWhenSectionEmpty);
+    void execute(String section, UserSectionContext ctx, Map<Long, String> queryParams, boolean queryWhenSectionEmpty);
 
     /**
      * 执行选项信息查询
@@ -25,7 +28,7 @@ public interface ISectionInfoInquireService<T, CTX> {
      * @param queryParams 查询参数
      * @return
      */
-    default void execute(String section, CTX ctx, T queryParams) {
+    default void execute(String section, UserSectionContext ctx, Map<Long, String> queryParams) {
         execute(section, ctx, queryParams, false);
     }
 
@@ -36,8 +39,7 @@ public interface ISectionInfoInquireService<T, CTX> {
      * @param queryParams 查询参数
      * @return
      */
-    default void execute(CTX ctx, T queryParams) {
+    default void execute(UserSectionContext ctx, Map<Long, String> queryParams) {
         execute(null, ctx, queryParams, true);
     }
-
 }

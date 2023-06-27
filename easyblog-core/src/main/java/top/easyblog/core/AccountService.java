@@ -1,8 +1,10 @@
 package top.easyblog.core;
 
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.AccountBean;
+import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.QueryAccountListRequest;
@@ -13,9 +15,13 @@ import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicAccountService;
 import top.easyblog.dao.auto.model.Account;
+import top.easyblog.service.section.IUserSectionInquireService;
+import top.easyblog.support.context.UserSectionContext;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,7 +31,7 @@ import java.util.stream.Collectors;
  * @date 2022/01/30 13:33
  */
 @Service
-public class AccountService {
+public class AccountService implements IUserSectionInquireService {
 
     @Autowired
     private AtomicAccountService atomicAccountService;
@@ -68,7 +74,6 @@ public class AccountService {
                 .map(item -> beanMapper.convertAccount2AccountBean(item)).orElse(null);
     }
 
-
     /**
      * 不分页查询账号
      *
@@ -96,7 +101,8 @@ public class AccountService {
                     .total(amount).data(Collections.emptyList()).build();
         }
         List<Account> accounts = atomicAccountService.queryAccountListByRequest(request);
-        List<AccountBean> accountBeans = accounts.stream().map(item -> beanMapper.convertAccount2AccountBean(item)).collect(Collectors.toList());
+        List<AccountBean> accountBeans = accounts.stream().map(item -> beanMapper.convertAccount2AccountBean(item))
+                .collect(Collectors.toList());
         return PageResponse.<AccountBean>builder().limit(request.getLimit()).offset(request.getOffset())
                 .total(amount).data(accountBeans).build();
     }
@@ -126,13 +132,32 @@ public class AccountService {
      * @param request
      */
     public void updateAccount(String code, UpdateAccountRequest request) {
-        Account oldAccount = atomicAccountService.queryAccountByRequest(QueryAccountRequest.builder().code(code).build());
+        Account oldAccount = atomicAccountService
+                .queryAccountByRequest(QueryAccountRequest.builder().code(code).build());
         if (Objects.isNull(oldAccount)) {
             throw new BusinessException(EasyResultCode.ACCOUNT_NOT_FOUND);
         }
 
         Account account = beanMapper.convertAccountUpdateReq2Account(oldAccount.getId(), request);
         atomicAccountService.updateAccountByPKSelective(account);
+    }
+
+    @Override
+    public void execute(String section, UserSectionContext ctx, Map<Long, String> userIdCodesMap,
+            boolean queryWhenSectionEmpty) {
+        if (MapUtils.isEmpty(userIdCodesMap)) {
+            return;
+        }
+
+        List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
+        if (section.contains(QuerySection.QUERY_ACCOUNTS.getName()) || queryWhenSectionEmpty) {
+            QueryAccountListRequest queryAccountListRequest = QueryAccountListRequest.builder()
+                    .userCodes(userCodes).build();
+            List<AccountBean> accounts = queryListUnlimited(queryAccountListRequest);
+            Map<String, List<AccountBean>> accountMap = accounts.stream().filter(Objects::nonNull)
+                    .collect(Collectors.groupingBy(AccountBean::getUserCode));
+            ctx.setAccountsMap(accountMap);
+        }
     }
 
 }
