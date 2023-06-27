@@ -142,6 +142,8 @@ public enum EasyResultCode {
 
     CREATE_USER_FAILED,
     INVALID_CONTINENT_TYPE,
+    MESSAGE_PARAM_CONFIG_REQUIRED,
+    MESSAGE_PARAM_CONFIG_RECEIVER_REQUIRED,
     ;
 
     public String getCode() {

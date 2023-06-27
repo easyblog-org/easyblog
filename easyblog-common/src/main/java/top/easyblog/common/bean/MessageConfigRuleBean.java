@@ -2,6 +2,8 @@ package top.easyblog.common.bean;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author: frank.huang
  * @date: 2023-02-06 19:29
@@ -25,6 +27,8 @@ public class MessageConfigRuleBean {
     private Byte channel;
 
     private String configIds;
+
+    private List<MessageConfigBean> configs;
 
     private Boolean deleted;
 

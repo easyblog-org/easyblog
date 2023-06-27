@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import top.easyblog.common.bean.MessageConfigRuleBean;
-import top.easyblog.common.request.message.rule.CreateMessageConfigRuleRequest;
-import top.easyblog.common.request.message.rule.QueryMessageConfigRuleRequest;
-import top.easyblog.common.request.message.rule.QueryMessageConfigRulesRequest;
-import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
+import top.easyblog.common.request.message.rule.*;
 import top.easyblog.common.response.PageResponse;
-import top.easyblog.platform.service.AdminMessagePushRuleService;
+import top.easyblog.platform.service.AdminMessageRuleConfigService;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: frank.huang
@@ -24,18 +23,19 @@ import javax.validation.Valid;
 public class AdminMessageRuleConfigController {
 
     @Autowired
-    private AdminMessagePushRuleService messagePushRuleService;
+    private AdminMessageRuleConfigService messagePushRuleService;
 
     @ResponseWrapper
     @PostMapping("")
-    public void create(@RequestBody @Valid CreateMessageConfigRuleRequest request) {
+    public void create(@RequestBody @Valid CreateMessagePushRuleRequest request) {
         messagePushRuleService.createMessagePushRule(request);
     }
 
+
     @ResponseWrapper
-    @PutMapping("/{code}")
-    public void update(@PathVariable("code") String code, UpdateMessageConfigRuleRequest request) {
-        messagePushRuleService.update(code, request);
+    @PutMapping("/")
+    public void update(UpdateMessagePushRuleRequest request) {
+        messagePushRuleService.update(request);
     }
 
     @ResponseWrapper
@@ -48,6 +48,12 @@ public class AdminMessageRuleConfigController {
     @GetMapping("/list")
     public PageResponse<MessageConfigRuleBean> list(@RequestParamAlias QueryMessageConfigRulesRequest request) {
         return messagePushRuleService.list(request);
+    }
+
+    @ResponseWrapper
+    @GetMapping("/cascader")
+    public Map<String, Map<String, List<MessageConfigRuleBean>>> queryMessagePushRuleMap(@RequestParam("template_code") String templateCode) {
+        return messagePushRuleService.queryMessagePushRuleMap(templateCode);
     }
 
 }
