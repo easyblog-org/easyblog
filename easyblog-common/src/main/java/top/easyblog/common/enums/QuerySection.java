@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum UserQuerySection {
+public enum QuerySection {
     QUERY_HEADER_IMG("header_img"),
 
     QUERY_CURRENT_HEADER_IMG("current_header_img"),
@@ -18,7 +18,14 @@ public enum UserQuerySection {
 
     QUERY_SIGN_LOG("sign_log"),
 
-    QUERY_ROLE("roles")
+    QUERY_ROLE("roles"),
+
+    QUERY_ARTICLE_CATEGORY("article_category"),
+
+    QUERY_ARTICLE_AUTHOR("article_author"),
+
+    QUERY_ARTICLE_AUTHOR_AVATAR("article_author_avatar"),
+
     ;
 
     private String name;

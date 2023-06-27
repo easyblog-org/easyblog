@@ -2,6 +2,7 @@ package top.easyblog.dao.auto.mapper.provider;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.jdbc.SQL;
 import top.easyblog.dao.auto.model.ArticleCategory;
 import top.easyblog.dao.auto.model.example.ArticleCategoryExample.Criteria;
@@ -27,27 +28,27 @@ public class ArticleCategorySqlProvider {
     public String insertSelective(ArticleCategory record) {
         SQL sql = new SQL();
         sql.INSERT_INTO("article_category");
-        
+
         if (record.getPid() != null) {
             sql.VALUES("pid", "#{pid,jdbcType=BIGINT}");
         }
-        
+
+        if (record.getName() != null) {
+            sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
+        }
+
         if (record.getCreateTime() != null) {
             sql.VALUES("create_time", "#{createTime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
-        
-        if (record.getName() != null) {
-            sql.VALUES("name", "#{name,jdbcType=VARBINARY}");
-        }
-        
+
         return sql.toString();
     }
 
-    public String selectByExampleWithBLOBs(ArticleCategoryExample example) {
+    public String selectByExample(ArticleCategoryExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
             sql.SELECT_DISTINCT("id");
@@ -55,12 +56,12 @@ public class ArticleCategorySqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("pid");
+        sql.SELECT("name");
         sql.SELECT("create_time");
         sql.SELECT("update_time");
-        sql.SELECT("name");
         sql.FROM("article_category");
         applyWhere(sql, example, false);
-        
+
         if (example != null && example.getOrderByClause() != null) {
             sql.ORDER_BY(example.getOrderByClause());
         }
@@ -75,68 +76,33 @@ public class ArticleCategorySqlProvider {
         return sqlBuilder.toString();
     }
 
-    public String selectByExample(ArticleCategoryExample example) {
-        SQL sql = new SQL();
-        if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("id");
-        } else {
-            sql.SELECT("id");
-        }
-        sql.SELECT("pid");
-        sql.SELECT("create_time");
-        sql.SELECT("update_time");
-        sql.FROM("article_category");
-        applyWhere(sql, example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            sql.ORDER_BY(example.getOrderByClause());
-        }
-        
-        return sql.toString();
-    }
-
     public String updateByExampleSelective(Map<String, Object> parameter) {
         ArticleCategory record = (ArticleCategory) parameter.get("record");
         ArticleCategoryExample example = (ArticleCategoryExample) parameter.get("example");
-        
+
         SQL sql = new SQL();
         sql.UPDATE("article_category");
-        
+
         if (record.getId() != null) {
             sql.SET("id = #{record.id,jdbcType=BIGINT}");
         }
-        
+
         if (record.getPid() != null) {
             sql.SET("pid = #{record.pid,jdbcType=BIGINT}");
         }
-        
+
+        if (record.getName() != null) {
+            sql.SET("name = #{record.name,jdbcType=VARCHAR}");
+        }
+
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
-        
-        if (record.getName() != null) {
-            sql.SET("name = #{record.name,jdbcType=VARBINARY}");
-        }
-        
-        applyWhere(sql, example, true);
-        return sql.toString();
-    }
 
-    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
-        SQL sql = new SQL();
-        sql.UPDATE("article_category");
-        
-        sql.SET("id = #{record.id,jdbcType=BIGINT}");
-        sql.SET("pid = #{record.pid,jdbcType=BIGINT}");
-        sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
-        sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        sql.SET("name = #{record.name,jdbcType=VARBINARY}");
-        
-        ArticleCategoryExample example = (ArticleCategoryExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -144,12 +110,13 @@ public class ArticleCategorySqlProvider {
     public String updateByExample(Map<String, Object> parameter) {
         SQL sql = new SQL();
         sql.UPDATE("article_category");
-        
+
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("pid = #{record.pid,jdbcType=BIGINT}");
+        sql.SET("name = #{record.name,jdbcType=VARCHAR}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
-        
+
         ArticleCategoryExample example = (ArticleCategoryExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
@@ -158,25 +125,25 @@ public class ArticleCategorySqlProvider {
     public String updateByPrimaryKeySelective(ArticleCategory record) {
         SQL sql = new SQL();
         sql.UPDATE("article_category");
-        
+
         if (record.getPid() != null) {
             sql.SET("pid = #{pid,jdbcType=BIGINT}");
         }
-        
+
+        if (record.getName() != null) {
+            sql.SET("name = #{name,jdbcType=VARCHAR}");
+        }
+
         if (record.getCreateTime() != null) {
             sql.SET("create_time = #{createTime,jdbcType=TIMESTAMP}");
         }
-        
+
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
         }
-        
-        if (record.getName() != null) {
-            sql.SET("name = #{name,jdbcType=VARBINARY}");
-        }
-        
+
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
-        
+
         return sql.toString();
     }
 
@@ -184,7 +151,7 @@ public class ArticleCategorySqlProvider {
         if (example == null) {
             return;
         }
-        
+
         String parmPhrase1;
         String parmPhrase1_th;
         String parmPhrase2;
@@ -206,7 +173,7 @@ public class ArticleCategorySqlProvider {
             parmPhrase3 = "#{oredCriteria[%d].allCriteria[%d].value[%d]}";
             parmPhrase3_th = "#{oredCriteria[%d].allCriteria[%d].value[%d],typeHandler=%s}";
         }
-        
+
         StringBuilder sb = new StringBuilder();
         List<Criteria> oredCriteria = example.getOredCriteria();
         boolean firstCriteria = true;
@@ -218,7 +185,7 @@ public class ArticleCategorySqlProvider {
                 } else {
                     sb.append(" or ");
                 }
-                
+
                 sb.append('(');
                 List<Criterion> criterions = criteria.getAllCriteria();
                 boolean firstCriterion = true;
@@ -229,14 +196,14 @@ public class ArticleCategorySqlProvider {
                     } else {
                         sb.append(" and ");
                     }
-                    
+
                     if (criterion.isNoValue()) {
                         sb.append(criterion.getCondition());
                     } else if (criterion.isSingleValue()) {
                         if (criterion.getTypeHandler() == null) {
                             sb.append(String.format(parmPhrase1, criterion.getCondition(), i, j));
                         } else {
-                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j,criterion.getTypeHandler()));
+                            sb.append(String.format(parmPhrase1_th, criterion.getCondition(), i, j, criterion.getTypeHandler()));
                         }
                     } else if (criterion.isBetweenValue()) {
                         if (criterion.getTypeHandler() == null) {
@@ -267,7 +234,7 @@ public class ArticleCategorySqlProvider {
                 sb.append(')');
             }
         }
-        
+
         if (sb.length() > 0) {
             sql.WHERE(sb.toString());
         }
