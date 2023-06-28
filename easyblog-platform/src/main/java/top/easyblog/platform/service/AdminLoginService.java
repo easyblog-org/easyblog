@@ -87,9 +87,9 @@ public class AdminLoginService {
 
             return roles.stream().filter(role -> {
                 // 只有管理员，负责人可以登录
-                return StringUtils.equalsIgnoreCase("admin", role.getCode()) ||
-                        StringUtils.equalsIgnoreCase("root", role.getCode()) ||
-                        StringUtils.equalsIgnoreCase("owner", role.getCode());
+                return StringUtils.equalsIgnoreCase("admin", role.getName()) ||
+                        StringUtils.equalsIgnoreCase("root", role.getName()) ||
+                        StringUtils.equalsIgnoreCase("owner", role.getName());
             }).findFirst().orElse(null);
         }).orElseThrow(() -> {
             log.info("User not admin,can not login.Details==>{}", JsonUtils.toJSONString(request));

@@ -133,13 +133,13 @@ public class RolesService implements IUserSectionInquireService {
 
     @Override
     public void execute(String section, UserSectionContext ctx, Map<Long, String> userIdCodesMap,
-            boolean queryWhenSectionEmpty) {
+                        boolean queryWhenSectionEmpty) {
         if (MapUtils.isEmpty(userIdCodesMap)) {
             return;
         }
 
         List<Long> userIds = new ArrayList<>(userIdCodesMap.keySet());
-        if (section.contains(QuerySection.QUERY_ROLE.getName()) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ROLE.getName(), section) || queryWhenSectionEmpty) {
             List<UserRoleRelationship> userRoleRelationships = atomicUserRolesService
                     .queryList(QueryUserRolesListRequest.builder()
                             .userIds(userIds).enabled(Boolean.TRUE).build());

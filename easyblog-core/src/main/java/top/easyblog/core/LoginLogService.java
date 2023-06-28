@@ -1,6 +1,8 @@
 package top.easyblog.core;
 
+import io.netty.util.internal.StringUtil;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,13 +85,13 @@ public class LoginLogService implements IUserSectionInquireService {
 
     @Override
     public void execute(String section, UserSectionContext ctx, Map<Long, String> userIdCodesMap,
-            boolean queryWhenSectionEmpty) {
+                        boolean queryWhenSectionEmpty) {
         if (MapUtils.isEmpty(userIdCodesMap)) {
             return;
         }
 
         List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
-        if (section.contains(QuerySection.QUERY_SIGN_LOG.getName())) {
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_SIGN_LOG.getName(), section)) {
             QueryLoginLogListRequest request = QueryLoginLogListRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode().intValue()).offset(NumberUtils.INTEGER_ZERO)
                     .limit(Constants.QUERY_LIMIT_MAX_THOUSAND).build();

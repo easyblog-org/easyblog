@@ -1,6 +1,7 @@
 package top.easyblog.core;
 
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.AccountBean;
@@ -144,13 +145,13 @@ public class AccountService implements IUserSectionInquireService {
 
     @Override
     public void execute(String section, UserSectionContext ctx, Map<Long, String> userIdCodesMap,
-            boolean queryWhenSectionEmpty) {
+                        boolean queryWhenSectionEmpty) {
         if (MapUtils.isEmpty(userIdCodesMap)) {
             return;
         }
 
         List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
-        if (section.contains(QuerySection.QUERY_ACCOUNTS.getName()) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ACCOUNTS.getName(), section) || queryWhenSectionEmpty) {
             QueryAccountListRequest queryAccountListRequest = QueryAccountListRequest.builder()
                     .userCodes(userCodes).build();
             List<AccountBean> accounts = queryListUnlimited(queryAccountListRequest);

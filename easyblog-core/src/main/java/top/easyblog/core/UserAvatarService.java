@@ -113,7 +113,7 @@ public class UserAvatarService implements
 
     @Override
     public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList,
-            boolean queryWhenSectionEmpty) {
+                        boolean queryWhenSectionEmpty) {
         if (CollectionUtils.isEmpty(articleBeanList)) {
             return;
         }
@@ -129,18 +129,18 @@ public class UserAvatarService implements
 
     @Override
     public void execute(String section, UserSectionContext ctx, Map<Long, String> userIdCodesMap,
-            boolean queryWhenSectionEmpty) {
+                        boolean queryWhenSectionEmpty) {
         if (MapUtils.isEmpty(userIdCodesMap)) {
             return;
         }
 
         List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
-        if (section.contains(QuerySection.QUERY_HEADER_IMG.getName()) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_HEADER_IMG.getName(), section) || queryWhenSectionEmpty) {
             ctx.setUserHistoryImagesMap(
                     buildUserAvatarMap(userCodes, (userHeaders) -> userHeaders.stream().filter(Objects::nonNull)
                             .collect(Collectors.groupingBy(UserAvatarBean::getUserCode))));
         }
-        if (section.contains(QuerySection.QUERY_CURRENT_HEADER_IMG.getName()) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_CURRENT_HEADER_IMG.getName(), section) || queryWhenSectionEmpty) {
             ctx.setUserCurrentImagesMap(buildUserAvatarMap(userCodes, (userHeaderBeans) -> userHeaderBeans.stream()
                     .filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
                     .collect(Collectors.toMap(UserAvatarBean::getUserCode, Function.identity(), (e1, e2) -> e1))));
@@ -148,7 +148,7 @@ public class UserAvatarService implements
     }
 
     private <R> R buildUserAvatarMap(List<String> userCodes,
-            Function<List<UserAvatarBean>, R> groupFunction) {
+                                     Function<List<UserAvatarBean>, R> groupFunction) {
         if (Objects.isNull(groupFunction))
             return null;
 

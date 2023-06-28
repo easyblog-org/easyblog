@@ -204,8 +204,13 @@ public interface BeanMapper {
 
     CreateUserRequest buildUserCreateRequest(CreateUserAccountRequest request);
 
+    @Mapping(target = "identifier", source = "request.email")
+    @Mapping(target = "credential", source = "request.password")
+    @Mapping(target = "userCode", source = "code")
     CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request, String code);
 
+    @Mapping(target = "identifier", source = "email")
+    @Mapping(target = "credential", source = "password")
     UpdateAccountRequest buildAccountUpdateRequest(UpdateUserAccountRequest request);
 
     UpdateUserRequest buildUserCreateRequest(UpdateUserAccountRequest request);
@@ -213,7 +218,14 @@ public interface BeanMapper {
     @Mapping(target = "configIds", source = "configIds")
     UpdateMessageConfigRuleRequest buildMessageRuleConfigUpdateReq(UpdateMessagePushRuleRequest request, String configIds);
 
+    @Mapping(target = "identifierType", expression = "java(top.easyblog.common.enums.IdentifierType.E_MAIL.getSubCode())")
+    @Mapping(target = "identifier", source = "request.email")
+    @Mapping(target = "credential", source = "request.password")
     LoginRequest buildAdminLoginRequest(AdminLoginRequest request);
 
+    @Mapping(target = "ip", source = "request.ip")
+    @Mapping(target = "device", source = "request.device")
+    @Mapping(target = "operationSystem", source = "request.operationSystem")
+    @Mapping(target = "location", source = "request.location")
     CreateLoginLogRequest buildAdminSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
 }

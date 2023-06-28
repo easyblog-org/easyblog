@@ -9,13 +9,14 @@ import top.easyblog.common.request.account.QueryAccountListRequest;
 import top.easyblog.common.request.account.QueryAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
 import top.easyblog.common.response.PageResponse;
+import top.easyblog.core.AccountService;
 
 @Service
 public class AdminAccountService {
 
 
     @Autowired
-    private AdminAccountService accountService;
+    private AccountService accountService;
 
     
     public void createAccount(CreateAccountRequest request) {
@@ -31,7 +32,7 @@ public class AdminAccountService {
     }
 
     public PageResponse<AccountBean> queryAccountList(QueryAccountListRequest request) {
-        return accountService.queryAccountList(request);
+        return accountService.queryAccountListPage(request);
     }
 
 }
