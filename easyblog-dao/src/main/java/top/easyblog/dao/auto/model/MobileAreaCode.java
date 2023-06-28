@@ -9,6 +9,8 @@ public class MobileAreaCode {
 
     private String code;
 
+    private String continentCode;
+
     private String crownCode;
 
     private String countryCode;

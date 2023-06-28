@@ -31,7 +31,9 @@ public enum ContinentEnum {
     private final String desc;
 
     public static Optional<ContinentEnum> codeOfOptional(String code) {
-        if (StringUtils.isBlank(code)) throw new BusinessException(EasyResultCode.UNKNOWN_CONTINENT_CODE);
+        if (StringUtils.isBlank(code)) {
+            return Optional.of(GLOBAL);
+        }
         Optional<ContinentEnum> enumOptional = Arrays.stream(ContinentEnum.values()).filter(item -> StringUtils.equalsIgnoreCase(item.getCode(), code)).findAny();
         if (!enumOptional.isPresent()) {
             throw new BusinessException(EasyResultCode.UNKNOWN_CONTINENT_CODE);

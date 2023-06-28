@@ -17,7 +17,7 @@ import javax.validation.Valid;
  * @author: frank.huang
  * @date: 2023-02-25 16:27
  */
-@RequestMapping("/v1/roles")
+@RequestMapping("/admin/v1/roles")
 @RestController
 public class AdminRolesController {
 

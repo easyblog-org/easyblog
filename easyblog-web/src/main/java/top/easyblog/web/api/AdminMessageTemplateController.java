@@ -20,9 +20,9 @@ import javax.validation.Valid;
  * @author: frank.huang
  * @date: 2023-02-25 13:48
  */
-@RequestMapping("/v1/template")
+@RequestMapping("/admin/v1/template")
 @RestController
-public class MessageTemplateController {
+public class AdminMessageTemplateController {
 
 
     @Autowired

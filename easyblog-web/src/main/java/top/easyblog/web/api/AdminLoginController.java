@@ -17,7 +17,7 @@ import top.easyblog.web.annotation.ResponseWrapper;
  * @author: frank.huang
  * @date: 2023-02-25 13:52
  */
-@RequestMapping("/v1/auth")
+@RequestMapping("/admin/v1/auth")
 @RestController
 public class AdminLoginController {
 

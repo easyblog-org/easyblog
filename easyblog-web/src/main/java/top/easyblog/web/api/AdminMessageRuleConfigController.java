@@ -18,7 +18,7 @@ import java.util.Map;
  * @author: frank.huang
  * @date: 2023-05-04 20:27
  */
-@RequestMapping("/v1/message-rule-config")
+@RequestMapping("/admin/v1/message-rule-config")
 @RestController
 public class AdminMessageRuleConfigController {
 

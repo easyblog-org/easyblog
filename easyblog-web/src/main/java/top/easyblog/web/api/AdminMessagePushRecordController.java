@@ -19,7 +19,7 @@ import javax.validation.Valid;
  * @date: 2023-05-13 13:24
  */
 @RestController
-@RequestMapping("/v1/message")
+@RequestMapping("/admin/v1/message")
 public class AdminMessagePushRecordController {
 
     @Autowired

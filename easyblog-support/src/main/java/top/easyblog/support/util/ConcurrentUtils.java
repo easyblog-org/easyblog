@@ -42,7 +42,7 @@ public class ConcurrentUtils {
             try {
                 task.run();
             } catch (Exception e) {
-                log.info("Task execute failed:", e.fillInStackTrace());
+                log.info("Task execute failed:",e);
                 throw e;
             } finally {
                 cdl.countDown();

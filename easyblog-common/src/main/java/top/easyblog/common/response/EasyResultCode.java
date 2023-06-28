@@ -118,6 +118,8 @@ public enum EasyResultCode {
     USER_NOT_FOUND,
     // 认证Token不存在
     AUTH_TOKEN_NOT_FOUND,
+    // 认证过期
+    AUTH_EXPIRED,
     //发送记录未找到
     MESSAGE_RECORD_NOT_FOUND,
     // 文章已经被删除

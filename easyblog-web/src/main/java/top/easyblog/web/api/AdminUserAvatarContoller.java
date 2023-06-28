@@ -21,7 +21,7 @@ import top.easyblog.web.annotation.ResponseWrapper;
  * @author: frank.huang
  * @date: 2023-03-11 15:30
  */
-@RequestMapping("/v1/header-image")
+@RequestMapping("/admin/v1/header-image")
 @RestController
 public class AdminUserAvatarContoller {
 

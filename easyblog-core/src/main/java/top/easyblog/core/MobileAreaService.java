@@ -51,7 +51,12 @@ public class MobileAreaService {
             throw new BusinessException(EasyResultCode.PHONE_AREA_CODE_ALREADY_EXISTS);
         }
 
-        ContinentEnum.codeOfOptional(request.getContinentCode());
+        ContinentEnum continentEnum = ContinentEnum.codeOfOptional(request.getContinentCode())
+                .orElseThrow(() -> new BusinessException(EasyResultCode.UNKNOWN_CONTINENT_CODE));
+        if (ContinentEnum.GLOBAL.name().equalsIgnoreCase(continentEnum.getCode())) {
+            log.info("Continent code can not be empty!");
+            throw new BusinessException(EasyResultCode.UNKNOWN_CONTINENT_CODE);
+        }
 
         mobileArea = beanMapper.convertMobileAreaCodeCreateReq2MobileArea(request);
         atomicMobileAreaService.insertPhoneAreaCodeByRequest(mobileArea);

@@ -18,7 +18,7 @@ import javax.validation.Valid;
  * @author: frank.huang
  * @date: 2023-02-25 13:48
  */
-@RequestMapping("/v1/user")
+@RequestMapping("/admin/v1/user")
 @RestController
 public class AdminUserController {
 

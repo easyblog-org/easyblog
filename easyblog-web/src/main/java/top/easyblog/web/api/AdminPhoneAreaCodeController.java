@@ -17,7 +17,7 @@ import java.util.List;
  * @author: frank.huang
  * @date: 2023-03-12 17:51
  */
-@RequestMapping("/v1/phone-area")
+@RequestMapping("/admin/v1/phone-area")
 @RestController
 public class AdminPhoneAreaCodeController {
 
