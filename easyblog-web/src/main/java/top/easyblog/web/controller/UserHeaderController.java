@@ -2,12 +2,12 @@ package top.easyblog.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.easyblog.common.bean.UserHeaderBean;
+import top.easyblog.common.bean.UserAvatarBean;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.header.QueryUserHeaderImgRequest;
 import top.easyblog.common.request.header.QueryUserHeadersRequest;
 import top.easyblog.common.response.PageResponse;
-import top.easyblog.core.UserHeaderService;
+import top.easyblog.core.UserAvatarService;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class UserHeaderController {
 
     @Autowired
-    private UserHeaderService headerImgService;
+    private UserAvatarService headerImgService;
 
     @ResponseWrapper
     @PostMapping
@@ -38,7 +38,7 @@ public class UserHeaderController {
 
     @ResponseWrapper
     @GetMapping("/list")
-    public PageResponse<UserHeaderBean> queryList(@Valid @RequestParamAlias QueryUserHeadersRequest request) {
+    public PageResponse<UserAvatarBean> queryList(@Valid @RequestParamAlias QueryUserHeadersRequest request) {
         return headerImgService.queryUserHeaderList(request);
     }
 }

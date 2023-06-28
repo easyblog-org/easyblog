@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.ArticleBean;
-import top.easyblog.common.bean.UserHeaderBean;
+import top.easyblog.common.bean.UserAvatarBean;
 import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.enums.Status;
@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * @date 2022/01/30 13:19
  */
 @Service
-public class UserHeaderService implements
+public class UserAvatarService implements
         IArticleSectionInquireService, IUserSectionInquireService {
 
     @Autowired
@@ -63,23 +63,23 @@ public class UserHeaderService implements
         headerImgService.createUserHeaderImgSelective(userHeader);
     }
 
-    public UserHeaderBean queryUserHeaderDetails(QueryUserHeaderImgRequest request) {
+    public UserAvatarBean queryUserHeaderDetails(QueryUserHeaderImgRequest request) {
         UserHeader UserHeader = headerImgService.queryByRequest(request);
         return Optional.ofNullable(UserHeader).map(item -> {
-            UserHeaderBean userHeaderImgBean = new UserHeaderBean();
+            UserAvatarBean userHeaderImgBean = new UserAvatarBean();
             BeanUtils.copyProperties(UserHeader, userHeaderImgBean);
             return userHeaderImgBean;
         }).orElse(null);
     }
 
-    public PageResponse<UserHeaderBean> queryUserHeaderList(QueryUserHeadersRequest request) {
+    public PageResponse<UserAvatarBean> queryUserHeaderList(QueryUserHeadersRequest request) {
         if (Objects.isNull(request.getOffset()) || Objects.isNull(request.getLimit())) {
             // 不分页，默认查询1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
             request.setLimit(
                     Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_MAX_THOUSAND : request.getLimit());
-            List<UserHeaderBean> userHeaderImgBeans = queryUserHeaderBeans(request);
-            return PageResponse.<UserHeaderBean>builder()
+            List<UserAvatarBean> userHeaderImgBeans = queryUserHeaderBeans(request);
+            return PageResponse.<UserAvatarBean>builder()
                     .limit(request.getLimit())
                     .offset(request.getOffset())
                     .total((long) userHeaderImgBeans.size())
@@ -89,18 +89,18 @@ public class UserHeaderService implements
 
         long count = headerImgService.countByRequest(request);
         if (count == 0) {
-            return PageResponse.<UserHeaderBean>builder().limit(request.getLimit()).offset(request.getOffset())
+            return PageResponse.<UserAvatarBean>builder().limit(request.getLimit()).offset(request.getOffset())
                     .total(NumberUtils.LONG_ZERO).data(Collections.emptyList()).build();
         }
 
-        List<UserHeaderBean> userHeaderBeans = queryUserHeaderBeans(request);
-        return PageResponse.<UserHeaderBean>builder().limit(request.getLimit()).offset(request.getOffset())
+        List<UserAvatarBean> userHeaderBeans = queryUserHeaderBeans(request);
+        return PageResponse.<UserAvatarBean>builder().limit(request.getLimit()).offset(request.getOffset())
                 .total(count).data(userHeaderBeans).build();
     }
 
-    public List<UserHeaderBean> queryUserHeaderBeans(QueryUserHeadersRequest request) {
+    public List<UserAvatarBean> queryUserHeaderBeans(QueryUserHeadersRequest request) {
         return headerImgService.queryHeaderImgListByRequest(request).stream().map(header -> {
-            UserHeaderBean userHeaderImgBean = new UserHeaderBean();
+            UserAvatarBean userHeaderImgBean = new UserAvatarBean();
             BeanUtils.copyProperties(header, userHeaderImgBean);
             userHeaderImgBean.setIsCurrentHeader(Status.ENABLE.getCode().equals(header.getStatus()));
             return userHeaderImgBean;
@@ -123,7 +123,7 @@ public class UserHeaderService implements
                 || queryWhenSectionEmpty) {
             ctx.setAuthorAvatarBeanMap(buildUserAvatarMap(authorIds, (userHeaderBeans) -> userHeaderBeans.stream()
                     .filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
-                    .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(), (e1, e2) -> e1))));
+                    .collect(Collectors.toMap(UserAvatarBean::getUserCode, Function.identity(), (e1, e2) -> e1))));
         }
     }
 
@@ -138,23 +138,23 @@ public class UserHeaderService implements
         if (section.contains(QuerySection.QUERY_HEADER_IMG.getName()) || queryWhenSectionEmpty) {
             ctx.setUserHistoryImagesMap(
                     buildUserAvatarMap(userCodes, (userHeaders) -> userHeaders.stream().filter(Objects::nonNull)
-                            .collect(Collectors.groupingBy(UserHeaderBean::getUserCode))));
+                            .collect(Collectors.groupingBy(UserAvatarBean::getUserCode))));
         }
         if (section.contains(QuerySection.QUERY_CURRENT_HEADER_IMG.getName()) || queryWhenSectionEmpty) {
             ctx.setUserCurrentImagesMap(buildUserAvatarMap(userCodes, (userHeaderBeans) -> userHeaderBeans.stream()
                     .filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))
-                    .collect(Collectors.toMap(UserHeaderBean::getUserCode, Function.identity(), (e1, e2) -> e1))));
+                    .collect(Collectors.toMap(UserAvatarBean::getUserCode, Function.identity(), (e1, e2) -> e1))));
         }
     }
 
     private <R> R buildUserAvatarMap(List<String> userCodes,
-            Function<List<UserHeaderBean>, R> groupFunction) {
+            Function<List<UserAvatarBean>, R> groupFunction) {
         if (Objects.isNull(groupFunction))
             return null;
 
         QueryUserHeadersRequest queryUserHeadersRequest = QueryUserHeadersRequest.builder()
                 .userCodes(userCodes).status(Status.ENABLE.getCode()).build();
-        List<UserHeaderBean> userHeaderBeans = queryUserHeaderBeans(queryUserHeadersRequest);
+        List<UserAvatarBean> userHeaderBeans = queryUserHeaderBeans(queryUserHeadersRequest);
         return groupFunction.apply(userHeaderBeans);
     }
 

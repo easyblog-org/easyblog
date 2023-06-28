@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import top.easyblog.common.bean.AccountBean;
 import top.easyblog.common.bean.LoginLogBean;
 import top.easyblog.common.bean.RolesBean;
-import top.easyblog.common.bean.UserHeaderBean;
+import top.easyblog.common.bean.UserAvatarBean;
 
 import java.util.List;
 import java.util.Map;
@@ -25,9 +25,9 @@ import java.util.Optional;
 @NoArgsConstructor
 public class UserSectionContext {
     // 当前头像
-    private Map<String, UserHeaderBean> userCurrentImagesMap;
+    private Map<String, UserAvatarBean> userCurrentImagesMap;
     // 历史头像
-    private Map<String, List<UserHeaderBean>> userHistoryImagesMap;
+    private Map<String, List<UserAvatarBean>> userHistoryImagesMap;
     // 账户
     private Map<String, List<AccountBean>> accountsMap;
     // 角色

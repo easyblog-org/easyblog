@@ -13,6 +13,8 @@ import top.easyblog.common.request.article.CreateArticleRequest;
 import top.easyblog.common.request.article.UpdateArticleCategoryRequest;
 import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
+import top.easyblog.common.request.login.AdminLoginRequest;
+import top.easyblog.common.request.login.LoginRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
 import top.easyblog.common.request.message.config.CreateMessageConfigRequest;
@@ -210,4 +212,8 @@ public interface BeanMapper {
 
     @Mapping(target = "configIds", source = "configIds")
     UpdateMessageConfigRuleRequest buildMessageRuleConfigUpdateReq(UpdateMessagePushRuleRequest request, String configIds);
+
+    LoginRequest buildAdminLoginRequest(AdminLoginRequest request);
+
+    CreateLoginLogRequest buildAdminSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
 }

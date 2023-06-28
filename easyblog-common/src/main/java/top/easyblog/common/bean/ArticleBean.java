@@ -25,7 +25,7 @@ public class ArticleBean {
     /**
      * 作者信息头像
      */
-    private UserHeaderBean authorAvatar;
+    private UserAvatarBean authorAvatar;
 
     private String title;
 
