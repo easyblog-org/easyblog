@@ -37,8 +37,14 @@ public class AdminMessageTemplateController {
 
     @ResponseWrapper
     @PutMapping("/{code}")
-    public void updateUserAccount(@PathVariable("code") String code, @RequestBody @Valid UpdateMessageTemplateRequest request) {
+    public void updateMessageTemplate(@PathVariable("code") String code, @RequestBody @Valid UpdateMessageTemplateRequest request) {
         templateService.update(code, request);
+    }
+
+    @ResponseWrapper
+    @PutMapping("/{code}/{status}")
+    public void updateMessageTemplate(@PathVariable("code") String code, @PathVariable Short status) {
+        templateService.updateStatus(code, status);
     }
 
 

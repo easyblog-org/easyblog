@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import top.easyblog.common.bean.MessageTemplateBean;
+import top.easyblog.common.enums.MessageTemplateStatus;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.message.template.CreateMessageTemplateRequest;
 import top.easyblog.common.request.message.template.QueryMessageTemplateRequest;
@@ -67,7 +68,12 @@ public class MessageTemplateService {
                 .limit(request.getLimit()).data(templateBeans).build();
     }
 
-
+    /**
+     * 更新消息模板内容
+     *
+     * @param code
+     * @param request
+     */
     public void updateMessageTemplate(String code, UpdateMessageTemplateRequest request) {
         MessageTemplate template = atomicMessageTemplateService.queryByRequest(QueryMessageTemplateRequest.builder()
                 .templateCode(code).build());

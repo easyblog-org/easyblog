@@ -132,8 +132,6 @@ public interface BeanMapper {
     MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
 
     @Mapping(target = "status", source = "template.status")
-    @Mapping(target = "createTime", expression = "java(template.getCreateTime().getTime()/1000)")
-    @Mapping(target = "updateTime", expression = "java(template.getUpdateTime().getTime()/1000)")
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
     @Mappings({

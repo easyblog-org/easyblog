@@ -2,6 +2,8 @@ package top.easyblog.common.bean;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class MessageTemplateBean {
     private Long id;
@@ -22,7 +24,7 @@ public class MessageTemplateBean {
 
     private Boolean deleted;
 
-    private Long createTime;
+    private Date createTime;
 
-    private Long updateTime;
+    private Date updateTime;
 }
