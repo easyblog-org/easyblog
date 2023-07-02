@@ -30,9 +30,9 @@ public class AtomicArticleService {
     public Long insertOne(Article article) {
         article.setCreateTime(new Date());
         article.setUpdateTime(new Date());
-        long lastID = mapper.insertSelective(article);
-        log.info("[DB] Insert new article [lastID={}] successfully!Details==>{}", lastID, JsonUtils.toJSONString(article));
-        return lastID;
+        mapper.insertSelective(article);
+        log.info("[DB] Insert new article [lastID={}] successfully!Details==>{}", article.getId(), JsonUtils.toJSONString(article));
+        return article.getId();
     }
 
 

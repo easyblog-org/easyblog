@@ -6,7 +6,7 @@
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="author_id" jdbcType="VARCHAR" property="authorId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
-        <result column="category" jdbcType="BIGINT" property="categoryId"/>
+        <result column="category" jdbcType="BIGINT" property="categoryIds"/>
         <result column="featured_image" jdbcType="VARCHAR" property="featuredImage"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="is_top" jdbcType="BOOLEAN" property="isTop"/>

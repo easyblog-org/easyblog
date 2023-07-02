@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
+import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.request.article.CreateArticleCategoryRequest;
 import top.easyblog.common.request.article.QueryArticleCategoryListRequest;
@@ -21,11 +22,7 @@ import top.easyblog.dao.auto.model.ArticleCategory;
 import top.easyblog.service.section.IArticleSectionInquireService;
 import top.easyblog.support.context.ArticleSectionContext;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -130,7 +127,9 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
     @Override
     public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList, boolean queryWhenSectionEmpty) {
         if (CollectionUtils.isEmpty(articleBeanList)) return;
-        List<Long> categoryIds = articleBeanList.stream().map(ArticleBean::getCategoryId).collect(Collectors.toList());
+        List<Long> categoryIds = articleBeanList.stream()
+                .map(item -> Arrays.stream(StringUtils.split(item.getCategoryIds(), Constants.COMMA)).map(Long::parseLong)
+                        .collect(Collectors.toList())).flatMap(Collection::stream).distinct().collect(Collectors.toList());
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_CATEGORY.name(), section) || queryWhenSectionEmpty) {
             List<ArticleCategory> articleCategories = atomicArticleCategoryService.queryListByRequest(QueryArticleCategoryListRequest.builder()
                     .ids(categoryIds).limit(null).offset(null).build());

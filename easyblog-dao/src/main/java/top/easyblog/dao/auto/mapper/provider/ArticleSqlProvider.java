@@ -37,7 +37,7 @@ public class ArticleSqlProvider {
         }
         
         if (record.getCategory() != null) {
-            sql.VALUES("category", "#{category,jdbcType=BIGINT}");
+            sql.VALUES("category", "#{category,jdbcType=VARCHAR}");
         }
         
         if (record.getFeaturedImage() != null) {
@@ -125,7 +125,7 @@ public class ArticleSqlProvider {
         }
         
         if (record.getCategory() != null) {
-            sql.SET("category = #{record.category,jdbcType=BIGINT}");
+            sql.SET("category = #{record.category,jdbcType=VARCHAR}");
         }
         
         if (record.getFeaturedImage() != null) {
@@ -167,7 +167,7 @@ public class ArticleSqlProvider {
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("author_id = #{record.authorId,jdbcType=VARCHAR}");
         sql.SET("title = #{record.title,jdbcType=VARCHAR}");
-        sql.SET("category = #{record.category,jdbcType=BIGINT}");
+        sql.SET("category = #{record.category,jdbcType=VARCHAR}");
         sql.SET("featured_image = #{record.featuredImage,jdbcType=VARCHAR}");
         sql.SET("status = #{record.status,jdbcType=VARCHAR}");
         sql.SET("is_top = #{record.isTop,jdbcType=BIT}");
@@ -194,7 +194,7 @@ public class ArticleSqlProvider {
         }
         
         if (record.getCategory() != null) {
-            sql.SET("category = #{category,jdbcType=BIGINT}");
+            sql.SET("category = #{category,jdbcType=VARCHAR}");
         }
         
         if (record.getFeaturedImage() != null) {

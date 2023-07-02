@@ -30,7 +30,7 @@ public class ArticleBean {
 
     private String title;
 
-    private Long categoryId;
+    private String categoryIds;
 
     private List<ArticleCategoryBean> categories;
 
