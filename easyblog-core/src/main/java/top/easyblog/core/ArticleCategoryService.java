@@ -122,7 +122,7 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
      * 聚合服务中进行选项查询
      *
      * @param section               选项名称
-     * @param ctx 上下文
+     * @param ctx                   上下文
      * @param articleBeanList       查询参数
      * @param queryWhenSectionEmpty 是否在选项名称为空时继续执行查询
      * @return
@@ -134,9 +134,9 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_CATEGORY.name(), section) || queryWhenSectionEmpty) {
             List<ArticleCategory> articleCategories = atomicArticleCategoryService.queryListByRequest(QueryArticleCategoryListRequest.builder()
                     .ids(categoryIds).limit(null).offset(null).build());
-            Map<Long, ArticleCategoryBean> articleCategoryBeanMap = articleCategories.stream().filter(Objects::nonNull)
+            Map<Long, List<ArticleCategoryBean>> articleCategoryBeanMap = articleCategories.stream().filter(Objects::nonNull)
                     .map(item -> beanMapper.convertArticleCategory2ArticleCategoryBean(item))
-                    .collect(Collectors.toMap(ArticleCategoryBean::getId, Function.identity(), (e1, e2) -> e1));
+                    .collect(Collectors.groupingBy(ArticleCategoryBean::getId));
             ctx.setArticleCategoryBeanMap(articleCategoryBeanMap);
         }
     }

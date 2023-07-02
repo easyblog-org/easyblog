@@ -67,13 +67,13 @@
             </foreach>
         </if>
         <if test="request.isTop!=null">
-            and a.is_top=#{isTop}
+            and a.is_top=#{request.isTop}
         </if>
         <if test="request.authorId!=null">
-            and a.author_id=#{authorId}
+            and a.author_id=#{request.authorId}
         </if>
         <if test="request.title!=null">
-            and a.title like %#{title}%
+            and a.title like %#{request.title}%
         </if>
     </sql>
 

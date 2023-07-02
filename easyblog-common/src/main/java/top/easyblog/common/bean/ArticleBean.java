@@ -3,6 +3,7 @@ package top.easyblog.common.bean;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: frank.huang
@@ -31,7 +32,7 @@ public class ArticleBean {
 
     private Long categoryId;
 
-    private ArticleCategoryBean category;
+    private List<ArticleCategoryBean> categories;
 
     private String featuredImage;
 

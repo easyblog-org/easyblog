@@ -175,7 +175,7 @@ public class ArticleService {
     private void fillSections(String sections, List<ArticleBean> articleBeans) {
         ArticleSectionContext ctx = queryArticleSectionInfo(sections, articleBeans);
         articleBeans.forEach(articleBean -> {
-            articleBean.setCategory(Optional.ofNullable(ctx.getArticleCategoryBeanMap()).map(map -> map.get(articleBean.getCategoryId())).orElse(null));
+            articleBean.setCategories(Optional.ofNullable(ctx.getArticleCategoryBeanMap()).map(map -> map.get(articleBean.getCategoryId())).orElse(null));
             articleBean.setAuthor(Optional.ofNullable(ctx.getAuthorMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
             articleBean.setAuthorAvatar(Optional.ofNullable(ctx.getAuthorAvatarBeanMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
         });
