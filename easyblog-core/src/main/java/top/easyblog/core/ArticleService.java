@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import top.easyblog.common.bean.ArticleBean;
+import top.easyblog.common.bean.ArticleCategoryBean;
+import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.ArticleStatus;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.article.CreateArticleRequest;
@@ -30,6 +32,7 @@ import top.easyblog.support.context.ArticleSectionContext;
 import top.easyblog.support.util.ConcurrentUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author: frank.huang
@@ -78,8 +81,7 @@ public class ArticleService {
 
 
     private void checkAuthorInfoValid(CreateArticleRequest request) {
-        User user = atomicUserService.queryByRequest(QueryUserRequest.builder()
-                .code(request.getAuthorId()).build());
+        User user = atomicUserService.queryByRequest(QueryUserRequest.builder().code(request.getAuthorId()).build());
         Assert.notNull(user, " Article author info not valid.");
     }
 
@@ -116,8 +118,7 @@ public class ArticleService {
 
 
     private boolean articleUndoDeleteExpired(ArticleBean articleBean) {
-        return Objects.nonNull(articleBean) &&
-                StringUtils.equalsIgnoreCase(ArticleStatus.DELETED.name(), articleBean.getStatus());
+        return Objects.nonNull(articleBean) && StringUtils.equalsIgnoreCase(ArticleStatus.DELETED.name(), articleBean.getStatus());
     }
 
 
@@ -129,9 +130,7 @@ public class ArticleService {
 
         ArticleContent articleContent = beanMapper.buildArticleContent(content);
         articleContent.setId(Optional.ofNullable(contentId).map(Long::intValue).orElse(null));
-        return Objects.isNull(contentId) ?
-                atomicArticleContentService.insertOne(articleContent) :
-                atomicArticleContentService.updateByPrimaryKeySelective(articleContent);
+        return Objects.isNull(contentId) ? atomicArticleContentService.insertOne(articleContent) : atomicArticleContentService.updateByPrimaryKeySelective(articleContent);
     }
 
 
@@ -142,8 +141,7 @@ public class ArticleService {
      * @return
      */
     public ArticleBean details(String code, String sections) {
-        List<ArticleBean> articleBeans = atomicArticleService.queryListByRequest(QueryArticlesRequest.builder()
-                .codes(Collections.singletonList(code)).build());
+        List<ArticleBean> articleBeans = atomicArticleService.queryListByRequest(QueryArticlesRequest.builder().codes(Collections.singletonList(code)).build());
         ArticleBean articleBean = CollectionUtils.isEmpty(articleBeans) ? null : Iterables.getFirst(articleBeans, null);
         fillSections(sections, Collections.singletonList(articleBean));
         return articleBean;
@@ -157,11 +155,7 @@ public class ArticleService {
      */
     public PageResponse<ArticleBean> list(QueryArticlesRequest request) {
         long hits = atomicArticleService.countByRequest(request);
-        PageResponse<ArticleBean> pageResponse = PageResponse.<ArticleBean>builder()
-                .total(hits)
-                .limit(request.getLimit())
-                .offset(request.getOffset())
-                .data(Collections.emptyList()).build();
+        PageResponse<ArticleBean> pageResponse = PageResponse.<ArticleBean>builder().total(hits).limit(request.getLimit()).offset(request.getOffset()).data(Collections.emptyList()).build();
         if (Objects.equals(NumberUtils.LONG_ZERO, hits)) {
             return pageResponse;
         }
@@ -175,7 +169,13 @@ public class ArticleService {
     private void fillSections(String sections, List<ArticleBean> articleBeans) {
         ArticleSectionContext ctx = queryArticleSectionInfo(sections, articleBeans);
         articleBeans.forEach(articleBean -> {
-            articleBean.setCategories(Optional.ofNullable(ctx.getArticleCategoryBeanMap()).map(map -> map.get(articleBean.getCategoryIds())).orElse(null));
+            String categoryIds = articleBean.getCategoryIds();
+            if (StringUtils.isNotBlank(categoryIds)) {
+                List<ArticleCategoryBean> categoryBeans = Arrays.stream(StringUtils.split(categoryIds, Constants.COMMA)).map(categoryId -> {
+                    return Optional.ofNullable(ctx.getArticleCategoryBeanMap()).map(map -> map.get(Long.parseLong(categoryId))).orElse(null);
+                }).filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
+                articleBean.setCategories(categoryBeans);
+            }
             articleBean.setAuthor(Optional.ofNullable(ctx.getAuthorMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
             articleBean.setAuthorAvatar(Optional.ofNullable(ctx.getAuthorAvatarBeanMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
         });
