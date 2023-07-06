@@ -51,8 +51,8 @@ public class H5ArticleController {
      */
     @ResponseWrapper
     @GetMapping("/{code}")
-    public ArticleBean details(@PathVariable("code") String code,
-                               @RequestParam("sections") String sections) {
+    public H5ArticleBean.ArticleBean details(@PathVariable("code") String code,
+                               @RequestParam(value = "sections",required = false) String sections) {
         return articleService.details(code, sections);
     }
 

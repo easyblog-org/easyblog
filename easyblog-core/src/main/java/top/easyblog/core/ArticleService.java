@@ -143,7 +143,7 @@ public class ArticleService {
     public ArticleBean details(String code, String sections) {
         List<ArticleBean> articleBeans = atomicArticleService.queryListByRequest(QueryArticlesRequest.builder().codes(Collections.singletonList(code)).build());
         ArticleBean articleBean = CollectionUtils.isEmpty(articleBeans) ? null : Iterables.getFirst(articleBeans, null);
-        fillSections(sections, Collections.singletonList(articleBean));
+        fillSections(sections, Objects.isNull(articleBean) ? null : Collections.singletonList(articleBean));
         return articleBean;
     }
 
@@ -167,8 +167,9 @@ public class ArticleService {
     }
 
     private void fillSections(String sections, List<ArticleBean> articleBeans) {
+        if (CollectionUtils.isEmpty(articleBeans)) return;
         ArticleSectionContext ctx = queryArticleSectionInfo(sections, articleBeans);
-        articleBeans.forEach(articleBean -> {
+        articleBeans.stream().filter(Objects::nonNull).forEach(articleBean -> {
             String categoryIds = articleBean.getCategoryIds();
             if (StringUtils.isNotBlank(categoryIds)) {
                 List<ArticleCategoryBean> categoryBeans = Arrays.stream(StringUtils.split(categoryIds, Constants.COMMA)).map(categoryId -> {

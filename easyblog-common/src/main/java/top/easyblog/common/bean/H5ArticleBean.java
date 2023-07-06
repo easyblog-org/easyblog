@@ -45,9 +45,9 @@ public class H5ArticleBean {
 
         private String content;
 
-        private Date createTime;
+        private Long createTime;
 
-        private Date updateTime;
+        private Long updateTime;
     }
 
     @Data

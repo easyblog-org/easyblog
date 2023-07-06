@@ -15,10 +15,7 @@ import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.ArticleService;
 import top.easyblog.support.util.ConcurrentUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +34,7 @@ public class H5ArticleService {
         PageResponse<ArticleBean> articleBeanPageResponse = articleService.list(request);
         List<ArticleBean> articleBeans = articleBeanPageResponse.getData();
         List<H5ArticleBean.ArticleBean> h5ArticleBeans = articleBeans.stream()
-                .map(this::convertToH5ArticleBean).collect(Collectors.toList());
+                .map(this::convertToH5ArticleBean).filter(Objects::nonNull).collect(Collectors.toList());
         return PageResponse.<H5ArticleBean.ArticleBean>builder()
                 .limit(request.getLimit())
                 .offset(request.getOffset())
@@ -45,8 +42,9 @@ public class H5ArticleService {
                 .data(h5ArticleBeans).build();
     }
 
-    public ArticleBean details(String code, String sections) {
-        return articleService.details(code, sections);
+    public H5ArticleBean.ArticleBean details(String code, String sections) {
+        ArticleBean articleBean = articleService.details(code, sections);
+        return convertToH5ArticleBean(articleBean);
     }
 
     public H5ArticleBean queryList() {
@@ -85,6 +83,7 @@ public class H5ArticleService {
     }
 
     private H5ArticleBean.ArticleBean convertToH5ArticleBean(ArticleBean articleBean) {
+        if (Objects.isNull(articleBean)) return null;
         H5ArticleBean.ArticleBean h5ArticleBean = new H5ArticleBean.ArticleBean();
         h5ArticleBean.setId(articleBean.getId());
         h5ArticleBean.setCode(articleBean.getCode());
@@ -93,8 +92,8 @@ public class H5ArticleService {
         h5ArticleBean.setStatus(articleBean.getStatus());
         h5ArticleBean.setIsTop(articleBean.getIsTop());
         h5ArticleBean.setContent(articleBean.getContent());
-        h5ArticleBean.setCreateTime(articleBean.getCreateTime());
-        h5ArticleBean.setUpdateTime(articleBean.getUpdateTime());
+        h5ArticleBean.setCreateTime(Optional.ofNullable(articleBean.getCreateTime()).map(Date::getTime).orElse(0L));
+        h5ArticleBean.setUpdateTime(Optional.ofNullable(articleBean.getUpdateTime()).map(Date::getTime).orElse(0L));
 
         if (Objects.nonNull(articleBean.getCategories())) {
             List<String> categoriesName = articleBean.getCategories().stream()
