@@ -11,7 +11,7 @@ public class Article {
 
     private String title;
 
-    private Long category;
+    private String category;
 
     private String featuredImage;
 

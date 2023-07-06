@@ -16,16 +16,18 @@ public enum MessageConfigType {
     /**
      * 消息接收人
      */
-    RECEIVER,
+    RECEIVER("消息接收人"),
     /**
      * 消息正文
      */
-    CONTENT,
+    CONTENT("消息正文"),
     /**
      * 消息标题
      */
-    SUBJECT,
+    SUBJECT("消息标题"),
     ;
+
+    private final String desc;
 
 
 

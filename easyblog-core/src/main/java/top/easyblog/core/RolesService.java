@@ -1,24 +1,38 @@
 package top.easyblog.core;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import top.easyblog.common.bean.RolesBean;
+import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.role.CreateRolesRequest;
 import top.easyblog.common.request.role.QueryRolesDetailsRequest;
 import top.easyblog.common.request.role.QueryRolesListRequest;
+import top.easyblog.common.request.role.QueryUserRolesListRequest;
 import top.easyblog.common.request.role.UpdateRolesRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.dao.atomic.AtomicRolesService;
+import top.easyblog.dao.atomic.AtomicUserRolesService;
 import top.easyblog.dao.auto.model.Roles;
+import top.easyblog.dao.auto.model.UserRoleRelationship;
+import top.easyblog.service.section.IUserSectionInquireService;
+import top.easyblog.support.context.UserSectionContext;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -26,17 +40,18 @@ import java.util.stream.Collectors;
  * @date: 2023-02-19 15:57
  */
 @Service
-public class RolesService {
+public class RolesService implements IUserSectionInquireService {
 
     @Autowired
     private AtomicRolesService atomicRolesService;
 
+    @Autowired
+    private AtomicUserRolesService atomicUserRolesService;
 
     public Roles create(CreateRolesRequest request) {
         checkRoleNameExists(request.getName());
         return atomicRolesService.insertOne(buildCreateRoles(request));
     }
-
 
     private void checkRoleNameExists(String roleName) {
         List<Roles> rolesList = atomicRolesService.queryList(QueryRolesListRequest.builder()
@@ -59,7 +74,7 @@ public class RolesService {
         return roles;
     }
 
-    public List<RolesBean> queryAllRolesList(){
+    public List<RolesBean> queryAllRolesList() {
         List<Roles> roles = atomicRolesService.queryList(QueryRolesListRequest.builder()
                 .enabled(Boolean.TRUE).build());
         return roles.stream().map(this::buildRolesBean).collect(Collectors.toList());
@@ -114,5 +129,48 @@ public class RolesService {
         rolesBean.setCreateTime(roles.getCreateTime().getTime());
         rolesBean.setUpdateTime(roles.getUpdateTime().getTime());
         return rolesBean;
+    }
+
+    @Override
+    public void execute(String section, UserSectionContext ctx, Map<Long, String> userIdCodesMap,
+                        boolean queryWhenSectionEmpty) {
+        if (MapUtils.isEmpty(userIdCodesMap)) {
+            return;
+        }
+
+        List<Long> userIds = new ArrayList<>(userIdCodesMap.keySet());
+        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ROLE.getName(), section) || queryWhenSectionEmpty) {
+            List<UserRoleRelationship> userRoleRelationships = atomicUserRolesService
+                    .queryList(QueryUserRolesListRequest.builder()
+                            .userIds(userIds).enabled(Boolean.TRUE).build());
+
+            if (CollectionUtils.isNotEmpty(userRoleRelationships)) {
+                Map<String, UserRoleRelationship> userRoleIdMap = userRoleRelationships.stream()
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toMap(item -> String.format("%s-%s", item.getRoleId(), item.getUserId()),
+                                Function.identity(), (x, y) -> x));
+                List<Long> roleIds = userRoleRelationships.stream().map(UserRoleRelationship::getRoleId)
+                        .collect(Collectors.toList());
+                PageResponse<RolesBean> rolesBeanPageResponse = queryRolesList(QueryRolesListRequest.builder()
+                        .ids(roleIds).build());
+                List<RolesBean> rolesBeans = rolesBeanPageResponse.getData();
+                Map<Long, List<RolesBean>> rolesIdMap = rolesBeans.stream().filter(Objects::nonNull)
+                        .collect(Collectors.groupingBy(RolesBean::getId));
+                Map<Long, List<RolesBean>> userIdRoleMap = Maps.newHashMap();
+                userRoleIdMap.forEach((roleUserId, userRole) -> {
+                    userIdRoleMap.compute(userRole.getUserId(), (k, v) -> {
+                        if (v == null) {
+                            v = Lists.newArrayList();
+                        }
+                        List<RolesBean> rolesBeanList = rolesIdMap.get(userRole.getRoleId());
+                        if (CollectionUtils.isNotEmpty(rolesBeanList)) {
+                            v.addAll(rolesBeanList);
+                        }
+                        return v;
+                    });
+                });
+                ctx.setRolesMap(userIdRoleMap);
+            }
+        }
     }
 }

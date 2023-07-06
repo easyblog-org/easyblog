@@ -33,4 +33,12 @@ public class QueryArticlesRequest {
 
     @Builder.Default
     private Integer offset = 0;
+
+    private String orderCause;
+
+    private String orderDir;
+
+    private Long createTimeBegin;
+
+    private Long createTimeEnd;
 }

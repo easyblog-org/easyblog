@@ -6,17 +6,15 @@
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="author_id" jdbcType="VARCHAR" property="authorId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
-        <result column="category" jdbcType="BIGINT" property="categoryId"/>
+        <result column="category" jdbcType="BIGINT" property="categoryIds"/>
         <result column="featured_image" jdbcType="VARCHAR" property="featuredImage"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="is_top" jdbcType="BOOLEAN" property="isTop"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="content_id" jdbcType="BIGINT" property="contentId"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"
-                typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"
-                typeHandler="top.easyblog.dao.custom.handler.Date2LongTypeHandler"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
 
@@ -67,13 +65,13 @@
             </foreach>
         </if>
         <if test="request.isTop!=null">
-            and a.is_top=#{isTop}
+            and a.is_top=#{request.isTop}
         </if>
         <if test="request.authorId!=null">
-            and a.author_id=#{authorId}
+            and a.author_id=#{request.authorId}
         </if>
         <if test="request.title!=null">
-            and a.title like %#{title}%
+            and a.title like %#{request.title}%
         </if>
     </sql>
 

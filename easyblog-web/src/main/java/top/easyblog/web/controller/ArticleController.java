@@ -39,7 +39,7 @@ public class ArticleController {
     @ResponseWrapper
     @GetMapping("/{code}")
     public ArticleBean details(@PathVariable("code") String code,
-                               @RequestParam("sections") String sections) {
+                               @RequestParam(value = "sections",required = false) String sections) {
         return articleService.details(code, sections);
     }
 

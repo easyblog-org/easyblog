@@ -32,6 +32,10 @@ public class MobileAreaCodeSqlProvider {
             sql.VALUES("code", "#{code,jdbcType=VARCHAR}");
         }
         
+        if (record.getContinentCode() != null) {
+            sql.VALUES("continent_code", "#{continentCode,jdbcType=VARCHAR}");
+        }
+        
         if (record.getCrownCode() != null) {
             sql.VALUES("crown_code", "#{crownCode,jdbcType=VARCHAR}");
         }
@@ -67,6 +71,7 @@ public class MobileAreaCodeSqlProvider {
             sql.SELECT("id");
         }
         sql.SELECT("code");
+        sql.SELECT("continent_code");
         sql.SELECT("crown_code");
         sql.SELECT("country_code");
         sql.SELECT("area_code");
@@ -105,6 +110,10 @@ public class MobileAreaCodeSqlProvider {
             sql.SET("code = #{record.code,jdbcType=VARCHAR}");
         }
         
+        if (record.getContinentCode() != null) {
+            sql.SET("continent_code = #{record.continentCode,jdbcType=VARCHAR}");
+        }
+        
         if (record.getCrownCode() != null) {
             sql.SET("crown_code = #{record.crownCode,jdbcType=VARCHAR}");
         }
@@ -139,6 +148,7 @@ public class MobileAreaCodeSqlProvider {
         
         sql.SET("id = #{record.id,jdbcType=BIGINT}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
+        sql.SET("continent_code = #{record.continentCode,jdbcType=VARCHAR}");
         sql.SET("crown_code = #{record.crownCode,jdbcType=VARCHAR}");
         sql.SET("country_code = #{record.countryCode,jdbcType=VARCHAR}");
         sql.SET("area_code = #{record.areaCode,jdbcType=VARCHAR}");
@@ -157,6 +167,10 @@ public class MobileAreaCodeSqlProvider {
         
         if (record.getCode() != null) {
             sql.SET("code = #{code,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getContinentCode() != null) {
+            sql.SET("continent_code = #{continentCode,jdbcType=VARCHAR}");
         }
         
         if (record.getCrownCode() != null) {

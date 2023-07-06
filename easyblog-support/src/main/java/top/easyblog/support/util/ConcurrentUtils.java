@@ -5,6 +5,7 @@ import org.slf4j.MDC;
 import top.easyblog.common.constant.Constants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.*;
@@ -29,9 +30,9 @@ public class ConcurrentUtils {
     private static final BlockingQueue<Runnable> DEFAULT_POOL_WORK_QUEUE = new LinkedBlockingQueue<>(1024);
 
     private static final ExecutorService DEFAULT_THREAD_POOL = new ThreadPoolExecutor(DEFAULT_MIN_CORE_POOL_SIZE,
-            DEFAULT_MAX_POOL_SIZE, DEFAULT_KEEP_ALIVE_TIME, DEFAULT_POOL_KEEP_ALIVE_TIME_TIMEUNIT, DEFAULT_POOL_WORK_QUEUE,
-            new ThreadPoolExecutor.CallerRunsPolicy()
-    );
+            DEFAULT_MAX_POOL_SIZE, DEFAULT_KEEP_ALIVE_TIME, DEFAULT_POOL_KEEP_ALIVE_TIME_TIMEUNIT,
+            DEFAULT_POOL_WORK_QUEUE,
+            new ThreadPoolExecutor.CallerRunsPolicy());
 
     public static void executeTaskInBlockModel(List<Runnable> tasks, ExecutorService threadPool) {
         CountDownLatch cdl = new CountDownLatch(tasks.size());
@@ -41,7 +42,7 @@ public class ConcurrentUtils {
             try {
                 task.run();
             } catch (Exception e) {
-                log.info("Task execute failed:", e.fillInStackTrace());
+                log.info("Task execute failed:",e);
                 throw e;
             } finally {
                 cdl.countDown();
@@ -65,7 +66,6 @@ public class ConcurrentUtils {
         }
     }
 
-
     public static void executeTaskInNonBlockModel(List<Runnable> tasks, ExecutorService threadPool) {
         if (Objects.isNull(threadPool)) {
             threadPool = DEFAULT_THREAD_POOL;
@@ -80,6 +80,11 @@ public class ConcurrentUtils {
                 throw e;
             }
         });
+    }
+
+    public static void asyncRunSingleTask(Runnable task) {
+        List<Runnable> tasks = Collections.singletonList(task);
+        executeTaskInNonBlockModel(tasks, null);
     }
 
 }

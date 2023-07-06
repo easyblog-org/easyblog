@@ -30,4 +30,6 @@ public class BusinessMessageRecordBean {
     private Long updateTime;
 
     private String businessMessage;
+
+    private Byte channel;
 }

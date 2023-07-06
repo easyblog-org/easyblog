@@ -22,7 +22,7 @@ import top.easyblog.common.request.user.CreateUserRequest;
 import top.easyblog.common.request.user.QueryUserRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.core.AccountService;
-import top.easyblog.core.UserHeaderService;
+import top.easyblog.core.UserAvatarService;
 import top.easyblog.core.UserService;
 import top.easyblog.core.annotation.Transaction;
 import top.easyblog.dao.atomic.AtomicRolesService;
@@ -56,7 +56,7 @@ public abstract class AbstractLoginStrategy implements ILoginStrategy {
     protected UserService userService;
 
     @Autowired
-    protected UserHeaderService headerService;
+    protected UserAvatarService headerService;
 
     @Autowired
     private AtomicUserRolesService atomicUserRolesService;

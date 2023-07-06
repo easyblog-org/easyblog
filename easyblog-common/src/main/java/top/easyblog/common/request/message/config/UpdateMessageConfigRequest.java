@@ -25,6 +25,8 @@ public class UpdateMessageConfigRequest implements BaseRequest {
 
     private Boolean deleted;
 
+    private String type;
+
     private UpdateTemplateValueConfigRequest templateValueConfig;
 
     @Override

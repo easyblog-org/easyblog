@@ -3,6 +3,7 @@ package top.easyblog.common.bean;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: frank.huang
@@ -25,13 +26,13 @@ public class ArticleBean {
     /**
      * 作者信息头像
      */
-    private UserHeaderBean authorAvatar;
+    private UserAvatarBean authorAvatar;
 
     private String title;
 
-    private Long categoryId;
+    private String categoryIds;
 
-    private ArticleCategoryBean category;
+    private List<ArticleCategoryBean> categories;
 
     private String featuredImage;
 

@@ -51,7 +51,12 @@ public class MobileAreaService {
             throw new BusinessException(EasyResultCode.PHONE_AREA_CODE_ALREADY_EXISTS);
         }
 
-        ContinentEnum.codeOfOptional(request.getContinentCode());
+        ContinentEnum continentEnum = ContinentEnum.codeOfOptional(request.getContinentCode())
+                .orElseThrow(() -> new BusinessException(EasyResultCode.UNKNOWN_CONTINENT_CODE));
+        if (ContinentEnum.GLOBAL.name().equalsIgnoreCase(continentEnum.getCode())) {
+            log.info("Continent code can not be empty!");
+            throw new BusinessException(EasyResultCode.UNKNOWN_CONTINENT_CODE);
+        }
 
         mobileArea = beanMapper.convertMobileAreaCodeCreateReq2MobileArea(request);
         atomicMobileAreaService.insertPhoneAreaCodeByRequest(mobileArea);
@@ -68,7 +73,7 @@ public class MobileAreaService {
         if (Objects.isNull(request.getOffset()) || Objects.isNull(request.getLimit())) {
             //不分页,默认查询前1000条数据
             request.setOffset(NumberUtils.INTEGER_ZERO);
-            request.setLimit(Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_ONE_THOUSAND : request.getLimit());
+            request.setLimit(Objects.isNull(request.getLimit()) ? Constants.QUERY_LIMIT_MAX_THOUSAND : request.getLimit());
             List<MobileAreBean> phoneAreaCodeBeans = buildMobileAreaBeanList(request);
             return PageResponse.<MobileAreBean>builder()
                     .total((long) phoneAreaCodeBeans.size()).data(phoneAreaCodeBeans).limit(request.getLimit()).offset(request.getOffset()).build();

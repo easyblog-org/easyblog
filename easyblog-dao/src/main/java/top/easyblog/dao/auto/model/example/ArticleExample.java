@@ -354,52 +354,52 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
-        public Criteria andCategoryEqualTo(Long value) {
+        public Criteria andCategoryEqualTo(String value) {
             addCriterion("category =", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotEqualTo(Long value) {
+        public Criteria andCategoryNotEqualTo(String value) {
             addCriterion("category <>", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThan(Long value) {
+        public Criteria andCategoryGreaterThan(String value) {
             addCriterion("category >", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryGreaterThanOrEqualTo(Long value) {
+        public Criteria andCategoryGreaterThanOrEqualTo(String value) {
             addCriterion("category >=", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThan(Long value) {
+        public Criteria andCategoryLessThan(String value) {
             addCriterion("category <", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryLessThanOrEqualTo(Long value) {
+        public Criteria andCategoryLessThanOrEqualTo(String value) {
             addCriterion("category <=", value, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryIn(List<Long> values) {
+        public Criteria andCategoryIn(List<String> values) {
             addCriterion("category in", values, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotIn(List<Long> values) {
+        public Criteria andCategoryNotIn(List<String> values) {
             addCriterion("category not in", values, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryBetween(Long value1, Long value2) {
+        public Criteria andCategoryBetween(String value1, String value2) {
             addCriterion("category between", value1, value2, "category");
             return (Criteria) this;
         }
 
-        public Criteria andCategoryNotBetween(Long value1, Long value2) {
+        public Criteria andCategoryNotBetween(String value1, String value2) {
             addCriterion("category not between", value1, value2, "category");
             return (Criteria) this;
         }

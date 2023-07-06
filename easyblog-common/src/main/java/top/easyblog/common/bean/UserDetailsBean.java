@@ -39,12 +39,12 @@ public class UserDetailsBean {
     /**
      * 用户当前有效头像
      */
-    private UserHeaderBean userCurrentImages;
+    private UserAvatarBean userCurrentImages;
 
     /**
      * 用户历史所有头像
      */
-    private List<UserHeaderBean> userHistoryImages;
+    private List<UserAvatarBean> userHistoryImages;
 
     /**
      * 当前账户

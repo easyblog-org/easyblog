@@ -15,19 +15,20 @@ import java.util.Objects;
 public enum MessageShieldType {
 
     /**
-     * 草稿
+     * 夜间不屏蔽
      */
-    NO_SHIELD((byte) 1),
+    NO_SHIELD((byte) 1, "夜间不屏蔽"),
 
     /**
-     * 已发布
+     * 夜间屏蔽
      */
-    SHIELD((byte) 2),
+    SHIELD((byte) 2, "夜间屏蔽"),
 
 
     ;
 
     private final Byte code;
+    private final String desc;
 
 
     public static MessageShieldType codeOf(Byte shieldType) {

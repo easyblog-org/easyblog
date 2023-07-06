@@ -75,6 +75,9 @@ public class AtomicMobileAreaService {
     private MobileAreaCodeExample generatePhoneAreaCodeExamples(QueryMobileAreaListRequest request) {
         MobileAreaCodeExample example = new MobileAreaCodeExample();
         MobileAreaCodeExample.Criteria criteria = example.createCriteria();
+        if (StringUtils.isNotBlank(request.getContinentCode())) {
+            criteria.andContinentCodeEqualTo(request.getContinentCode());
+        }
         if (CollectionUtils.isNotEmpty(request.getCodes())) {
             criteria.andCodeIn(request.getCodes());
         }

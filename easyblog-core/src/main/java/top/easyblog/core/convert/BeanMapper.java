@@ -13,6 +13,8 @@ import top.easyblog.common.request.article.CreateArticleRequest;
 import top.easyblog.common.request.article.UpdateArticleCategoryRequest;
 import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
+import top.easyblog.common.request.login.AdminLoginRequest;
+import top.easyblog.common.request.login.LoginRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
 import top.easyblog.common.request.message.config.CreateMessageConfigRequest;
@@ -23,12 +25,16 @@ import top.easyblog.common.request.message.record.CreateBusinessMessageRecordReq
 import top.easyblog.common.request.message.record.UpdateBusinessMessageRecordRequest;
 import top.easyblog.common.request.message.rule.CreateMessageConfigRuleRequest;
 import top.easyblog.common.request.message.rule.UpdateMessageConfigRuleRequest;
+import top.easyblog.common.request.message.rule.UpdateMessagePushRuleRequest;
 import top.easyblog.common.request.message.template.CreateMessageTemplateRequest;
 import top.easyblog.common.request.message.template.UpdateMessageTemplateRequest;
 import top.easyblog.common.request.mobilearea.CreateMobileAreaRequest;
 import top.easyblog.common.request.mobilearea.UpdateMobileAreaRequest;
 import top.easyblog.common.request.phoneauth.CreatePhoneAuthRequest;
+import top.easyblog.common.request.user.CreateUserAccountRequest;
 import top.easyblog.common.request.user.CreateUserRequest;
+import top.easyblog.common.request.user.UpdateUserAccountRequest;
+import top.easyblog.common.request.user.UpdateUserRequest;
 import top.easyblog.dao.auto.model.*;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageConfigContext;
@@ -40,7 +46,6 @@ import top.easyblog.support.context.MessageConfigContext;
 @Mapper(componentModel = "spring")
 public interface BeanMapper {
 
-
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createTime", ignore = true),
@@ -48,7 +53,6 @@ public interface BeanMapper {
             @Mapping(target = "code", ignore = true)
     })
     Account convertAccountCreateReq2Account(CreateAccountRequest request);
-
 
     AccountBean convertAccount2AccountBean(Account account);
 
@@ -61,7 +65,6 @@ public interface BeanMapper {
     })
     Account convertAccountUpdateReq2Account(Long accountId, UpdateAccountRequest request);
 
-
     @Mappings({
             @Mapping(target = "ipAddress", source = "ip"),
             @Mapping(target = "id", ignore = true),
@@ -70,7 +73,6 @@ public interface BeanMapper {
             @Mapping(target = "code", ignore = true),
     })
     LoginLog convertLoginLogCreateReq2Account(CreateLoginLogRequest request);
-
 
     LoginLogBean convertLoginLog2LoginLogBean(LoginLog loginLog);
 
@@ -81,27 +83,19 @@ public interface BeanMapper {
     })
     LoginLog convertLoginLogUpdateReq2LoginLog(Long id, UpdateLoginLogRequest request);
 
-
     MobileAreaCode convertMobileAreaCodeCreateReq2MobileArea(CreateMobileAreaRequest request);
-
 
     MobileAreBean convertMobileArea2MobileAreaBean(MobileAreaCode item);
 
-
     MobileAreaCode convertMobileAreaUpdateReq2MobileArea(Long id, UpdateMobileAreaRequest request);
-
 
     PhoneAuth convertPhoneAuthCreateReq2PhoneAuth(CreatePhoneAuthRequest request);
 
-
     UserHeader convertUserHeaderCreateReq2UserHeader(CreateUserHeaderRequest request);
-
 
     UserDetailsBean convertUser2UserBean(User user);
 
-
     User convertUserCreateReq2User(CreateUserRequest request);
-
 
     @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(6))")
     @Mapping(target = "templateValueConfigId", source = "templateValueConfigId")
@@ -137,10 +131,7 @@ public interface BeanMapper {
     @Mapping(target = "updateTime", expression = "java(messageConfigRule.getUpdateTime().getTime()/1000)")
     MessageConfigRuleBean buildMessageConfigRuleBean(MessageConfigRule messageConfigRule);
 
-
     @Mapping(target = "status", source = "template.status")
-    @Mapping(target = "createTime", expression = "java(template.getCreateTime().getTime()/1000)")
-    @Mapping(target = "updateTime", expression = "java(template.getUpdateTime().getTime()/1000)")
     MessageTemplateBean convertMessageTemplate2MessageTemplateBean(MessageTemplate template);
 
     @Mappings({
@@ -157,26 +148,31 @@ public interface BeanMapper {
             @Mapping(target = "title", source = "messageTemplate.name"),
             @Mapping(target = "configs", source = "messageConfigs")
     })
-    MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg, MessageConfigRuleBean messageConfigRule,
+    MessageConfigContext buildMessageConfigContext(BusinessMessageRecordContext msg,
+                                                   MessageConfigRuleBean messageConfigRule,
                                                    MessageTemplateBean messageTemplate, List<MessageConfigBean> messageConfigs);
 
-    BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(CreateBusinessMessageRecordRequest request);
+    BusinessMessageRecord convertMessageSendRecordCreateReq2MessageSendRecord(
+            CreateBusinessMessageRecordRequest request);
 
     @Mapping(target = "isSync", source = "isSync")
-    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record, Boolean isSync);
+    BusinessMessageRecordContext convertMessageSendRecord2MessageSendRecordContext(BusinessMessageRecord record,
+                                                                                   Boolean isSync);
 
     @Mapping(target = "createTime", expression = "java(record.getCreateTime().getTime()/1000)")
     @Mapping(target = "updateTime", expression = "java(record.getUpdateTime().getTime()/1000)")
     BusinessMessageRecordBean convertBusinessMessageRecord2BusinessMessageRecordBean(BusinessMessageRecord record);
 
     @Mapping(target = "templateCode", expression = "java(top.easyblog.support.util.IdGenerator.generateRandomCode(12))")
-    MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(CreateMessageTemplateRequest request);
+    MessageTemplate convertBusinessMessageRecordCreateReqBusinessMessageRecord(
+            CreateMessageTemplateRequest request);
 
-    MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id, UpdateMessageTemplateRequest request);
+    MessageTemplate convertBusinessMessageRecordUpdateReqBusinessMessageRecord(Long id,
+                                                                               UpdateMessageTemplateRequest request);
 
     @Mapping(target = "id", source = "id")
-    BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id, UpdateBusinessMessageRecordRequest request);
-
+    BusinessMessageRecord convertMessageSendRecordUpdateReq2MessageSendRecord(Long id,
+                                                                              UpdateBusinessMessageRecordRequest request);
 
     @Mappings({
             @Mapping(target = "updateTime", ignore = true),
@@ -203,4 +199,31 @@ public interface BeanMapper {
     ArticleCategory convertArticleCategoryUpdateReq2AeticleCategory(Long id, UpdateArticleCategoryRequest request);
 
     ArticleCategory convertArticleCategoryCreateReq2AeticleCategory(CreateArticleCategoryRequest request);
+
+    CreateUserRequest buildUserCreateRequest(CreateUserAccountRequest request);
+
+    @Mapping(target = "identifier", source = "request.email")
+    @Mapping(target = "credential", source = "request.password")
+    @Mapping(target = "userCode", source = "code")
+    CreateAccountRequest buildCreateAccountRequest(CreateUserAccountRequest request, String code);
+
+    @Mapping(target = "identifier", source = "email")
+    @Mapping(target = "credential", source = "password")
+    UpdateAccountRequest buildAccountUpdateRequest(UpdateUserAccountRequest request);
+
+    UpdateUserRequest buildUserCreateRequest(UpdateUserAccountRequest request);
+
+    @Mapping(target = "configIds", source = "configIds")
+    UpdateMessageConfigRuleRequest buildMessageRuleConfigUpdateReq(UpdateMessagePushRuleRequest request, String configIds);
+
+    @Mapping(target = "identifierType", expression = "java(top.easyblog.common.enums.IdentifierType.E_MAIL.getSubCode())")
+    @Mapping(target = "identifier", source = "request.email")
+    @Mapping(target = "credential", source = "request.password")
+    LoginRequest buildAdminLoginRequest(AdminLoginRequest request);
+
+    @Mapping(target = "ip", source = "request.ip")
+    @Mapping(target = "device", source = "request.device")
+    @Mapping(target = "operationSystem", source = "request.operationSystem")
+    @Mapping(target = "location", source = "request.location")
+    CreateLoginLogRequest buildAdminSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
 }

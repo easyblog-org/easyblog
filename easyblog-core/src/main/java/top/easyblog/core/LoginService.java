@@ -19,11 +19,11 @@ import top.easyblog.core.annotation.Transaction;
 import top.easyblog.core.strategy.LoginStrategyContext;
 import top.easyblog.service.ILoginService;
 import top.easyblog.service.strategy.ILoginStrategy;
+import top.easyblog.support.util.ConcurrentUtils;
 import top.easyblog.support.util.JsonUtils;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,42 +40,59 @@ public class LoginService implements ILoginService {
     @Autowired
     private RedisService redisService;
 
-
     @Override
     public void sendCaptchaCode(Integer identifierType, String identifier) {
-        /*if (Objects.equals(identifierType, IdentifierType.PHONE.getSubCode()) ||
-                Objects.equals(identifierType, IdentifierType.PHONE_CAPTCHA.getSubCode())) {
-            ICaptchaSendStrategy captchaSendStrategy = CaptchaSendStrategyContext.getCaptchaSendStrategy(CaptchaSendChannel.PHONE_SMS.getCode());
-            captchaSendStrategy.sendCaptchaCode(identifier);
-        } else if (Objects.equals(identifierType, IdentifierType.E_MAIL.getSubCode())) {
-            ICaptchaSendStrategy captchaSendStrategy = CaptchaSendStrategyContext.getCaptchaSendStrategy(CaptchaSendChannel.EMAIL.getCode());
-            captchaSendStrategy.sendCaptchaCode(identifier);
-        } else {
-            throw new UnsupportedOperationException();
-        }*/
+        /*
+         * if (Objects.equals(identifierType, IdentifierType.PHONE.getSubCode()) ||
+         * Objects.equals(identifierType, IdentifierType.PHONE_CAPTCHA.getSubCode())) {
+         * ICaptchaSendStrategy captchaSendStrategy =
+         * CaptchaSendStrategyContext.getCaptchaSendStrategy(CaptchaSendChannel.
+         * PHONE_SMS.getCode());
+         * captchaSendStrategy.sendCaptchaCode(identifier);
+         * } else if (Objects.equals(identifierType,
+         * IdentifierType.E_MAIL.getSubCode())) {
+         * ICaptchaSendStrategy captchaSendStrategy =
+         * CaptchaSendStrategyContext.getCaptchaSendStrategy(CaptchaSendChannel.EMAIL.
+         * getCode());
+         * captchaSendStrategy.sendCaptchaCode(identifier);
+         * } else {
+         * throw new UnsupportedOperationException();
+         * }
+         */
     }
 
+    /**
+     * 账号登录
+     */
     @Override
     @Transaction
     public LoginDetailsBean login(LoginRequest request) {
+        ILoginStrategy loginPolicy = prepareLogin(request);
+        AuthenticationDetailsBean userDetailsBean = loginPolicy.doLogin(request);
+        if (Objects.isNull(userDetailsBean.getUser())) {
+            throw new BusinessException(EasyResultCode.LOGIN_FAILED, "Not Found");
+        }
+
+        LoginDetailsBean loginDetailsBean = new LoginDetailsBean();
+        loginDetailsBean.setUser(userDetailsBean.getUser());
+        postLogin(request, userDetailsBean, loginDetailsBean);
+        return loginDetailsBean;
+    }
+
+    public ILoginStrategy prepareLogin(LoginRequest request) {
         ILoginStrategy loginPolicy = LoginStrategyContext.getIdentifyStrategy(request.getIdentifierType());
         if (Objects.isNull(loginPolicy)) {
             throw new BusinessException(EasyResultCode.INTERNAL_ERROR);
         }
-        AuthenticationDetailsBean userDetailsBean = loginPolicy.doLogin(request);
-        if (Objects.isNull(userDetailsBean.getUser())) {
-            throw new BusinessException(EasyResultCode.LOGIN_FAILED);
-        }
-        LoginDetailsBean loginDetailsBean = new LoginDetailsBean();
-        loginDetailsBean.setUser(userDetailsBean.getUser());
 
-        //通过登录日志判断用户是否已经登录过
+        return loginPolicy;
+    }
+
+
+    public void postLogin(LoginRequest request, AuthenticationDetailsBean userDetailsBean, LoginDetailsBean loginDetailsBean) {
+        // 通过登录日志判断用户是否已经登录过
         AccountBean currAccount = userDetailsBean.getUser().getCurrAccount();
-        LoginLogBean loginLogBean = loginLogService.queryLoginLogDetails(QueryLoginLogRequest.builder()
-                .userCode(currAccount.getUserCode())
-                .accountCode(currAccount.getCode())
-                .status(LoginStatus.ONLINE.getCode())
-                .build());
+        LoginLogBean loginLogBean = loginLogService.queryLoginLogDetails(QueryLoginLogRequest.builder().userCode(currAccount.getUserCode()).accountCode(currAccount.getCode()).status(LoginStatus.ONLINE.getCode()).build());
 
         if (Objects.nonNull(loginLogBean)) {
             // 重置token过期时间
@@ -83,19 +100,18 @@ public class LoginService implements ILoginService {
             String userInfo = redisService.get(key);
             loginDetailsBean.setToken(key);
             if (StringUtils.isBlank(userInfo)) {
-                storageToken(request, loginDetailsBean);
+                asyncSaveLoginToken(request, loginDetailsBean);
             } else {
                 redisService.expire(loginLogBean.getToken(), LoginConstants.LOGIN_TOKEN_MAX_EXPIRE, TimeUnit.DAYS);
             }
-            return loginDetailsBean;
+            return;
         }
 
-        //如果用户已经登录直接返回，否则生成新的token
+        // 如果用户已经登录直接返回，否则生成新的token
         loginDetailsBean.setToken(String.format("auth:token:%s", generateLoginToken()));
-        storageToken(request, loginDetailsBean);
-        //保存用户登录日志
-        CompletableFuture.runAsync(() -> saveLoginLog(request, loginDetailsBean));
-        return loginDetailsBean;
+        asyncSaveLoginToken(request, loginDetailsBean);
+        // 保存用户登录日志
+        asynSaveLoginLog(request, loginDetailsBean);
     }
 
     /**
@@ -104,30 +120,24 @@ public class LoginService implements ILoginService {
      * @param request
      * @param loginDetailsBean
      */
-    private void saveLoginLog(LoginRequest request, LoginDetailsBean loginDetailsBean) {
-        UserDetailsBean userDetailsBean = loginDetailsBean.getUser();
-        AccountBean currAccount = userDetailsBean.getCurrAccount();
-        CreateLoginLogRequest createSignInLogRequest = Optional.of(userDetailsBean).map(userBean -> {
-            log.info("User login log: user_info:{},account_info:{}", JsonUtils.toJSONString(userDetailsBean), JsonUtils.toJSONString(currAccount));
-            return CreateLoginLogRequest.builder()
-                    .userCode(userDetailsBean.getCode())
-                    .accountCode(currAccount.getCode())
-                    .token(loginDetailsBean.getToken())
-                    .status(LoginStatus.ONLINE.getCode())
-                    .build();
-        }).orElseGet(() -> CreateLoginLogRequest.builder()
-                .token(loginDetailsBean.getToken())
-                .status(LoginStatus.ONLINE.getCode())
-                .build());
+    private void asynSaveLoginLog(LoginRequest request, LoginDetailsBean loginDetailsBean) {
+        ConcurrentUtils.asyncRunSingleTask(() -> {
+            UserDetailsBean userDetailsBean = loginDetailsBean.getUser();
+            AccountBean currAccount = userDetailsBean.getCurrAccount();
+            CreateLoginLogRequest createSignInLogRequest = Optional.of(userDetailsBean).map(userBean -> {
+                log.info("User login log: user_info:{},account_info:{}", JsonUtils.toJSONString(userDetailsBean), JsonUtils.toJSONString(currAccount));
+                return CreateLoginLogRequest.builder().userCode(userDetailsBean.getCode()).accountCode(currAccount.getCode()).token(loginDetailsBean.getToken()).status(LoginStatus.ONLINE.getCode()).build();
+            }).orElseGet(() -> CreateLoginLogRequest.builder().token(loginDetailsBean.getToken()).status(LoginStatus.ONLINE.getCode()).build());
 
-        Optional.ofNullable(request.getExtra()).ifPresent(extra -> {
-            createSignInLogRequest.setDevice(extra.getDevice());
-            createSignInLogRequest.setOperationSystem(extra.getOperationSystem());
-            createSignInLogRequest.setIp(extra.getIp());
-            createSignInLogRequest.setLocation(extra.getLocation());
+            Optional.ofNullable(request.getExtra()).ifPresent(extra -> {
+                createSignInLogRequest.setDevice(extra.getDevice());
+                createSignInLogRequest.setOperationSystem(extra.getOperationSystem());
+                createSignInLogRequest.setIp(extra.getIp());
+                createSignInLogRequest.setLocation(extra.getLocation());
+            });
+            LoginLogBean loginLogBean = loginLogService.createSignInLog(createSignInLogRequest);
+            log.info("Create sign log:{}", JsonUtils.toJSONString(loginLogBean));
         });
-        LoginLogBean loginLogBean = loginLogService.createSignInLog(createSignInLogRequest);
-        log.info("Create sign log:{}", JsonUtils.toJSONString(loginLogBean));
     }
 
     /**
@@ -136,16 +146,20 @@ public class LoginService implements ILoginService {
      * @param request
      * @param loginDetailsBean
      */
-    private void storageToken(LoginRequest request, LoginDetailsBean loginDetailsBean) {
-        String userInfo = JsonUtils.toJSONString(loginDetailsBean.getUser());
-        boolean result = redisService.set(loginDetailsBean.getToken(), userInfo, LoginConstants.LOGIN_TOKEN_MAX_EXPIRE, TimeUnit.DAYS);
-        if (!result) {
-            log.info("Login failed: internal error,root cause: redis return value is {}", request);
-            throw new BusinessException(EasyResultCode.INTERNAL_ERROR);
-        }
+    private void asyncSaveLoginToken(LoginRequest request, LoginDetailsBean loginDetailsBean) {
+        ConcurrentUtils.asyncRunSingleTask(() -> {
+            String userInfo = JsonUtils.toJSONString(loginDetailsBean.getUser());
+            boolean result = redisService.set(loginDetailsBean.getToken(), userInfo, LoginConstants.LOGIN_TOKEN_MAX_EXPIRE, TimeUnit.DAYS);
+            if (!result) {
+                log.info("Login failed: internal error,root cause: redis return value is {}", request);
+                throw new BusinessException(EasyResultCode.INTERNAL_ERROR);
+            }
+        });
     }
 
-
+    /**
+     * 退出登录
+     */
     @Override
     public boolean logout(LogoutRequest request) {
         String token = request.getToken();
@@ -167,24 +181,34 @@ public class LoginService implements ILoginService {
             return false;
         }
 
-        //退出成功
-        CompletableFuture.runAsync(() -> {
-            AccountBean currAccount = null;
-            if (Objects.nonNull(userDetailsBean) && Objects.nonNull(currAccount = userDetailsBean.getCurrAccount())) {
-                //更新用户账户状态为退出
-                LoginLogBean signInLogBean = loginLogService.queryLoginLogDetails(QueryLoginLogRequest.builder()
-                        .userCode(userDetailsBean.getCode()).accountCode(currAccount.getCode()).token(token).build());
-                Optional.ofNullable(signInLogBean).ifPresent(logBean -> {
-                    UpdateLoginLogRequest updateLoginLogRequest = UpdateLoginLogRequest.builder()
-                            .status(LoginStatus.OFFLINE.getCode()).build();
-                    loginLogService.updateSignLog(logBean.getCode(),updateLoginLogRequest);
-                });
-            }
-        });
-
+        asyncUpdateLoginStatusOffline(userDetailsBean, token);
         return true;
     }
 
+    /**
+     * 退出后更新登录状态为OFFLINE
+     *
+     * @param userDetailsBean
+     * @param token
+     */
+    private void asyncUpdateLoginStatusOffline(UserDetailsBean userDetailsBean, String token) {
+        ConcurrentUtils.asyncRunSingleTask(() -> {
+            // 退出成功执行
+            AccountBean currAccount = null;
+            if (Objects.nonNull(userDetailsBean) && Objects.nonNull(currAccount = userDetailsBean.getCurrAccount())) {
+                // 更新用户账户状态为退出
+                LoginLogBean signInLogBean = loginLogService.queryLoginLogDetails(QueryLoginLogRequest.builder().userCode(userDetailsBean.getCode()).accountCode(currAccount.getCode()).token(token).build());
+                Optional.ofNullable(signInLogBean).ifPresent(logBean -> {
+                    UpdateLoginLogRequest updateLoginLogRequest = UpdateLoginLogRequest.builder().status(LoginStatus.OFFLINE.getCode()).build();
+                    loginLogService.updateSignLog(logBean.getCode(), updateLoginLogRequest);
+                });
+            }
+        });
+    }
+
+    /**
+     * 注册账号
+     */
     @Override
     public AuthenticationDetailsBean register(RegisterUserRequest request) {
         ILoginStrategy loginPolicy = LoginStrategyContext.getIdentifyStrategy(request.getIdentifierType());

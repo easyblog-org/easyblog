@@ -55,14 +55,15 @@ CREATE TABLE `user_header`
 
 CREATE TABLE `mobile_area_code`
 (
-    `id`           bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `code`         varchar(32)  NOT NULL DEFAULT '' COMMENT '唯一code',
-    `crown_code`   varchar(10)  NOT NULL DEFAULT '' COMMENT '国际冠码',
-    `country_code` varchar(100) NOT NULL DEFAULT '' COMMENT '国家码',
-    `area_code`    varchar(10)  NOT NULL DEFAULT '' COMMENT '区域码',
-    `area_name`    varchar(20)  NOT NULL DEFAULT '' COMMENT '区域名',
-    `create_time`  timestamp    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`  timestamp    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+    `id`             bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `code`           varchar(32)  NOT NULL DEFAULT '' COMMENT '唯一code',
+    `continent_code` varchar(32)  NOT NULL DEFAULT 'AS' COMMENT '大洲编号',
+    `crown_code`     varchar(10)  NOT NULL DEFAULT '' COMMENT '国际冠码',
+    `country_code`   varchar(100) NOT NULL DEFAULT '' COMMENT '国家码',
+    `area_code`      varchar(10)  NOT NULL DEFAULT '' COMMENT '区域码',
+    `area_name`      varchar(20)  NOT NULL DEFAULT '' COMMENT '区域名',
+    `create_time`    timestamp    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_time`    timestamp    NULL     DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY idx_code (code),
     KEY `idx_cca` (`crown_code`, `country_code`, `area_code`)

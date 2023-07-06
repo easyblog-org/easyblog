@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
+import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.QuerySection;
 import top.easyblog.common.request.article.CreateArticleCategoryRequest;
 import top.easyblog.common.request.article.QueryArticleCategoryListRequest;
@@ -21,11 +22,7 @@ import top.easyblog.dao.auto.model.ArticleCategory;
 import top.easyblog.service.section.IArticleSectionInquireService;
 import top.easyblog.support.context.ArticleSectionContext;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -122,7 +119,7 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
      * 聚合服务中进行选项查询
      *
      * @param section               选项名称
-     * @param ctx 上下文
+     * @param ctx                   上下文
      * @param articleBeanList       查询参数
      * @param queryWhenSectionEmpty 是否在选项名称为空时继续执行查询
      * @return
@@ -130,13 +127,15 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
     @Override
     public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList, boolean queryWhenSectionEmpty) {
         if (CollectionUtils.isEmpty(articleBeanList)) return;
-        List<Long> categoryIds = articleBeanList.stream().map(ArticleBean::getCategoryId).collect(Collectors.toList());
+        List<Long> categoryIds = articleBeanList.stream()
+                .map(item -> Arrays.stream(StringUtils.split(item.getCategoryIds(), Constants.COMMA)).map(Long::parseLong)
+                        .collect(Collectors.toList())).flatMap(Collection::stream).distinct().collect(Collectors.toList());
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_CATEGORY.name(), section) || queryWhenSectionEmpty) {
             List<ArticleCategory> articleCategories = atomicArticleCategoryService.queryListByRequest(QueryArticleCategoryListRequest.builder()
                     .ids(categoryIds).limit(null).offset(null).build());
-            Map<Long, ArticleCategoryBean> articleCategoryBeanMap = articleCategories.stream().filter(Objects::nonNull)
+            Map<Long, List<ArticleCategoryBean>> articleCategoryBeanMap = articleCategories.stream().filter(Objects::nonNull)
                     .map(item -> beanMapper.convertArticleCategory2ArticleCategoryBean(item))
-                    .collect(Collectors.toMap(ArticleCategoryBean::getId, Function.identity(), (e1, e2) -> e1));
+                    .collect(Collectors.groupingBy(ArticleCategoryBean::getId));
             ctx.setArticleCategoryBeanMap(articleCategoryBeanMap);
         }
     }

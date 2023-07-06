@@ -97,6 +97,11 @@
                 <version>${easyblog-version}</version>
             </dependency>
             <dependency>
+            <groupId>top.easyblog</groupId>
+            <artifactId>easyblog-platform</artifactId>
+             <version>${easyblog-version}</version>
+        </dependency>
+            <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
@@ -248,5 +253,6 @@
         <module>easyblog-service</module>
         <module>easyblog-client</module>
 		<module>easyblog-web</module>
+        <module>easyblog-platform</module>
     </modules>
 </project>

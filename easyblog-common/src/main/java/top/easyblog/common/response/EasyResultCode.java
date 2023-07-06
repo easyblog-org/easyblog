@@ -118,6 +118,8 @@ public enum EasyResultCode {
     USER_NOT_FOUND,
     // 认证Token不存在
     AUTH_TOKEN_NOT_FOUND,
+    // 认证过期
+    AUTH_EXPIRED,
     //发送记录未找到
     MESSAGE_RECORD_NOT_FOUND,
     // 文章已经被删除
@@ -139,6 +141,15 @@ public enum EasyResultCode {
     DELETE_OPERATION_NOT_PERMISSION,
     // 密码不一致
     PASSWORD_NOT_EQUAL,
+
+    CREATE_USER_FAILED,
+    INVALID_CONTINENT_TYPE,
+    MESSAGE_PARAM_CONFIG_REQUIRED,
+    MESSAGE_PARAM_CONFIG_RECEIVER_REQUIRED,
+    MESSAGE_TEMPLATE_NOT_FOUND,
+    MESSAGE_TEMPLATE_STATUS_ILLEGAL,
+    PASSWORD_NOT_CHANGE,
+    NO_ACCESS_PERMISSION,
     ;
 
     public String getCode() {
