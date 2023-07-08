@@ -24,17 +24,6 @@ public class H5ArticleController {
     /**
      * 文章列表
      *
-     * @return
-     */
-    @ResponseWrapper
-    @GetMapping("/index")
-    public H5ArticleBean queryList(){
-        return articleService.queryList();
-    }
-
-    /**
-     * 文章列表
-     *
      * @param request
      * @return
      */
