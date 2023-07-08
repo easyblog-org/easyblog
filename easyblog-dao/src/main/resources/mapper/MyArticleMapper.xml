@@ -10,7 +10,6 @@
         <result column="featured_image" jdbcType="VARCHAR" property="featuredImage"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="is_top" jdbcType="BOOLEAN" property="isTop"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
         <result column="content_id" jdbcType="BIGINT" property="contentId"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -20,14 +19,14 @@
 
     <sql id="BASE_QUERY_COL">
         a.id,a.code,a.author_id,a.title,a.category,a.featured_image,a.status,a.is_top,a.create_time,a.update_time,
-        a.content_id,ac.content
+        a.content_id
     </sql>
 
     <select id="selectListByRequest" resultMap="BaseResultMap"
             parameterType="top.easyblog.common.request.article.QueryArticlesRequest">
         select
         <include refid="BASE_QUERY_COL"/>
-        from article a left join article_content ac on a.content_id = ac.id
+        from article a
         <where>
             <include refid="article_where_condition"/>
         </where>
@@ -45,7 +44,7 @@
     <select id="countByRequest" resultType="long"
             parameterType="top.easyblog.common.request.article.QueryArticlesRequest">
         select count(*)
-        from article a left join article_content ac on a.content_id = ac.id
+        from article a
         <where>
             <include refid="article_where_condition"/>
         </where>

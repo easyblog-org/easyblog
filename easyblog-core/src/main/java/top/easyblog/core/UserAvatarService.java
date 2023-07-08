@@ -118,7 +118,7 @@ public class UserAvatarService implements
             return;
         }
 
-        List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).collect(Collectors.toList());
+        List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).distinct().collect(Collectors.toList());
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR_AVATAR.name(), section)
                 || queryWhenSectionEmpty) {
             ctx.setAuthorAvatarBeanMap(buildUserAvatarMap(authorIds, (userHeaderBeans) -> userHeaderBeans.stream()
@@ -134,7 +134,7 @@ public class UserAvatarService implements
             return;
         }
 
-        List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
+        List<String> userCodes = new ArrayList<>(userIdCodesMap.values()).stream().distinct().collect(Collectors.toList());
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_HEADER_IMG.getName(), section) || queryWhenSectionEmpty) {
             ctx.setUserHistoryImagesMap(
                     buildUserAvatarMap(userCodes, (userHeaders) -> userHeaders.stream().filter(Objects::nonNull)

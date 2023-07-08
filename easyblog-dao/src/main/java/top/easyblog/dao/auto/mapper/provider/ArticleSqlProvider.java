@@ -53,7 +53,7 @@ public class ArticleSqlProvider {
         }
         
         if (record.getContentId() != null) {
-            sql.VALUES("content_id", "#{contentId,jdbcType=INTEGER}");
+            sql.VALUES("content_id", "#{contentId,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -141,7 +141,7 @@ public class ArticleSqlProvider {
         }
         
         if (record.getContentId() != null) {
-            sql.SET("content_id = #{record.contentId,jdbcType=INTEGER}");
+            sql.SET("content_id = #{record.contentId,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {
@@ -171,7 +171,7 @@ public class ArticleSqlProvider {
         sql.SET("featured_image = #{record.featuredImage,jdbcType=VARCHAR}");
         sql.SET("status = #{record.status,jdbcType=VARCHAR}");
         sql.SET("is_top = #{record.isTop,jdbcType=BIT}");
-        sql.SET("content_id = #{record.contentId,jdbcType=INTEGER}");
+        sql.SET("content_id = #{record.contentId,jdbcType=VARCHAR}");
         sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
         sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         sql.SET("code = #{record.code,jdbcType=VARCHAR}");
@@ -210,7 +210,7 @@ public class ArticleSqlProvider {
         }
         
         if (record.getContentId() != null) {
-            sql.SET("content_id = #{contentId,jdbcType=INTEGER}");
+            sql.SET("content_id = #{contentId,jdbcType=VARCHAR}");
         }
         
         if (record.getCreateTime() != null) {

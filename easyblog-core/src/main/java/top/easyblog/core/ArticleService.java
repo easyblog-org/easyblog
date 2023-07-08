@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
+import top.easyblog.common.bean.ArticleContentBean;
 import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.ArticleStatus;
 import top.easyblog.common.exception.BusinessException;
@@ -25,11 +26,12 @@ import top.easyblog.dao.atomic.AtomicArticleContentService;
 import top.easyblog.dao.atomic.AtomicArticleService;
 import top.easyblog.dao.atomic.AtomicUserService;
 import top.easyblog.dao.auto.model.Article;
-import top.easyblog.dao.auto.model.ArticleContent;
 import top.easyblog.dao.auto.model.User;
+import top.easyblog.dao.mongo.model.ArticleContent;
 import top.easyblog.service.section.IArticleSectionInquireService;
 import top.easyblog.support.context.ArticleSectionContext;
 import top.easyblog.support.util.ConcurrentUtils;
+import top.easyblog.support.util.IdGenerator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -66,7 +68,7 @@ public class ArticleService {
     @Transaction
     public String saveArticle(CreateArticleRequest request) {
         checkCreateReqValid(request);
-        Long contentID = refreshArticleContentIfNeed(request.getContent(), null);
+        String contentID = refreshArticleContentIfNeed(request.getContent(), null);
         Assert.notNull(contentID, "Save article content failed.");
         Article article = beanMapper.convertArticleCreateReq2Article(request, contentID);
         atomicArticleService.insertOne(article);
@@ -97,12 +99,13 @@ public class ArticleService {
      * @param code
      * @param request
      */
+    @Transaction
     public void updateArticle(String code, UpdateArticleRequest request) {
         ArticleBean articleBean = details(code, null);
         checkUpdateReqValid(request, articleBean);
         Assert.notNull(articleBean, "Article of code+" + code + "+ not found!");
 
-        Long contentId = refreshArticleContentIfNeed(request.getContent(), articleBean.getContentId());
+        String contentId = refreshArticleContentIfNeed(request.getContent(), articleBean.getContentId());
         Article article = beanMapper.convertArticleUpdateReq2Article(request, articleBean.getId(), contentId);
         atomicArticleService.updateByPrimaryKeySelective(article);
     }
@@ -122,15 +125,18 @@ public class ArticleService {
     }
 
 
-    private Long refreshArticleContentIfNeed(String content, Long contentId) {
+    private String refreshArticleContentIfNeed(String content, String contentId) {
         if (StringUtils.isBlank(content)) {
             log.info("Article content is blank,ignore!");
             return null;
         }
 
+        boolean createNewDocument = StringUtils.isBlank(contentId);
         ArticleContent articleContent = beanMapper.buildArticleContent(content);
-        articleContent.setId(Optional.ofNullable(contentId).map(Long::intValue).orElse(null));
-        return Objects.isNull(contentId) ? atomicArticleContentService.insertOne(articleContent) : atomicArticleContentService.updateByPrimaryKeySelective(articleContent);
+        articleContent.setContentId(createNewDocument ? IdGenerator.generateRandomCode(32) : contentId);
+        return createNewDocument ?
+                atomicArticleContentService.insertOne(articleContent) :
+                atomicArticleContentService.updateByPrimaryKeySelective(articleContent);
     }
 
 
@@ -179,6 +185,8 @@ public class ArticleService {
             }
             articleBean.setAuthor(Optional.ofNullable(ctx.getAuthorMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
             articleBean.setAuthorAvatar(Optional.ofNullable(ctx.getAuthorAvatarBeanMap()).map(map -> map.get(articleBean.getAuthorId())).orElse(null));
+            articleBean.setContent(Optional.ofNullable(ctx.getArticleContentBeanMap())
+                    .flatMap(map -> Optional.ofNullable(map.get(articleBean.getContentId())).map(ArticleContentBean::getContent)).orElse(null));
         });
     }
 

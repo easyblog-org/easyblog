@@ -19,7 +19,7 @@ public class Article {
 
     private Boolean isTop;
 
-    private Integer contentId;
+    private String contentId;
 
     private Date createTime;
 

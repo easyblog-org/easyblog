@@ -22,6 +22,8 @@ public enum QuerySection {
 
     QUERY_ARTICLE_CATEGORY("article_category"),
 
+    QUERY_ARTICLE_CONTENT("article_content"),
+
     QUERY_ARTICLE_AUTHOR("article_author"),
 
     QUERY_ARTICLE_AUTHOR_AVATAR("article_author_avatar"),

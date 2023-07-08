@@ -7,12 +7,14 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.StopWatch;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
 import top.easyblog.common.bean.H5ArticleBean;
 import top.easyblog.common.request.article.QueryArticlesRequest;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.ArticleService;
+import top.easyblog.core.annotation.Transaction;
 import top.easyblog.support.util.ConcurrentUtils;
 
 import java.util.*;
@@ -50,7 +52,9 @@ public class H5ArticleService {
     public H5ArticleBean queryList() {
         H5ArticleBean articleBean = new H5ArticleBean();
         List<Runnable> tasks = new ArrayList<>();
+
         tasks.add(() -> {
+            System.out.println("start query swiperArticleList..."+new Date().getTime());
             PageResponse<H5ArticleBean.ArticleBean> articleBeanPageResponse = list(QueryArticlesRequest.builder()
                     .isTop(true)
                     .orderCause("create_time")
