@@ -49,42 +49,6 @@ public class H5ArticleService {
         return convertToH5ArticleBean(articleBean);
     }
 
-    public H5ArticleBean queryList() {
-        H5ArticleBean articleBean = new H5ArticleBean();
-        List<Runnable> tasks = new ArrayList<>();
-
-        tasks.add(() -> {
-            System.out.println("start query swiperArticleList..."+new Date().getTime());
-            PageResponse<H5ArticleBean.ArticleBean> articleBeanPageResponse = list(QueryArticlesRequest.builder()
-                    .isTop(true)
-                    .orderCause("create_time")
-                    .orderDir("desc")
-                    .offset(0)
-                    .limit(7)
-                    .build());
-            Assert.notNull(articleBeanPageResponse, "Query article list return null response.");
-            List<H5ArticleBean.ArticleBean> topHotArticles = articleBeanPageResponse.getData();
-            List<List<H5ArticleBean.ArticleBean>> topHotArticlesPartition = Lists.partition(topHotArticles, 5);
-            articleBean.setSwiperArticleList(Iterables.getFirst(topHotArticlesPartition, Collections.emptyList()));
-            articleBean.setSwiperArticleSideList(topHotArticles.size() <= 5 ? Collections.emptyList() :
-                    Iterables.getLast(topHotArticlesPartition, Collections.emptyList()));
-        });
-
-        tasks.add(() -> {
-            PageResponse<H5ArticleBean.ArticleBean> articleBeanPageResponse = list(QueryArticlesRequest.builder()
-                    .orderCause("create_time")
-                    .orderDir("desc")
-                    .offset(0)
-                    .limit(20)
-                    .build());
-            Assert.notNull(articleBeanPageResponse, "Query article list return null response.");
-            articleBean.setNewestArticleList(articleBeanPageResponse.getData());
-        });
-
-
-        ConcurrentUtils.executeTaskInBlockModel(tasks, null);
-        return articleBean;
-    }
 
     private H5ArticleBean.ArticleBean convertToH5ArticleBean(ArticleBean articleBean) {
         if (Objects.isNull(articleBean)) return null;
