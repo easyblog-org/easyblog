@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import top.easyblog.common.bean.ArticleCategoryBean;
+import top.easyblog.common.bean.ArticleContentBean;
 import top.easyblog.common.bean.UserDetailsBean;
 import top.easyblog.common.bean.UserAvatarBean;
 
@@ -23,4 +24,5 @@ public class ArticleSectionContext {
     private Map<Long, List<ArticleCategoryBean>> articleCategoryBeanMap;
     private Map<String, UserDetailsBean> authorMap;
     private Map<String, UserAvatarBean> authorAvatarBeanMap;
+    private Map<String, ArticleContentBean> articleContentBeanMap;
 }

@@ -24,7 +24,7 @@
         <slf4j-version>1.7.30</slf4j-version>
         <lombok.version>1.18.22</lombok.version>
         <mysql.version>8.0.30</mysql.version>
-        <druid.version>1.2.15</druid.version>
+        <druid.version>1.1.20</druid.version>
         <mybatis.spring.boot.version>2.1.0</mybatis.spring.boot.version>
         <pagehelper-version>1.2.13</pagehelper-version>
         <commons-logging-version>1.1.1</commons-logging-version>
@@ -177,7 +177,7 @@
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>
-                <artifactId>druid</artifactId>
+                <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid.version}</version>
             </dependency>
             <dependency>

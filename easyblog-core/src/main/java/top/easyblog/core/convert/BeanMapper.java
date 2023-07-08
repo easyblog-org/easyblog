@@ -36,6 +36,7 @@ import top.easyblog.common.request.user.CreateUserRequest;
 import top.easyblog.common.request.user.UpdateUserAccountRequest;
 import top.easyblog.common.request.user.UpdateUserRequest;
 import top.easyblog.dao.auto.model.*;
+import top.easyblog.dao.mongo.model.ArticleContent;
 import top.easyblog.support.context.BusinessMessageRecordContext;
 import top.easyblog.support.context.MessageConfigContext;
 
@@ -182,12 +183,12 @@ public interface BeanMapper {
             @Mapping(target = "status", expression = "java(request.getStatus().toUpperCase())"),
             @Mapping(target = "code", expression = "java(top.easyblog.support.util.IdGenerator.getSnowflakeNextId())"),
     })
-    Article convertArticleCreateReq2Article(CreateArticleRequest request, Long contentId);
+    Article convertArticleCreateReq2Article(CreateArticleRequest request, String contentId);
 
     @Mapping(target = "id", source = "articleId")
     @Mapping(target = "contentId", source = "contentId")
     @Mapping(target = "status", expression = "java(java.util.Optional.ofNullable(request.getStatus()).map(String::toUpperCase).orElse(null))")
-    Article convertArticleUpdateReq2Article(UpdateArticleRequest request, Long articleId, Long contentId);
+    Article convertArticleUpdateReq2Article(UpdateArticleRequest request, Long articleId, String contentId);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "content", source = "content")
@@ -226,4 +227,6 @@ public interface BeanMapper {
     @Mapping(target = "operationSystem", source = "request.operationSystem")
     @Mapping(target = "location", source = "request.location")
     CreateLoginLogRequest buildAdminSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
+
+    ArticleContentBean convertArticleContent2Bean(ArticleContent item);
 }

@@ -150,7 +150,7 @@ public class AccountService implements IUserSectionInquireService {
             return;
         }
 
-        List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
+        List<String> userCodes = new ArrayList<>(userIdCodesMap.values()).stream().distinct().collect(Collectors.toList());
         if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ACCOUNTS.getName(), section) || queryWhenSectionEmpty) {
             QueryAccountListRequest queryAccountListRequest = QueryAccountListRequest.builder()
                     .userCodes(userCodes).build();

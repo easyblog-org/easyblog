@@ -614,52 +614,52 @@ public class ArticleExample {
             return (Criteria) this;
         }
 
-        public Criteria andContentIdEqualTo(Integer value) {
+        public Criteria andContentIdEqualTo(String value) {
             addCriterion("content_id =", value, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdNotEqualTo(Integer value) {
+        public Criteria andContentIdNotEqualTo(String value) {
             addCriterion("content_id <>", value, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdGreaterThan(Integer value) {
+        public Criteria andContentIdGreaterThan(String value) {
             addCriterion("content_id >", value, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andContentIdGreaterThanOrEqualTo(String value) {
             addCriterion("content_id >=", value, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdLessThan(Integer value) {
+        public Criteria andContentIdLessThan(String value) {
             addCriterion("content_id <", value, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdLessThanOrEqualTo(Integer value) {
+        public Criteria andContentIdLessThanOrEqualTo(String value) {
             addCriterion("content_id <=", value, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdIn(List<Integer> values) {
+        public Criteria andContentIdIn(List<String> values) {
             addCriterion("content_id in", values, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdNotIn(List<Integer> values) {
+        public Criteria andContentIdNotIn(List<String> values) {
             addCriterion("content_id not in", values, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdBetween(Integer value1, Integer value2) {
+        public Criteria andContentIdBetween(String value1, String value2) {
             addCriterion("content_id between", value1, value2, "contentId");
             return (Criteria) this;
         }
 
-        public Criteria andContentIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andContentIdNotBetween(String value1, String value2) {
             addCriterion("content_id not between", value1, value2, "contentId");
             return (Criteria) this;
         }

@@ -43,7 +43,7 @@ public interface ArticleMapper {
         "code)",
         "values (#{authorId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, ",
         "#{category,jdbcType=VARCHAR}, #{featuredImage,jdbcType=VARCHAR}, ",
-        "#{status,jdbcType=VARCHAR}, #{isTop,jdbcType=BIT}, #{contentId,jdbcType=INTEGER}, ",
+        "#{status,jdbcType=VARCHAR}, #{isTop,jdbcType=BIT}, #{contentId,jdbcType=VARCHAR}, ",
         "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, ",
         "#{code,jdbcType=VARCHAR})"
     })
@@ -63,7 +63,7 @@ public interface ArticleMapper {
         @Result(column="featured_image", property="featuredImage", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.VARCHAR),
         @Result(column="is_top", property="isTop", jdbcType=JdbcType.BIT),
-        @Result(column="content_id", property="contentId", jdbcType=JdbcType.INTEGER),
+        @Result(column="content_id", property="contentId", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
@@ -85,7 +85,7 @@ public interface ArticleMapper {
         @Result(column="featured_image", property="featuredImage", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.VARCHAR),
         @Result(column="is_top", property="isTop", jdbcType=JdbcType.BIT),
-        @Result(column="content_id", property="contentId", jdbcType=JdbcType.INTEGER),
+        @Result(column="content_id", property="contentId", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
         @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
@@ -109,7 +109,7 @@ public interface ArticleMapper {
           "featured_image = #{featuredImage,jdbcType=VARCHAR},",
           "status = #{status,jdbcType=VARCHAR},",
           "is_top = #{isTop,jdbcType=BIT},",
-          "content_id = #{contentId,jdbcType=INTEGER},",
+          "content_id = #{contentId,jdbcType=VARCHAR},",
           "create_time = #{createTime,jdbcType=TIMESTAMP},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
           "code = #{code,jdbcType=VARCHAR}",

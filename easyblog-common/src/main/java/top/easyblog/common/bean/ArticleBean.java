@@ -40,7 +40,7 @@ public class ArticleBean {
 
     private Boolean isTop;
 
-    private Long contentId;
+    private String contentId;
 
     private String content;
 
