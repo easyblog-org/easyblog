@@ -2,11 +2,11 @@ package top.easyblog.web.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.H5ArticleBean;
 import top.easyblog.common.request.article.QueryArticlesRequest;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.platform.service.H5ArticleService;
+import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 /**
@@ -29,7 +29,7 @@ public class H5ArticleController {
      */
     @ResponseWrapper
     @GetMapping("/list")
-    public PageResponse<H5ArticleBean.ArticleBean> list(QueryArticlesRequest request) {
+    public PageResponse<H5ArticleBean.ArticleBean> list(@RequestParamAlias QueryArticlesRequest request) {
         return articleService.list(request);
     }
 

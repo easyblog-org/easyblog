@@ -35,7 +35,9 @@
         <where>
             <include refid="article_where_condition"/>
         </where>
-        group by a.id
+        <if test="request.orderCause!=null and request.orderDir!=null">
+            order by ${request.orderCause} ${request.orderDir}
+        </if>
         <if test="request.limit!=null">
             <if test="request.offset!=null">
                 limit #{request.offset},#{request.limit}
@@ -43,9 +45,6 @@
             <if test="request.offset==null">
                 limit #{request.limit}
             </if>
-        </if>
-        <if test="request.orderCause!=null and request.orderDir!=null">
-            order by #{request.orderCause} #{request.orderDir}
         </if>
     </select>
 
