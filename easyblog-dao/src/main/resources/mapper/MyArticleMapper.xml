@@ -12,6 +12,11 @@
         <result column="is_top" jdbcType="BOOLEAN" property="isTop"/>
         <result column="content_id" jdbcType="BIGINT" property="contentId"/>
         <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="likes_num" jdbcType="INTEGER" property="likesNum"/>
+        <result column="favorites_num" jdbcType="INTEGER" property="favoritesNum"/>
+        <result column="retweets_num" jdbcType="INTEGER" property="retweetsNum"/>
+        <result column="reports_num" jdbcType="INTEGER" property="reportsNum"/>
+        <result column="page_views" jdbcType="INTEGER" property="pageViews"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -19,7 +24,7 @@
 
     <sql id="BASE_QUERY_COL">
         a.id,a.code,a.author_id,a.title,a.category,a.featured_image,a.status,a.is_top,a.create_time,a.update_time,
-        a.content_id
+        a.content_id,a.likes_num,a.favorites_num,a.retweets_num,a.reports_num,a.page_views
     </sql>
 
     <select id="selectListByRequest" resultMap="BaseResultMap"
@@ -38,6 +43,9 @@
             <if test="request.offset==null">
                 limit #{request.limit}
             </if>
+        </if>
+        <if test="request.orderCause!=null and request.orderDir!=null">
+            order by #{request.orderCause} #{request.orderDir}
         </if>
     </select>
 
@@ -71,6 +79,12 @@
         </if>
         <if test="request.title!=null">
             and a.title like %#{request.title}%
+        </if>
+        <if test="request.createTimeBegin!=null">
+            and a.create_time &gt;= #{request.createTimeBegin}
+        </if>
+        <if test="request.createTimeEnd!=null">
+            and a.create_time &lt;= #{createTimeEnd}
         </if>
     </sql>
 

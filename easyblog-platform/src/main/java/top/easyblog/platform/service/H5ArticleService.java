@@ -60,6 +60,11 @@ public class H5ArticleService {
         h5ArticleBean.setStatus(articleBean.getStatus());
         h5ArticleBean.setIsTop(articleBean.getIsTop());
         h5ArticleBean.setContent(articleBean.getContent());
+        h5ArticleBean.setFavoritesNum(articleBean.getFavoritesNum());
+        h5ArticleBean.setLikesNum(articleBean.getLikesNum());
+        h5ArticleBean.setPageViews(articleBean.getPageViews());
+        h5ArticleBean.setReportsNum(articleBean.getReportsNum());
+        h5ArticleBean.setRetweetsNum(articleBean.getRetweetsNum());
         h5ArticleBean.setCreateTime(Optional.ofNullable(articleBean.getCreateTime()).map(Date::getTime).orElse(0L));
         h5ArticleBean.setUpdateTime(Optional.ofNullable(articleBean.getUpdateTime()).map(Date::getTime).orElse(0L));
 
@@ -77,7 +82,6 @@ public class H5ArticleService {
         }
         if (Objects.nonNull(articleBean.getAuthorAvatar())) {
             articleAuthor.setHeaderImgUrl(articleBean.getAuthorAvatar().getHeaderImgUrl());
-
         }
         h5ArticleBean.setAuthor(articleAuthor);
         return h5ArticleBean;
