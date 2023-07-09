@@ -47,4 +47,16 @@ public class ArticleBean {
     private Date createTime;
 
     private Date updateTime;
+
+    private String category;
+
+    private Integer likesNum;
+
+    private Integer favoritesNum;
+
+    private Integer retweetsNum;
+
+    private Integer reportsNum;
+
+    private Integer pageViews;
 }

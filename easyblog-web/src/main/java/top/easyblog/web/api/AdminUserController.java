@@ -10,6 +10,7 @@ import top.easyblog.common.request.user.QueryUserRequest;
 import top.easyblog.common.request.user.UpdateUserAccountRequest;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.platform.service.AdminUserService;
+import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 import javax.validation.Valid;
@@ -40,13 +41,13 @@ public class AdminUserController {
 
     @ResponseWrapper
     @GetMapping("")
-    public UserDetailsBean details(QueryUserRequest request) {
+    public UserDetailsBean details(@RequestParamAlias QueryUserRequest request) {
         return userService.details(request);
     }
 
     @ResponseWrapper
     @GetMapping("/list")
-    public PageResponse<UserDetailsBean> queryList(QueryUserListRequest request) {
+    public PageResponse<UserDetailsBean> queryList(@RequestParamAlias QueryUserListRequest request) {
         return userService.queryUserList(request);
     }
 

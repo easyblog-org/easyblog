@@ -1,7 +1,12 @@
 package top.easyblog.common.constant;
 
+
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author: frank.huang
@@ -28,17 +33,17 @@ public final class Constants {
     public static final String UNKNOWN_IP = "unknown";
     public static final String REQUEST_URL = "url";
     public static final String SIGN = "sign";
-    public static final String APP_ID="app_id";
-    public static final String SECRET="secret";
-    public static final String TIMESTAMP="timestamp";
-    public static final String LOCAL_HOST="localhost";
-    public static final String LOOPBACK_ADDRESS="127.0.0.1";
+    public static final String APP_ID = "app_id";
+    public static final String SECRET = "secret";
+    public static final String TIMESTAMP = "timestamp";
+    public static final String LOCAL_HOST = "localhost";
+    public static final String LOOPBACK_ADDRESS = "127.0.0.1";
 
     //缓存类
     public static final String REDIS_USER_KEY = "easyblog-cli:user:name:%s";
 
     //时间
-    public static final long TEN_MINUS = 10*60*1000;
+    public static final long TEN_MINUS = 10 * 60 * 1000;
 
     // 查询分页大小 1000
     public static final int QUERY_LIMIT_MAX_THOUSAND = 1000;
@@ -48,4 +53,15 @@ public final class Constants {
 
     //默认分页查询大小
     public static final Integer DEFAULT_PAGE_SIZE = 100;
+
+
+    // 允许的排序方式
+    public static final List<String> ORDER_DIRS = Collections.unmodifiableList(
+            Arrays.asList("desc", "asc")
+    );
+
+    //文章列表排序方式
+    public static final List<String> ARTICLE_LIST_ORDER_CAUSE = Collections.unmodifiableList(
+            Arrays.asList("create_time","update_time","page_views","reports_num","likes_num")
+    );
 }

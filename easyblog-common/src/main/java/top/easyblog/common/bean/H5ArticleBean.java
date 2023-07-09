@@ -45,6 +45,18 @@ public class H5ArticleBean {
 
         private String content;
 
+        private String category;
+
+        private Integer likesNum;
+
+        private Integer favoritesNum;
+
+        private Integer retweetsNum;
+
+        private Integer reportsNum;
+
+        private Integer pageViews;
+
         private Long createTime;
 
         private Long updateTime;

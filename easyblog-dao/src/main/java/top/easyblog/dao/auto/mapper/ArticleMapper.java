@@ -36,16 +36,20 @@ public interface ArticleMapper {
     int deleteByPrimaryKey(Long id);
 
     @Insert({
-        "insert into article (author_id, title, ",
-        "category, featured_image, ",
-        "status, is_top, content_id, ",
-        "create_time, update_time, ",
-        "code)",
-        "values (#{authorId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, ",
-        "#{category,jdbcType=VARCHAR}, #{featuredImage,jdbcType=VARCHAR}, ",
-        "#{status,jdbcType=VARCHAR}, #{isTop,jdbcType=BIT}, #{contentId,jdbcType=VARCHAR}, ",
-        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, ",
-        "#{code,jdbcType=VARCHAR})"
+        "insert into article (code, author_id, ",
+        "title, category, ",
+        "featured_image, content_id, ",
+        "status, is_top, likes_num, ",
+        "favorites_num, retweets_num, ",
+        "reports_num, page_views, ",
+        "update_time, create_time)",
+        "values (#{code,jdbcType=VARCHAR}, #{authorId,jdbcType=VARCHAR}, ",
+        "#{title,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, ",
+        "#{featuredImage,jdbcType=VARCHAR}, #{contentId,jdbcType=VARCHAR}, ",
+        "#{status,jdbcType=VARCHAR}, #{isTop,jdbcType=BIT}, #{likesNum,jdbcType=INTEGER}, ",
+        "#{favoritesNum,jdbcType=INTEGER}, #{retweetsNum,jdbcType=INTEGER}, ",
+        "#{reportsNum,jdbcType=INTEGER}, #{pageViews,jdbcType=INTEGER}, ",
+        "#{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
     int insert(Article record);
@@ -57,38 +61,49 @@ public interface ArticleMapper {
     @SelectProvider(type=ArticleSqlProvider.class, method="selectByExample")
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR),
         @Result(column="author_id", property="authorId", jdbcType=JdbcType.VARCHAR),
         @Result(column="title", property="title", jdbcType=JdbcType.VARCHAR),
         @Result(column="category", property="category", jdbcType=JdbcType.VARCHAR),
         @Result(column="featured_image", property="featuredImage", jdbcType=JdbcType.VARCHAR),
+        @Result(column="content_id", property="contentId", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.VARCHAR),
         @Result(column="is_top", property="isTop", jdbcType=JdbcType.BIT),
-        @Result(column="content_id", property="contentId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="likes_num", property="likesNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="favorites_num", property="favoritesNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="retweets_num", property="retweetsNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="reports_num", property="reportsNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="page_views", property="pageViews", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP)
     })
     List<Article> selectByExample(ArticleExample example);
 
     @Select({
         "select",
-        "id, author_id, title, category, featured_image, status, is_top, content_id, ",
-        "create_time, update_time, code",
+        "id, code, author_id, title, category, featured_image, content_id, status, is_top, ",
+        "likes_num, favorites_num, retweets_num, reports_num, page_views, update_time, ",
+        "create_time",
         "from article",
         "where id = #{id,jdbcType=BIGINT}"
     })
     @Results({
         @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR),
         @Result(column="author_id", property="authorId", jdbcType=JdbcType.VARCHAR),
         @Result(column="title", property="title", jdbcType=JdbcType.VARCHAR),
         @Result(column="category", property="category", jdbcType=JdbcType.VARCHAR),
         @Result(column="featured_image", property="featuredImage", jdbcType=JdbcType.VARCHAR),
+        @Result(column="content_id", property="contentId", jdbcType=JdbcType.VARCHAR),
         @Result(column="status", property="status", jdbcType=JdbcType.VARCHAR),
         @Result(column="is_top", property="isTop", jdbcType=JdbcType.BIT),
-        @Result(column="content_id", property="contentId", jdbcType=JdbcType.VARCHAR),
-        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="likes_num", property="likesNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="favorites_num", property="favoritesNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="retweets_num", property="retweetsNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="reports_num", property="reportsNum", jdbcType=JdbcType.INTEGER),
+        @Result(column="page_views", property="pageViews", jdbcType=JdbcType.INTEGER),
         @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="code", property="code", jdbcType=JdbcType.VARCHAR)
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP)
     })
     Article selectByPrimaryKey(Long id);
 
@@ -103,16 +118,21 @@ public interface ArticleMapper {
 
     @Update({
         "update article",
-        "set author_id = #{authorId,jdbcType=VARCHAR},",
+        "set code = #{code,jdbcType=VARCHAR},",
+          "author_id = #{authorId,jdbcType=VARCHAR},",
           "title = #{title,jdbcType=VARCHAR},",
           "category = #{category,jdbcType=VARCHAR},",
           "featured_image = #{featuredImage,jdbcType=VARCHAR},",
+          "content_id = #{contentId,jdbcType=VARCHAR},",
           "status = #{status,jdbcType=VARCHAR},",
           "is_top = #{isTop,jdbcType=BIT},",
-          "content_id = #{contentId,jdbcType=VARCHAR},",
-          "create_time = #{createTime,jdbcType=TIMESTAMP},",
+          "likes_num = #{likesNum,jdbcType=INTEGER},",
+          "favorites_num = #{favoritesNum,jdbcType=INTEGER},",
+          "retweets_num = #{retweetsNum,jdbcType=INTEGER},",
+          "reports_num = #{reportsNum,jdbcType=INTEGER},",
+          "page_views = #{pageViews,jdbcType=INTEGER},",
           "update_time = #{updateTime,jdbcType=TIMESTAMP},",
-          "code = #{code,jdbcType=VARCHAR}",
+          "create_time = #{createTime,jdbcType=TIMESTAMP}",
         "where id = #{id,jdbcType=BIGINT}"
     })
     int updateByPrimaryKey(Article record);

@@ -7,6 +7,8 @@ import lombok.Data;
 public class Article {
     private Long id;
 
+    private String code;
+
     private String authorId;
 
     private String title;
@@ -15,15 +17,23 @@ public class Article {
 
     private String featuredImage;
 
+    private String contentId;
+
     private String status;
 
     private Boolean isTop;
 
-    private String contentId;
+    private Integer likesNum;
 
-    private Date createTime;
+    private Integer favoritesNum;
+
+    private Integer retweetsNum;
+
+    private Integer reportsNum;
+
+    private Integer pageViews;
 
     private Date updateTime;
 
-    private String code;
+    private Date createTime;
 }

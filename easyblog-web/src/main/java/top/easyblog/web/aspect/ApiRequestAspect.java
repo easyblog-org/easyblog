@@ -20,7 +20,8 @@ import java.util.Objects;
 @Component
 public class ApiRequestAspect {
 
-    @Pointcut("execution(public * top.easyblog.web.controller..*.*(..)) && " +
+    @Pointcut("(execution(public * top.easyblog.web.controller..*.*(..)) ||" +
+            "execution(public * top.easyblog.web.api.*.*(..))) && " +
             "(@annotation(org.springframework.web.bind.annotation.GetMapping) ||" +
             "@annotation(org.springframework.web.bind.annotation.PostMapping) ||" +
             "@annotation(org.springframework.web.bind.annotation.PutMapping) ||" +
@@ -35,7 +36,7 @@ public class ApiRequestAspect {
         Object[] args = pjp.getArgs();
         Arrays.stream(args).filter(arg -> Objects.nonNull(arg) && arg instanceof BaseRequest).forEach(arg -> {
             if (!((BaseRequest) arg).validate()) {
-                throw new BusinessException(EasyResultCode.PARAMETER_VALIDATE_FAILED, "please check parameter:" + arg);
+                throw new BusinessException(EasyResultCode.PARAMETER_VALIDATE_FAILED, "请求参数不合法！");
             }
         });
         return pjp.proceed(pjp.getArgs());
