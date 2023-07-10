@@ -1,10 +1,8 @@
 name: Deploy Spring Boot App
-
 on:
-  push:
+ push:
     branches:
       - master
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
