@@ -24,6 +24,8 @@ fi
 #===========================================================================================
 # Check JAVA_HOME Configuration
 #===========================================================================================
+echo "JAVA_HOME:" ${JAVA_HOME}
+
 [ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=$HOME/jdk/java
 [ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=/usr/java
 [ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=/opt/taobao/java
