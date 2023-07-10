@@ -1,12 +1,12 @@
-name: Deploy Spring Boot App
-on:\
- push:\
-    branches:\
-      - master
+name: Deploy Spring Boot App
+
+on:
+ push:
+    branches: ["master"]
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -19,6 +19,4 @@ jobs:
       - name: Build and run Spring Boot app
         run: |
           cd easyblog
-          ./startup.sh -d true -p 8001 
-
-
+          ./startup.sh -d true -p 8001
