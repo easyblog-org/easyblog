@@ -1,0 +1,24 @@
+name: Deploy Spring Boot App
+on:
+ push:
+    branches:
+      - master
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+
+      - name: Build and run Spring Boot app
+        run: |
+          cd easyblog
+          ./startup.sh -d true -p 8001 
+
+
