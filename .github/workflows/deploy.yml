@@ -27,6 +27,7 @@ jobs:
           username: root
           password: ${{ secrets.REMOTE_PWD }}
           script: |
+            echo $JAVA_HOME
             /root/app/easyblog/startup.sh -d true -p 8001
 
       - name: 服务健康检查
