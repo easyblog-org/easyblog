@@ -1,15 +1,39 @@
 name: Deploy Spring Boot App
 on:
- push:
-    branches: ["master"]
+  push:
+    branches:
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: 登录远程服务器拉取最新代码
-        run: sshpass -p ${{secrets.REMOTE_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_IP}} "cd /root/app/easyblog && git pull origin master"        
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: root
+          password: ${{ secrets.REMOTE_PWD }}
+          script: |
+            cd /root/app/easyblog
+            git pull origin master
+
       - name: 执行启动脚本启动项目
-        run: sshpass -p ${{secrets.REMOTE_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_IP}} "cd /root/app/easyblog && ./startup.sh -d true -p 8001"
+        uses: appleboy/ssh-action@v1
+        env:
+         JAVA_HOME: /usr/local/java/jdk1.8.0_141
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: root
+          password: ${{ secrets.REMOTE_PWD }}
+          script: |
+            /root/app/easyblog/startup.sh -d true -p 8001
+
       - name: 服务健康检查
-        run: response=$(curl -s --location --request GET 'http://117.50.189.250:8001/status') && if [[ $response == *"ok"* ]]; then echo "Service is healthy"; else echo "Service is unhealthy with HTTP status code $response"; fi
+        run: |
+          response=$(curl -s --location --request GET '${{ secrets.REMOTE_HELTH_CHECK }}')
+          if [[ $response == *"ok"* ]]; then
+            echo "Service is healthy"
+          else
+            echo "Service is unhealthy with HTTP status code $response"
+          fi
