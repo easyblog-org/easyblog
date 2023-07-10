@@ -22,39 +22,6 @@ fi
 
 
 #===========================================================================================
-# Check JAVA_HOME Configuration
-#===========================================================================================
-echo "JAVA_HOME:" ${JAVA_HOME}
-
-[ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=$HOME/jdk/java
-[ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=/usr/java
-[ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=/opt/taobao/java
-[ ! -e "${JAVA_HOME}/bin/java" ] && unset JAVA_HOME
-
-echo "JAVA_HOME:" ${JAVA_HOME}
-
-if [ -z "${JAVA_HOME}" ]; then
-  if $darwin; then
-
-    if [ -x '/usr/libexec/java_home' ] ; then
-      export JAVA_HOME='/usr/libexec/java_home'
-
-    elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
-      export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
-    fi
-  else
-    JAVA_PATH=`dirname $(readlink -f $(which javac))`
-    if [ "x${JAVA_PATH}" != "x" ]; then
-      export JAVA_HOME=`dirname ${JAVA_PATH} 2>/dev/null`
-    fi
-  fi
-  if [ -z "${JAVA_HOME}" ]; then
-        error_exit "Please set the JAVA_HOME variable in your environment, We need java(x64)! jdk8 or later is better!"
-  fi
-fi
-
-
-#===========================================================================================
 # Running Params Configuration
 #===========================================================================================
 ACTIVE_PROFILE="dev"
@@ -74,6 +41,40 @@ do
         exit 1;;
     esac
 done
+
+# 如果在物理机上运行，需要检查java环境
+#===========================================================================================
+# Check JAVA_HOME Configuration
+#===========================================================================================
+if [ ${USE_DOCKER} == "false"  ]; then
+  echo "JAVA_HOME:" ${JAVA_HOME}
+  [ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=$HOME/jdk/java
+  [ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=/usr/java
+  [ ! -e "${JAVA_HOME}/bin/java" ] && JAVA_HOME=/opt/taobao/java
+  [ ! -e "${JAVA_HOME}/bin/java" ] && unset JAVA_HOME
+
+  echo "JAVA_HOME:" ${JAVA_HOME}
+
+  if [ -z "${JAVA_HOME}" ]; then
+    if $darwin; then
+
+      if [ -x '/usr/libexec/java_home' ] ; then
+        export JAVA_HOME='/usr/libexec/java_home'
+
+      elif [ -d "/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home" ]; then
+        export JAVA_HOME="/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home"
+      fi
+    else
+      JAVA_PATH=`dirname $(readlink -f $(which javac))`
+      if [ "x${JAVA_PATH}" != "x" ]; then
+        export JAVA_HOME=`dirname ${JAVA_PATH} 2>/dev/null`
+      fi
+    fi
+    if [ -z "${JAVA_HOME}" ]; then
+          error_exit "Please set the JAVA_HOME variable in your environment, We need java(x64)! jdk8 or later is better!"
+    fi
+  fi
+fi
 
 #===========================================================================================
 # Build Docker Image
@@ -155,6 +156,8 @@ runOnDocker(){
 #===========================================================================================
 runOnReal(){
   echo ">>>>>> Starting application in ${ACTIVE_PROFILE} env on real physical machine..."
+  # shellcheck disable=SC1073
+  # shellcheck disable=SC1072
   if [ which lsof >/dev/null 2>&1 ]; then
     echo "Command 'lsof' is not exists,pls install manually!"
     exit 1
