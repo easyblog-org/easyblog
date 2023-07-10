@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 登录远程服务器拉取最新代码
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_IP }}
           username: root
@@ -19,7 +19,7 @@ jobs:
             git pull origin master
 
       - name: 执行启动脚本启动项目
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@master
         env:
          JAVA_HOME: /usr/local/java/jdk1.8.0_141
         with:
