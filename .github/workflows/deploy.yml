@@ -6,13 +6,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: 登录远程服务器拉取最新代码
-        run: sshpass -p ${{secrets.REMOTE_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_IP}} "cd /root/app/easyblog && git pull origin master"
-          
-     - name: 执行启动脚本启动项目
+        run: sshpass -p ${{secrets.REMOTE_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_IP}} "cd /root/app/easyblog && git pull origin master"        
+      - name: 执行启动脚本启动项目
         run: sshpass -p ${{secrets.REMOTE_PWD}} ssh -o StrictHostKeyChecking=no root@${{secrets.REMOTE_IP}} "cd /root/app/easyblog && ./startup.sh -d true -p 8001"
-
-      -name: 服务健康检查
+      - name: 服务健康检查
         run: response=$(curl -s --location --request GET 'http://117.50.189.250:8001/status') && if [[ $response == *"ok"* ]]; then echo "Service is healthy"; else echo "Service is unhealthy with HTTP status code $response"; fi
