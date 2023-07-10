@@ -1,0 +1,40 @@
+name: Deploy Spring Boot App
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 登录远程服务器拉取最新代码
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: root
+          password: ${{ secrets.REMOTE_PWD }}
+          script: |
+            cd /root/app/easyblog
+            git pull origin master
+
+      - name: 执行启动脚本启动项目
+        uses: appleboy/ssh-action@master
+        env:
+         JAVA_HOME: /usr/local/java/jdk1.8.0_141
+        with:
+          host: ${{ secrets.REMOTE_IP }}
+          username: root
+          password: ${{ secrets.REMOTE_PWD }}
+          script: |
+            echo $JAVA_HOME
+            /root/app/easyblog/startup.sh -d true -p 8001
+
+      - name: 服务健康检查
+        run: |
+          response=$(curl -s --location --request GET '${{ secrets.REMOTE_HELTH_CHECK }}')
+          if [[ $response == *"ok"* ]]; then
+            echo "Service is healthy"
+          else
+            echo "Service is unhealthy with HTTP status code $response"
+          fi
