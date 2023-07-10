@@ -80,10 +80,10 @@
             and a.title like %#{request.title}%
         </if>
         <if test="request.createTimeBegin!=null">
-            and a.create_time &gt;= #{request.createTimeBegin}
+            and a.create_time &gt;= FROM_UNIXTIME(#{request.createTimeBegin}/1000)
         </if>
         <if test="request.createTimeEnd!=null">
-            and a.create_time &lt;= #{createTimeEnd}
+            and a.create_time &lt;= FROM_UNIXTIME(#{request.createTimeEnd}/1000)
         </if>
     </sql>
 
