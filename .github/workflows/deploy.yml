@@ -17,7 +17,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ''
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: 'easyblog/easyblog'
   LOG_BASE_DIR: '/data/easyblog/logs'
   JAR_FILE_PATH: './easyblog-web/target/easyblog-web-1.0.0.jar'
   SERVER_PORT: '8001'
