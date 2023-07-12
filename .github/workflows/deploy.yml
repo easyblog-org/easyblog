@@ -36,11 +36,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B clean package --file pom.xml
+      run: mvn clean package
     - name: Build the Docker image
       run: docker build . --file Dockerfile --build-arg LOG_BASE_DIR="${{env.LOG_BASE_DIR}}" --build-arg JAR_FILE_PATH="${{env.JAR_FILE_PATH}}" --build-arg SERVER_PORT="${{env.SERVER_PORT}}" --tag ${{env.IMAGE_NAME}}
     - name: echo
       run: echo $GITHUB_REF_NAME
+    - name: echo
+      run: echo ${{ env.IMAGE_NAME }}
       
     # 登录  
     - name: Log into registry ${{ env.REGISTRY }}
