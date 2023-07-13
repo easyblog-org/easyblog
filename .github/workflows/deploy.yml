@@ -40,7 +40,7 @@ jobs:
     - name: echo
       run: |
         pwd
-        ls
+        ls `pwd`/easyblog-web/target
     
     - name: Build the Docker image
       run: docker build . --file Dockerfile --build-arg LOG_BASE_DIR="${{env.LOG_BASE_DIR}}" --build-arg JAR_FILE_PATH="${{env.JAR_FILE_PATH}}" --build-arg SERVER_PORT="${{env.SERVER_PORT}}" --tag ${{env.IMAGE_NAME}}
