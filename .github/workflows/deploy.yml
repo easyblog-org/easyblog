@@ -21,12 +21,11 @@ env:
   LOG_BASE_DIR: '/data/easyblog/logs'
   JAR_FILE_PATH: './easyblog-web/target/easyblog-web-1.0.0.jar'
   SERVER_PORT: '8001'
+  CONTAINER_NAME: 'easyblog-8001'
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 8
@@ -39,10 +38,6 @@ jobs:
       run: mvn clean package
     - name: Build the Docker image
       run: docker build . --file Dockerfile --build-arg LOG_BASE_DIR="${{env.LOG_BASE_DIR}}" --build-arg JAR_FILE_PATH="${{env.JAR_FILE_PATH}}" --build-arg SERVER_PORT="${{env.SERVER_PORT}}" --tag ${{env.IMAGE_NAME}}
-    - name: echo
-      run: echo $GITHUB_REF_NAME
-    - name: echo
-      run: echo ${{ env.IMAGE_NAME }}
       
     # 登录  
     - name: Log into registry ${{ env.REGISTRY }}
@@ -73,3 +68,25 @@ jobs:
         push: ${{ github.event_name != 'pull_request' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
+        
+    # 部署到远程服务器    
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+       host: ${{ secrets.REMOTE_IP }}
+       username: ${{ secrets.REMOTE_USER }}
+       # 通过 密码 登录
+       password: ${{ secrets.REMOTE_PWD }}
+       script: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} ${{ env.REGISTRY }}
+        docker pull ${{ env.IMAGE_NAME }}:latest
+        docker stop ${{ env.CONTAINER_NAME }}
+        docker rm ${{ env.CONTAINER_NAME }}
+        docker run -d \
+          --name ${{ env.CONTAINER_NAME }} \
+          -p ${{ env.SERVER_PORT }}:${{ env.SERVER_PORT }} \
+          -e "JVM_PARAMS=${{secrets.JVM_PARAMS}}" \
+          -e "JAVA_OPTS=${{secrets.JAVA_OPTS}}" \
+          -v "${{env.LOG_BASE_DIR}}":/data/logs \
+        ${{ env.IMAGE_NAME }}:latest
+      
