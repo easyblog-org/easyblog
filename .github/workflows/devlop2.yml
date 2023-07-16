@@ -1,0 +1,42 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: easyblog-ci2
+
+on:
+  push:
+    branches: 
+      - "master"
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ''
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: 'easyblog/easyblog'
+  LOG_BASE_DIR: '/data/easyblog/logs'
+  JAR_FILE_PATH: 'easyblog-web/target/easyblog-web-1.0.0.jar'
+  SERVER_PORT: '8001'
+  CONTAINER_NAME: 'easyblog-8001'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+    # 部署到远程服务器    
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@master
+      with:
+       host: ${{ secrets.REMOTE_IP }}
+       username: ${{ secrets.REMOTE_USER }}
+       # 通过 密码 登录
+       password: ${{ secrets.REMOTE_PWD }}
+       script: |
+         cd /root/app/easyblog
+         git pull origin master
+         ./startup.sh -d true -p 8001
