@@ -31,7 +31,7 @@ WORKDIR  "/usr/local/app"
 
 # Add files required to build this image
 # ---------------
-ADD  ${JAR_FILE_PATH}  /app.jar
+COPY  ${JAR_FILE_PATH}  app.jar
 
 # Expose default port
 # ---------------
@@ -39,4 +39,4 @@ EXPOSE ${SERVER_PORT}
 
 # Container entry
 CMD ["${JAVA_OPTS}","${JVM_PARAMS}"]
-ENTRYPOINT ["java","-jar","/app.jar"]
+ENTRYPOINT java -jar ${JAVA_OPTS} ${JVM_PARAMS} app.jar
