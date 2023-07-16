@@ -88,4 +88,24 @@
     </sql>
 
 
+    <update id="updateByPrimaryKeySelective" parameterType="top.easyblog.dao.auto.model.Article">
+        UPDATE article
+        <set>
+            <if test="article.authorId != null">author_id = #{article.authorId},</if>
+            <if test="article.title != null">title = #{article.title},</if>
+            <if test="article.category != null">category = #{article.category},</if>
+            <if test="article.featuredImage != null">featured_image = #{article.featuredImage},</if>
+            <if test="article.contentId != null">content_id = #{article.contentId},</if>
+            <if test="article.status != null">status = #{article.status},</if>
+            <if test="article.isTop != null">is_top = #{article.isTop},</if>
+            <if test="article.likesNum != null">likes_num = likes_num + #{article.likesNum},</if>
+            <if test="article.favoritesNum != null">favorites_num = favorites_num + #{article.favoritesNum},</if>
+            <if test="article.retweetsNum != null">retweets_num = retweets_num + #{article.retweetsNum},</if>
+            <if test="article.reportsNum != null">reports_num = reports_num + #{article.reportsNum},</if>
+            <if test="article.pageViews != null">page_views = page_views + #{article.pageViews}</if>
+        </set>
+        WHERE id = #{article.id}
+    </update>
+
+
 </mapper>

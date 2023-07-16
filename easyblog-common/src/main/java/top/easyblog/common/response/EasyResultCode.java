@@ -141,6 +141,8 @@ public enum EasyResultCode {
     DELETE_OPERATION_NOT_PERMISSION,
     // 密码不一致
     PASSWORD_NOT_EQUAL,
+    // 统计指标不存在
+    STATISTIC_INDEX_NOT_FOUND,
 
     CREATE_USER_FAILED,
     INVALID_CONTINENT_TYPE,

@@ -3,7 +3,9 @@ package top.easyblog.web.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.easyblog.common.bean.H5ArticleBean;
+import top.easyblog.common.request.article.ArticleStatisticsRequest;
 import top.easyblog.common.request.article.QueryArticlesRequest;
+import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.platform.service.H5ArticleService;
 import top.easyblog.web.annotation.RequestParamAlias;
@@ -41,8 +43,20 @@ public class H5ArticleController {
     @ResponseWrapper
     @GetMapping("/{code}")
     public H5ArticleBean.ArticleBean details(@PathVariable("code") String code,
-                               @RequestParam(value = "sections",required = false) String sections) {
+                                             @RequestParam(value = "sections", required = false) String sections) {
         return articleService.details(code, sections);
+    }
+
+    @ResponseWrapper
+    @PutMapping("/{code}")
+    public void updateArticle(@PathVariable("code") String code, @RequestBody UpdateArticleRequest request) {
+        articleService.update(code, request);
+    }
+
+    @ResponseWrapper
+    @PutMapping("/statistics")
+    public void updateArticle(@RequestBody ArticleStatisticsRequest request) {
+        articleService.statistics(request);
     }
 
 }

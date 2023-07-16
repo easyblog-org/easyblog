@@ -1,23 +1,27 @@
 package top.easyblog.platform.service;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
+import cn.hutool.extra.validation.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import org.springframework.util.StopWatch;
+import org.springframework.validation.ValidationUtils;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
 import top.easyblog.common.bean.H5ArticleBean;
+import top.easyblog.common.exception.BusinessException;
+import top.easyblog.common.request.article.ArticleStatisticsRequest;
 import top.easyblog.common.request.article.QueryArticlesRequest;
+import top.easyblog.common.request.article.UpdateArticleRequest;
+import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.ArticleService;
-import top.easyblog.core.annotation.Transaction;
-import top.easyblog.support.util.ConcurrentUtils;
+import top.easyblog.platform.service.strategy.ArticleStatisticUpdateStrategy;
+import top.easyblog.platform.service.strategy.ArticleStatisticUpdateStrategyContext;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -86,4 +90,18 @@ public class H5ArticleService {
         h5ArticleBean.setAuthor(articleAuthor);
         return h5ArticleBean;
     }
+
+    public void update(String code, UpdateArticleRequest request) {
+        articleService.updateArticle(code, request);
+    }
+
+    public void statistics(ArticleStatisticsRequest request) {
+        ArticleStatisticUpdateStrategy statisticStrategy = ArticleStatisticUpdateStrategyContext.getStatisticStrategy(request.getStatisticIndexName());
+        if (Objects.isNull(statisticStrategy)) {
+            throw new BusinessException(EasyResultCode.STATISTIC_INDEX_NOT_FOUND);
+        }
+
+        statisticStrategy.updateStatistic(request);
+    }
+
 }
