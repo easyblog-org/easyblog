@@ -39,4 +39,4 @@ EXPOSE ${SERVER_PORT}
 
 # Container entry
 CMD ["${JAVA_OPTS}","${JVM_PARAMS}"]
-ENTRYPOINT ["java","-jar","${JAVA_OPTS}","${JVM_PARAMS}","/app.jar"]
+ENTRYPOINT ["java","${JVM_PARAMS} ${JAVA_OPTS}","-jar","/app.jar"]
