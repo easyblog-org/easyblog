@@ -19,7 +19,7 @@ env:
   # github.repository as <account>/<repo>
   IMAGE_NAME: 'easyblog/easyblog'
   LOG_BASE_DIR: '/data/easyblog/logs'
-  JAR_FILE_PATH: '`pwd`/easyblog-web/target/easyblog-web-1.0.0.jar'
+  JAR_FILE_PATH: '/home/runner/work/easyblog/easyblog/easyblog-web/target/easyblog-web-1.0.0.jar'
   SERVER_PORT: '8001'
   CONTAINER_NAME: 'easyblog-8001'
 
