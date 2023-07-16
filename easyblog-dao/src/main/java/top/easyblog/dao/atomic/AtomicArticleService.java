@@ -38,7 +38,7 @@ public class AtomicArticleService {
 
     public void updateByPrimaryKeySelective(Article article) {
         article.setUpdateTime(new Date());
-        mapper.updateByPrimaryKeySelective(article);
+        myArticleMapper.updateByPrimaryKeySelective(article);
         log.info("[DB]Update article [id={}] successfully!Details==>{}", article.getId(), JsonUtils.toJSONString(article));
     }
 

@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.request.article.QueryArticlesRequest;
+import top.easyblog.dao.auto.model.Article;
 
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface MyArticleMapper {
      * @return
      */
     List<ArticleBean> selectListByRequest(@Param("request") QueryArticlesRequest request);
+
+    /**
+     * 更新文章
+     *
+     * @param article
+     */
+    void updateByPrimaryKeySelective(@Param("article") Article article);
 }
