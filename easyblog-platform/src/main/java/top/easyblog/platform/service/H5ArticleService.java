@@ -1,20 +1,21 @@
 package top.easyblog.platform.service;
 
-import cn.hutool.extra.validation.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.ValidationUtils;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
 import top.easyblog.common.bean.H5ArticleBean;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.article.ArticleStatisticsRequest;
+import top.easyblog.common.request.article.QueryArticleEventRequest;
 import top.easyblog.common.request.article.QueryArticlesRequest;
 import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
+import top.easyblog.core.ArticleEventService;
 import top.easyblog.core.ArticleService;
+import top.easyblog.dao.auto.model.ArticleEvent;
 import top.easyblog.platform.service.strategy.ArticleStatisticUpdateStrategy;
 import top.easyblog.platform.service.strategy.ArticleStatisticUpdateStrategyContext;
 
@@ -34,6 +35,9 @@ public class H5ArticleService {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ArticleEventService articleEventService;
 
 
     public PageResponse<H5ArticleBean.ArticleBean> list(QueryArticlesRequest request) {
@@ -95,13 +99,38 @@ public class H5ArticleService {
         articleService.updateArticle(code, request);
     }
 
-    public void statistics(ArticleStatisticsRequest request) {
+    /**
+     * 更新文章指标（事件）
+     *
+     * @param request
+     */
+    public void updateStatistic(ArticleStatisticsRequest request) {
         ArticleStatisticUpdateStrategy statisticStrategy = ArticleStatisticUpdateStrategyContext.getStatisticStrategy(request.getStatisticIndexName());
         if (Objects.isNull(statisticStrategy)) {
             throw new BusinessException(EasyResultCode.STATISTIC_INDEX_NOT_FOUND);
         }
 
         statisticStrategy.updateStatistic(request);
+    }
+
+    /**
+     * 查询文章指标（事件）
+     *
+     * @param request
+     * @return
+     */
+    public Long statistic(QueryArticleEventRequest request) {
+        return articleEventService.countByRequest(request);
+    }
+
+    /**
+     * 查询文档总数
+     *
+     * @param request
+     * @return
+     */
+    public Long countArticleByRequest(QueryArticlesRequest request) {
+        return articleService.countByRequest(request);
     }
 
 }

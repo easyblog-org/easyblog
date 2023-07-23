@@ -26,5 +26,9 @@ public class ArticleStatisticsRequest {
      * 指标主体code
       */
     private String code;
+    /**
+     * 操作人
+     */
+    private String operator;
 
 }

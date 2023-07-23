@@ -83,7 +83,7 @@
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>-->
-        <table tableName="article">
+        <table tableName="article_event">
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="MYSQL" identity="true"/>
         </table>
