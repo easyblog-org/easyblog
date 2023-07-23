@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.easyblog.common.bean.H5ArticleBean;
 import top.easyblog.common.request.article.ArticleStatisticsRequest;
+import top.easyblog.common.request.article.QueryArticleEventRequest;
 import top.easyblog.common.request.article.QueryArticlesRequest;
 import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.platform.service.H5ArticleService;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
+
+import java.util.Objects;
 
 /**
  * @author: frank.huang
@@ -55,8 +58,20 @@ public class H5ArticleController {
 
     @ResponseWrapper
     @PutMapping("/statistics")
-    public void updateArticle(@RequestBody ArticleStatisticsRequest request) {
-        articleService.statistics(request);
+    public void updateStatistic(@RequestBody ArticleStatisticsRequest request) {
+        articleService.updateStatistic(request);
+    }
+
+    @ResponseWrapper
+    @GetMapping("/statistics")
+    public Long statistic(@RequestParamAlias QueryArticleEventRequest request) {
+        return articleService.statistic(request);
+    }
+
+    @ResponseWrapper
+    @GetMapping("/count")
+    public Long countArticles(@RequestParamAlias QueryArticlesRequest request) {
+        return articleService.countArticleByRequest(request);
     }
 
 }

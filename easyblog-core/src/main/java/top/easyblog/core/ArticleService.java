@@ -172,6 +172,10 @@ public class ArticleService {
         return pageResponse;
     }
 
+    public Long countByRequest(QueryArticlesRequest request){
+        return atomicArticleService.countByRequest(request);
+    }
+
     private void fillSections(String sections, List<ArticleBean> articleBeans) {
         if (CollectionUtils.isEmpty(articleBeans)) return;
         ArticleSectionContext ctx = queryArticleSectionInfo(sections, articleBeans);

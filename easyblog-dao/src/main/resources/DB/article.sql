@@ -36,3 +36,14 @@ CREATE TABLE article_category
     update_time DATETIME COMMENT '更新时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT '文章分类表';
+
+create table article_event
+(
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'ID，递增自增',
+    article_code varchar(32) not null default '' comment '文章Code',
+    user_code varchar(32) not null default '' comment '用户Code',
+    event varchar(32) not null default '' comment '事件',
+    create_time DATETIME COMMENT '创建时间',
+    update_time DATETIME COMMENT '更新时间'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4 COMMENT '文章事件记录';

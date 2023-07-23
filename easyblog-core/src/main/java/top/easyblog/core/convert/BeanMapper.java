@@ -8,10 +8,7 @@ import org.mapstruct.Mappings;
 import top.easyblog.common.bean.*;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
-import top.easyblog.common.request.article.CreateArticleCategoryRequest;
-import top.easyblog.common.request.article.CreateArticleRequest;
-import top.easyblog.common.request.article.UpdateArticleCategoryRequest;
-import top.easyblog.common.request.article.UpdateArticleRequest;
+import top.easyblog.common.request.article.*;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.login.AdminLoginRequest;
 import top.easyblog.common.request.login.LoginRequest;
@@ -229,4 +226,6 @@ public interface BeanMapper {
     CreateLoginLogRequest buildAdminSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
 
     ArticleContentBean convertArticleContent2Bean(ArticleContent item);
+
+    ArticleEvent buildArticleEvent(CreateArticleEventRequest request);
 }
