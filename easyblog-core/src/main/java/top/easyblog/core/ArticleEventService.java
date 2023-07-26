@@ -43,4 +43,8 @@ public class ArticleEventService {
         return atomicArticleEventService.queryListByRequest(request);
     }
 
+    public void deleteByIds(List<Long> ids) {
+        atomicArticleEventService.deleteByIds(ids);
+    }
+
 }

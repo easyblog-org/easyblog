@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import top.easyblog.common.bean.ArticleCategoryBean;
-import top.easyblog.common.bean.ArticleContentBean;
-import top.easyblog.common.bean.UserDetailsBean;
-import top.easyblog.common.bean.UserAvatarBean;
+import top.easyblog.common.bean.*;
 
 import java.util.List;
 import java.util.Map;

@@ -38,7 +38,7 @@ public class AtomicArticleEventService {
         return mapper.selectByExample(example);
     }
 
-    public long countByRequest(QueryArticleEventRequest request){
+    public long countByRequest(QueryArticleEventRequest request) {
         ArticleEventExample example = generateExamples(request);
         return mapper.countByExample(example);
     }
@@ -59,5 +59,18 @@ public class AtomicArticleEventService {
             criteria.andOperatorIn(request.getOperators());
         }
         return example;
+    }
+
+    public void deleteByIds(List<Long> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            log.info("[DB]Empty article_event delete id list,ignore.");
+            return;
+        }
+
+        ArticleEventExample example = new ArticleEventExample();
+        ArticleEventExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        mapper.deleteByExample(example);
+        log.info("[DB]Delete article_even by ids {}", ids);
     }
 }
