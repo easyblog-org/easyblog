@@ -23,4 +23,14 @@ public class ArticleLikesUpdateStrategy extends AbstractArticleStatisticStrategy
     public UpdateArticleRequest convertStatisticUpdateRequest(ArticleStatisticsRequest request) {
         return UpdateArticleRequest.builder().likesNum(request.getIncrement()).build();
     }
+
+    @Override
+    protected boolean skipUpdate(ArticleStatisticsRequest request) {
+        return false;
+    }
+
+    @Override
+    protected boolean deleteStatisticOnExisting() {
+        return true;
+    }
 }
