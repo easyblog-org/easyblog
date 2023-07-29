@@ -3,13 +3,7 @@ package top.easyblog.core;
 
 import lombok.extern.slf4j.Slf4j;
 import top.easyblog.common.bean.StaticOption;
-import top.easyblog.common.enums.ContinentEnum;
-import top.easyblog.common.enums.IdentifierType;
-import top.easyblog.common.enums.MessageConfigType;
-import top.easyblog.common.enums.MessageSendChannel;
-import top.easyblog.common.enums.MessageShieldType;
-import top.easyblog.common.enums.MessageTemplateType;
-import top.easyblog.common.enums.TemplateValueConfigType;
+import top.easyblog.common.enums.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -96,6 +90,16 @@ public class StaticService {
 
     public List<StaticOption> queryAllMessageTemplateValueType() {
         return Arrays.stream(TemplateValueConfigType.values()).filter(Objects::nonNull)
+                .map(item -> {
+                    StaticOption option = new StaticOption();
+                    option.setKey(item.getCode());
+                    option.setValue(item.getDesc());
+                    return option;
+                }).distinct().collect(Collectors.toList());
+    }
+
+    public List<StaticOption> queryArticleReportEvent() {
+        return Arrays.stream(ArticleReportEvent.values()).filter(Objects::nonNull)
                 .map(item -> {
                     StaticOption option = new StaticOption();
                     option.setKey(item.getCode());
