@@ -21,6 +21,6 @@ public class ArticleShareUpdateStrategy extends AbstractArticleStatisticStrategy
 
     @Override
     public UpdateArticleRequest convertStatisticUpdateRequest(ArticleStatisticsRequest request) {
-        return UpdateArticleRequest.builder().build();
+        return UpdateArticleRequest.builder().retweetsNum(request.getIncrement()).build();
     }
 }

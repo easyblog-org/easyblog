@@ -18,4 +18,6 @@ public class ArticleEvent {
     private Date createTime;
 
     private Date updateTime;
+
+    private String remark;
 }

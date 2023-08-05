@@ -23,4 +23,9 @@ public class ArticleReportUpdateStrategy extends AbstractArticleStatisticStrateg
     public UpdateArticleRequest convertStatisticUpdateRequest(ArticleStatisticsRequest request) {
         return UpdateArticleRequest.builder().reportsNum(request.getIncrement()).build();
     }
+
+    @Override
+    protected boolean skipUpdate(ArticleStatisticsRequest request) {
+        return false;
+    }
 }

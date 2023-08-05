@@ -35,6 +35,8 @@ public class UpdateArticleRequest {
 
     private Integer pageViews;
 
+    private Integer retweetsNum;
+
     /**
      * 文章状态
      * @see top.easyblog.common.enums.ArticleStatus
