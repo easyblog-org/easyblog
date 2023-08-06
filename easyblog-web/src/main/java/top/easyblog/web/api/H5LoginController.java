@@ -1,4 +1,4 @@
-package top.easyblog.web.controller;
+package top.easyblog.web.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +8,7 @@ import top.easyblog.common.request.login.LoginRequest;
 import top.easyblog.common.request.login.LogoutRequest;
 import top.easyblog.common.request.login.RegisterUserRequest;
 import top.easyblog.common.response.EasyResultCode;
+import top.easyblog.platform.service.H5LoginService;
 import top.easyblog.service.ILoginService;
 import top.easyblog.web.annotation.ResponseWrapper;
 
@@ -20,11 +21,11 @@ import javax.validation.Valid;
  * @date 2022/01/29 15:44
  */
 @RestController
-@RequestMapping("/v1/auth")
-public class LoginController {
+@RequestMapping("/h5/v1/auth")
+public class H5LoginController {
 
     @Autowired
-    private ILoginService loginService;
+    private H5LoginService loginService;
 
     /**
      * 生成6位验证码（纯数字）

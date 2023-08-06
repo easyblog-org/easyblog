@@ -38,9 +38,8 @@ public interface TemplateParameterParseStrategy {
             throw new BusinessException(EasyResultCode.ILLEGAL_PARAM, "Message config bean can not be null");
         }
 
-        if (Objects.equals(TemplateValueConfigType.DIRECT_JSON_VALUE.getCode(), templateValueConfig.getType()) ||
-                Objects.equals(TemplateValueConfigType.DIRECT_VALUE.getCode(), templateValueConfig.getType()) &&
-                        StringUtils.isBlank(context.getBusinessMessage())) {
+        if (TemplateValueConfigType.DIRECT_VALUE_TYPES.contains(templateValueConfig.getType()) &&
+                StringUtils.isBlank(context.getBusinessMessage())) {
             throw new BusinessException(EasyResultCode.ILLEGAL_PARAM, "Biz message value can not be empty when template value is '" + templateValueConfig.getType() + "'");
         }
         return doParse(context);

@@ -27,8 +27,8 @@ public class DocumentUtils {
             return null;
         }
         Object document = defaultConfiguration.jsonProvider().parse(json);
-        List<String> values = JsonPath.read(document, expression);
-        return StringUtils.join(values, ",");
+        Object values = JsonPath.read(document, expression);
+        return StringUtils.joinWith(",", values);
     }
 
 }
