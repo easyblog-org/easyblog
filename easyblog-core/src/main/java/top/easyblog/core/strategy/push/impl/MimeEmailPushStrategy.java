@@ -28,7 +28,7 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Value("${custom.message.email.sender}")
+    @Value("${spring.mail.username}")
     private String emailSender;
 
     @Override

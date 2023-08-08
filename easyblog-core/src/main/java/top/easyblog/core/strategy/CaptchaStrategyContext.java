@@ -37,7 +37,7 @@ public class CaptchaStrategyContext {
         }
 
         ICaptchaStrategy captchaStrategy = captchaStrategyMap.get(String.format("%s-%s", StringUtils.upperCase(captchaCodeType), identifierType));
-        IdentifierType type = IdentifierType.subCodeOf(identifierType);
+        IdentifierType type = IdentifierType.codeOf(identifierType);
         if (Objects.isNull(type) || Objects.equals(IdentifierType.UNKNOWN, type)) {
             throw new IllegalArgumentException(EasyResultCode.INCORRECT_CAPTCHA_POLICY.getCode());
         }

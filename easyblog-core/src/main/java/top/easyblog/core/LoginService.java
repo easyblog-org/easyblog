@@ -48,7 +48,7 @@ public class LoginService implements ILoginService {
     public void sendCaptchaCode(String captchaCodeType, Integer identifierType, String identifier) {
         String captchaCodeKey = String.format("CAPTCHA_%s:%s:%s", StringUtils.upperCase(captchaCodeType), identifierType, identifier);
         String captchaCode = redisService.get(captchaCodeKey);
-        if (StringUtils.isBlank(captchaCode)) {
+        if (StringUtils.isNotBlank(captchaCode)) {
             redisService.delete(captchaCodeKey);
         }
 
@@ -64,6 +64,7 @@ public class LoginService implements ILoginService {
             captchaStrategy.sendCaptcha(CaptchaPushContext.builder()
                     .captchaCodeType(captchaCodeType)
                     .identifierType(identifierType)
+                    .identifier(identifier)
                     .captchaCode(newCaptchaCode)
                     .build());
         });
