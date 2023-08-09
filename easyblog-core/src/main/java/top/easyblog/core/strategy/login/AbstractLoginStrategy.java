@@ -126,9 +126,13 @@ public abstract class AbstractLoginStrategy implements ILoginStrategy {
     @Transaction
     public UserDetailsBean processRegister(RegisterUserRequest request) {
         //3.创建User
+        Integer accountStatus = Optional.ofNullable(request.getVerified())
+                .filter(verified -> !Objects.equals(Status.DISABLE.getCode().intValue(), request.getVerified()))
+                .map(verified -> AccountStatus.ACTIVE.getCode()).orElse(AccountStatus.PRE_ACTIVE.getCode());
+
         String nickname = StringUtils.isNotBlank(request.getNickname()) ? request.getNickname() : RandomNicknameUtils.generateNickname();
         UserDetailsBean newUser = userService.createUser(CreateUserRequest.builder()
-                .nickName(nickname).active(AccountStatus.PRE_ACTIVE.getCode()).build());
+                .nickName(nickname).active(accountStatus).build());
 
         CreateUserHeaderRequest headerImg = request.getUserHeader();
         headerService.createUserHeader(CreateUserHeaderRequest.builder()
@@ -147,7 +151,7 @@ public abstract class AbstractLoginStrategy implements ILoginStrategy {
                 .createDirect(Boolean.TRUE)
                 .build());
 
-        //TODO 创建User role
+        //创建User role
         createUserRole(newUser);
         return userService.queryUserDetails(QueryUserRequest.builder()
                 .id(newUser.getId()).sections(LoginConstants.QUERY_ACCOUNTS).build());

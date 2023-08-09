@@ -120,7 +120,7 @@ public class LoginService implements ILoginService {
         loginDetailsBean.setToken(String.format("auth:token:%s", generateLoginToken()));
         asyncSaveLoginToken(request, loginDetailsBean);
         // 保存用户登录日志
-        asynSaveLoginLog(request, loginDetailsBean);
+        asyncSaveLoginLog(request, loginDetailsBean);
     }
 
     /**
@@ -129,7 +129,7 @@ public class LoginService implements ILoginService {
      * @param request
      * @param loginDetailsBean
      */
-    private void asynSaveLoginLog(LoginRequest request, LoginDetailsBean loginDetailsBean) {
+    private void asyncSaveLoginLog(LoginRequest request, LoginDetailsBean loginDetailsBean) {
         ConcurrentUtils.asyncRunSingleTask(() -> {
             UserDetailsBean userDetailsBean = loginDetailsBean.getUser();
             AccountBean currAccount = userDetailsBean.getCurrAccount();
