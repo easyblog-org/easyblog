@@ -11,6 +11,7 @@ import top.easyblog.common.request.account.UpdateAccountRequest;
 import top.easyblog.common.request.article.*;
 import top.easyblog.common.request.header.CreateUserHeaderRequest;
 import top.easyblog.common.request.login.AdminLoginRequest;
+import top.easyblog.common.request.login.UserLoginRequest;
 import top.easyblog.common.request.login.LoginRequest;
 import top.easyblog.common.request.loginlog.CreateLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
@@ -217,13 +218,29 @@ public interface BeanMapper {
     @Mapping(target = "identifierType", expression = "java(top.easyblog.common.enums.IdentifierType.E_MAIL.getSubCode())")
     @Mapping(target = "identifier", source = "request.email")
     @Mapping(target = "credential", source = "request.password")
-    LoginRequest buildAdminLoginRequest(AdminLoginRequest request);
+    LoginRequest buildUserLoginRequest(AdminLoginRequest request);
+
+
+    LoginRequest buildUserLoginRequest(UserLoginRequest request);
 
     @Mapping(target = "ip", source = "request.ip")
     @Mapping(target = "device", source = "request.device")
     @Mapping(target = "operationSystem", source = "request.operationSystem")
     @Mapping(target = "location", source = "request.location")
-    CreateLoginLogRequest buildAdminSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
+    @Mapping(target = "userCode", source = "accountBean.userCode")
+    @Mapping(target = "accountCode", source = "accountBean.code")
+    @Mapping(target = "status", ignore = true)
+    CreateLoginLogRequest buildUserSignLogReqeust(AdminLoginRequest request, AccountBean accountBean);
+
+    @Mapping(target = "ip", source = "request.ip")
+    @Mapping(target = "device", source = "request.device")
+    @Mapping(target = "operationSystem", source = "request.operationSystem")
+    @Mapping(target = "location", source = "request.location")
+    @Mapping(target = "userCode", source = "accountBean.userCode")
+    @Mapping(target = "accountCode", source = "accountBean.code")
+    @Mapping(target = "status", ignore = true)
+    CreateLoginLogRequest buildUserSignLogReqeust(UserLoginRequest request, AccountBean accountBean);
+
 
     ArticleContentBean convertArticleContent2Bean(ArticleContent item);
 

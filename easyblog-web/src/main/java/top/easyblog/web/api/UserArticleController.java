@@ -8,7 +8,7 @@ import top.easyblog.common.request.article.QueryArticleEventRequest;
 import top.easyblog.common.request.article.QueryArticlesRequest;
 import top.easyblog.common.request.article.UpdateArticleRequest;
 import top.easyblog.common.response.PageResponse;
-import top.easyblog.platform.service.H5ArticleService;
+import top.easyblog.platform.service.UserArticleService;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
@@ -18,10 +18,10 @@ import top.easyblog.web.annotation.ResponseWrapper;
  */
 @RequestMapping("/h5/v1/article")
 @RestController
-public class H5ArticleController {
+public class UserArticleController {
 
     @Autowired
-    private H5ArticleService articleService;
+    private UserArticleService articleService;
 
 
     /**

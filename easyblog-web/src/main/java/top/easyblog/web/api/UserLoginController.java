@@ -1,15 +1,15 @@
 package top.easyblog.web.api;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.easyblog.common.enums.IdentifierType;
 import top.easyblog.common.exception.BusinessException;
-import top.easyblog.common.request.login.LoginRequest;
 import top.easyblog.common.request.login.LogoutRequest;
 import top.easyblog.common.request.login.RegisterUserRequest;
+import top.easyblog.common.request.login.UserLoginRequest;
 import top.easyblog.common.response.EasyResultCode;
-import top.easyblog.platform.service.H5LoginService;
-import top.easyblog.service.ILoginService;
+import top.easyblog.platform.service.UserLoginService;
 import top.easyblog.web.annotation.ResponseWrapper;
 
 import javax.validation.Valid;
@@ -21,11 +21,11 @@ import javax.validation.Valid;
  * @date 2022/01/29 15:44
  */
 @RestController
-@RequestMapping("/h5/v1/auth")
-public class H5LoginController {
+@RequestMapping("/h5/v1/user")
+public class UserLoginController {
 
     @Autowired
-    private H5LoginService loginService;
+    private UserLoginService loginService;
 
     /**
      * 生成6位验证码（纯数字）
@@ -43,7 +43,7 @@ public class H5LoginController {
 
     @ResponseWrapper
     @PostMapping("/login")
-    public Object login(@RequestBody @Valid LoginRequest request) {
+    public Object login(@RequestBody @Valid UserLoginRequest request) {
         if (IdentifierType.THIRD_IDENTITY_TYPE.contains(IdentifierType.subCodeOf(request.getIdentifierType()))) {
             throw new BusinessException(EasyResultCode.INVALID_IDENTITY_TYPE);
         }
@@ -65,4 +65,10 @@ public class H5LoginController {
         return loginService.register(request);
     }
 
+
+    @ResponseWrapper
+    @GetMapping("/logged/{token}")
+    public Object logged(@PathVariable("token") String token){
+        return loginService.logged(token);
+    }
 }

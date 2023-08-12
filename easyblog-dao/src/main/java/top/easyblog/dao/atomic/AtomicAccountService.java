@@ -35,7 +35,6 @@ public class AtomicAccountService {
     public Account insertSelective(Account record) {
         record.setCreateTime(new Date());
         record.setUpdateTime(new Date());
-        record.setCredential("");
         record.setCode(IdGenerator.generateRandomCode(IdGenerator.DEFAULT_LENGTH));
         log.info("[DB] Insert account:{}", JsonUtils.toJSONString(record));
         accountMapper.insertSelective(record);

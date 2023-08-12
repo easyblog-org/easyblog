@@ -96,8 +96,8 @@ public class AdminLoginService {
             return new BusinessException(EasyResultCode.NO_ACCESS_PERMISSION);
         });
 
-        LoginRequest loginRequest = beanMapper.buildAdminLoginRequest(request);
-        loginRequest.setExtra(beanMapper.buildAdminSignLogReqeust(request, accountBean));
+        LoginRequest loginRequest = beanMapper.buildUserLoginRequest(request);
+        loginRequest.setExtra(beanMapper.buildUserSignLogReqeust(request, accountBean));
         return loginService.login(loginRequest);
     }
 

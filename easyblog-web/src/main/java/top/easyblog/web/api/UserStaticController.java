@@ -13,7 +13,7 @@ import top.easyblog.web.annotation.ResponseWrapper;
  */
 @RequestMapping("/h5/v1/static")
 @RestController
-public class H5StaticController {
+public class UserStaticController {
 
     @Autowired
     private StaticService staticService;
