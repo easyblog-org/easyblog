@@ -13,6 +13,8 @@ import top.easyblog.dao.auto.model.BusinessMessageRecord;
 import top.easyblog.web.annotation.RequestParamAlias;
 import top.easyblog.web.annotation.ResponseWrapper;
 
+import javax.validation.Valid;
+
 /**
  * @author: frank.huang
  * @date: 2023-02-12 13:47
@@ -27,13 +29,13 @@ public class MessageSendRecordController {
 
     @ResponseWrapper
     @PostMapping("/record")
-    public BusinessMessageRecord createBusinessRecord(@RequestBody CreateBusinessMessageRecordRequest request) {
+    public BusinessMessageRecord createBusinessRecord(@RequestBody @Valid CreateBusinessMessageRecordRequest request) {
         return messageSendRecordService.createMessageRecord(request);
     }
 
     @ResponseWrapper
     @PutMapping("/record/{id}")
-    public void updateBusinessRecord(@PathVariable("id") Long id,@RequestBody UpdateBusinessMessageRecordRequest request) {
+    public void updateBusinessRecord(@PathVariable("id") Long id,@RequestBody @Valid UpdateBusinessMessageRecordRequest request) {
         messageSendRecordService.updateMessageRecord(id, request);
     }
 

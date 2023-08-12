@@ -30,5 +30,9 @@ public class ArticleStatisticsRequest {
      * 操作人
      */
     private String operator;
+    /**
+     * 备注
+     */
+    private String remark;
 
 }

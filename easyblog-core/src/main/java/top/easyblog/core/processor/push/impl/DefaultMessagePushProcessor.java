@@ -76,14 +76,14 @@ public class DefaultMessagePushProcessor extends AbstractMessagePushProcessor {
 
     /**
      * 过滤消息：消息去重
-     * 
+     *
      * @param msg
      * @return
      */
     private boolean filter(BusinessMessageRecordContext msg) {
         BusinessMessageRecord record = atomicBusinessMessageRecordService
                 .queryByRequest(QueryBusinessMessageRecordRequest.builder().id(msg.getId()).build());
-        log.info("[Filter Msg]:{}", JsonUtils.toJSONString(msg));
+        log.info("Filter Msg:{}", JsonUtils.toJSONString(msg));
 
         return Objects.nonNull(record) && Objects.equals(Boolean.FALSE, record.getDeleted()) &&
                 Objects.equals(MessageSendStatus.UNSEND.getCode(), record.getStatus());
@@ -132,17 +132,17 @@ public class DefaultMessagePushProcessor extends AbstractMessagePushProcessor {
             throw new BusinessException(EasyResultCode.INCORRECT_BUSINESS_EVENT_OR_MODULE);
         }
         if (StringUtils.isBlank(messageConfigRule.getTemplateCode())) {
-            throw new IllegalArgumentException("Illagal message config: 'template_code' can't be empty");
+            throw new IllegalArgumentException("Illegal message config: 'template_code' can't be empty");
         }
         if (StringUtils.isBlank(messageConfigRule.getConfigIds())) {
-            throw new IllegalArgumentException("Illagal message config: 'config_ids' can't be empty");
+            throw new IllegalArgumentException("Illegal message config: 'config_ids' can't be empty");
         }
 
         List<MessageConfigBean> messageConfigs = messageConfigService.listAll(QueryMessageConfigsRequest.builder()
                 .codes(Lists.newArrayList(StringUtils.split(messageConfigRule.getConfigIds(), ","))).build());
         if (CollectionUtils.isEmpty(messageConfigs)) {
             throw new BusinessException(EasyResultCode.INCORRECT_MESSAGE_CONFIGS,
-                    "Illagal message config: message parmas can not be empty");
+                    "Illegal message config: message parmas can not be empty");
         }
 
         boolean receiverConfigExists = messageConfigs.stream()
@@ -151,7 +151,7 @@ public class DefaultMessagePushProcessor extends AbstractMessagePushProcessor {
                         && Boolean.FALSE.equals(config.getDeleted()));
         if (!receiverConfigExists) {
             throw new BusinessException(EasyResultCode.INCORRECT_MESSAGE_CONFIGS,
-                    "Illagal message config: message param 'receiver' must at least have one");
+                    "Illegal message config: message param 'receiver' must at least have one");
         }
 
         MessageTemplateBean messageTemplate = messageTemplateService.details(

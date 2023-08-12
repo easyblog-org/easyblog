@@ -71,9 +71,9 @@ public class AdminMessageRuleConfigService {
      *
      * @param request
      */
-    public void update(UpdateMessagePushRuleRequest request) {
+    public void update(Long id, UpdateMessagePushRuleRequest request) {
         MessageConfigRuleBean messageConfigRuleBean = messageConfigRuleService.details(QueryMessageConfigRuleRequest.builder()
-                .businessEvent(request.getBusinessEvent()).businessModule(request.getBusinessModule()).build());
+                .id(id).build());
         if (Objects.isNull(messageConfigRuleBean)) {
             throw new BusinessException(EasyResultCode.MESSAGE_CONFIG_RULE_NOT_FOUND);
         }

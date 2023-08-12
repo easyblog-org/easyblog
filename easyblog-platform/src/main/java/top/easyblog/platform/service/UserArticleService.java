@@ -15,7 +15,6 @@ import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.ArticleEventService;
 import top.easyblog.core.ArticleService;
-import top.easyblog.dao.auto.model.ArticleEvent;
 import top.easyblog.platform.service.strategy.ArticleStatisticUpdateStrategy;
 import top.easyblog.platform.service.strategy.ArticleStatisticUpdateStrategyContext;
 
@@ -31,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-public class H5ArticleService {
+public class UserArticleService {
 
     @Autowired
     private ArticleService articleService;

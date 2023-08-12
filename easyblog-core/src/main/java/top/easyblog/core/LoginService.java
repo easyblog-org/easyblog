@@ -16,10 +16,14 @@ import top.easyblog.common.request.loginlog.QueryLoginLogRequest;
 import top.easyblog.common.request.loginlog.UpdateLoginLogRequest;
 import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.core.annotation.Transaction;
+import top.easyblog.core.strategy.CaptchaStrategyContext;
 import top.easyblog.core.strategy.LoginStrategyContext;
 import top.easyblog.service.ILoginService;
+import top.easyblog.service.strategy.ICaptchaStrategy;
 import top.easyblog.service.strategy.ILoginStrategy;
+import top.easyblog.service.strategy.context.CaptchaPushContext;
 import top.easyblog.support.util.ConcurrentUtils;
+import top.easyblog.support.util.IdGenerator;
 import top.easyblog.support.util.JsonUtils;
 
 import java.util.Objects;
@@ -41,24 +45,29 @@ public class LoginService implements ILoginService {
     private RedisService redisService;
 
     @Override
-    public void sendCaptchaCode(Integer identifierType, String identifier) {
-        /*
-         * if (Objects.equals(identifierType, IdentifierType.PHONE.getSubCode()) ||
-         * Objects.equals(identifierType, IdentifierType.PHONE_CAPTCHA.getSubCode())) {
-         * ICaptchaSendStrategy captchaSendStrategy =
-         * CaptchaSendStrategyContext.getCaptchaSendStrategy(CaptchaSendChannel.
-         * PHONE_SMS.getCode());
-         * captchaSendStrategy.sendCaptchaCode(identifier);
-         * } else if (Objects.equals(identifierType,
-         * IdentifierType.E_MAIL.getSubCode())) {
-         * ICaptchaSendStrategy captchaSendStrategy =
-         * CaptchaSendStrategyContext.getCaptchaSendStrategy(CaptchaSendChannel.EMAIL.
-         * getCode());
-         * captchaSendStrategy.sendCaptchaCode(identifier);
-         * } else {
-         * throw new UnsupportedOperationException();
-         * }
-         */
+    public void sendCaptchaCode(String captchaCodeType, Integer identifierType, String identifier) {
+        String captchaCodeKey = String.format("CAPTCHA_%s:%s:%s", StringUtils.upperCase(captchaCodeType), identifierType, identifier);
+        String captchaCode = redisService.get(captchaCodeKey);
+        if (StringUtils.isNotBlank(captchaCode)) {
+            redisService.delete(captchaCodeKey);
+        }
+
+        String newCaptchaCode = IdGenerator.generateRandomCode(IdGenerator.SHORT_LENGTH);
+        boolean saved = redisService.set(captchaCodeKey, newCaptchaCode, 5L, TimeUnit.MINUTES);
+        if (!saved) {
+            throw new BusinessException(EasyResultCode.INTERNAL_ERROR);
+        }
+
+        // 通过验证码策略发送验证码
+        ConcurrentUtils.asyncRunSingleTask(() -> {
+            ICaptchaStrategy captchaStrategy = CaptchaStrategyContext.getCaptchaStrategy(captchaCodeType, identifierType);
+            captchaStrategy.sendCaptcha(CaptchaPushContext.builder()
+                    .captchaCodeType(captchaCodeType)
+                    .identifierType(identifierType)
+                    .identifier(identifier)
+                    .captchaCode(newCaptchaCode)
+                    .build());
+        });
     }
 
     /**
@@ -111,7 +120,7 @@ public class LoginService implements ILoginService {
         loginDetailsBean.setToken(String.format("auth:token:%s", generateLoginToken()));
         asyncSaveLoginToken(request, loginDetailsBean);
         // 保存用户登录日志
-        asynSaveLoginLog(request, loginDetailsBean);
+        asyncSaveLoginLog(request, loginDetailsBean);
     }
 
     /**
@@ -120,7 +129,7 @@ public class LoginService implements ILoginService {
      * @param request
      * @param loginDetailsBean
      */
-    private void asynSaveLoginLog(LoginRequest request, LoginDetailsBean loginDetailsBean) {
+    private void asyncSaveLoginLog(LoginRequest request, LoginDetailsBean loginDetailsBean) {
         ConcurrentUtils.asyncRunSingleTask(() -> {
             UserDetailsBean userDetailsBean = loginDetailsBean.getUser();
             AccountBean currAccount = userDetailsBean.getCurrAccount();

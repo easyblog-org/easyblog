@@ -59,6 +59,7 @@ public abstract class AbstractArticleStatisticStrategy implements ArticleStatist
                     .articleCode(request.getCode())
                     .userCode(details.getAuthorId())
                     .operator(request.getOperator())
+                    .remark(request.getRemark())
                     .event(this.getStatisticIndexName()).build());
 
             articleService.updateArticle(request.getCode(), convertStatisticUpdateRequest(request));

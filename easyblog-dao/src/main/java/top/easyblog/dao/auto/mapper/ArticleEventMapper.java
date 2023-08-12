@@ -38,10 +38,12 @@ public interface ArticleEventMapper {
     @Insert({
         "insert into article_event (article_code, user_code, ",
         "event, operator, ",
-        "create_time, update_time)",
+        "create_time, update_time, ",
+        "remark)",
         "values (#{articleCode,jdbcType=VARCHAR}, #{userCode,jdbcType=VARCHAR}, ",
         "#{event,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, ",
-        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})"
+        "#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, ",
+        "#{remark,jdbcType=LONGVARCHAR})"
     })
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
     int insert(ArticleEvent record);
@@ -49,6 +51,19 @@ public interface ArticleEventMapper {
     @InsertProvider(type=ArticleEventSqlProvider.class, method="insertSelective")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=Long.class)
     int insertSelective(ArticleEvent record);
+
+    @SelectProvider(type=ArticleEventSqlProvider.class, method="selectByExampleWithBLOBs")
+    @Results({
+        @Result(column="id", property="id", jdbcType=JdbcType.BIGINT, id=true),
+        @Result(column="article_code", property="articleCode", jdbcType=JdbcType.VARCHAR),
+        @Result(column="user_code", property="userCode", jdbcType=JdbcType.VARCHAR),
+        @Result(column="event", property="event", jdbcType=JdbcType.VARCHAR),
+        @Result(column="operator", property="operator", jdbcType=JdbcType.VARCHAR),
+        @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="remark", property="remark", jdbcType=JdbcType.LONGVARCHAR)
+    })
+    List<ArticleEvent> selectByExampleWithBLOBs(ArticleEventExample example);
 
     @SelectProvider(type=ArticleEventSqlProvider.class, method="selectByExample")
     @Results({
@@ -64,7 +79,7 @@ public interface ArticleEventMapper {
 
     @Select({
         "select",
-        "id, article_code, user_code, event, operator, create_time, update_time",
+        "id, article_code, user_code, event, operator, create_time, update_time, remark",
         "from article_event",
         "where id = #{id,jdbcType=BIGINT}"
     })
@@ -75,18 +90,35 @@ public interface ArticleEventMapper {
         @Result(column="event", property="event", jdbcType=JdbcType.VARCHAR),
         @Result(column="operator", property="operator", jdbcType=JdbcType.VARCHAR),
         @Result(column="create_time", property="createTime", jdbcType=JdbcType.TIMESTAMP),
-        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP)
+        @Result(column="update_time", property="updateTime", jdbcType=JdbcType.TIMESTAMP),
+        @Result(column="remark", property="remark", jdbcType=JdbcType.LONGVARCHAR)
     })
     ArticleEvent selectByPrimaryKey(Long id);
 
     @UpdateProvider(type=ArticleEventSqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") ArticleEvent record, @Param("example") ArticleEventExample example);
 
+    @UpdateProvider(type=ArticleEventSqlProvider.class, method="updateByExampleWithBLOBs")
+    int updateByExampleWithBLOBs(@Param("record") ArticleEvent record, @Param("example") ArticleEventExample example);
+
     @UpdateProvider(type=ArticleEventSqlProvider.class, method="updateByExample")
     int updateByExample(@Param("record") ArticleEvent record, @Param("example") ArticleEventExample example);
 
     @UpdateProvider(type=ArticleEventSqlProvider.class, method="updateByPrimaryKeySelective")
     int updateByPrimaryKeySelective(ArticleEvent record);
+
+    @Update({
+        "update article_event",
+        "set article_code = #{articleCode,jdbcType=VARCHAR},",
+          "user_code = #{userCode,jdbcType=VARCHAR},",
+          "event = #{event,jdbcType=VARCHAR},",
+          "operator = #{operator,jdbcType=VARCHAR},",
+          "create_time = #{createTime,jdbcType=TIMESTAMP},",
+          "update_time = #{updateTime,jdbcType=TIMESTAMP},",
+          "remark = #{remark,jdbcType=LONGVARCHAR}",
+        "where id = #{id,jdbcType=BIGINT}"
+    })
+    int updateByPrimaryKeyWithBLOBs(ArticleEvent record);
 
     @Update({
         "update article_event",

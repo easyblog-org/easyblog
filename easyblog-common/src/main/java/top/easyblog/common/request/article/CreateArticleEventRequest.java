@@ -27,4 +27,5 @@ public class CreateArticleEventRequest {
     @NotBlank(message = "Required param 'event' is not present.")
     private String event;
     private String operator;
+    private String remark;
 }

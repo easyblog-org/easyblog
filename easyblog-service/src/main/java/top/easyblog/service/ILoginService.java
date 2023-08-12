@@ -56,7 +56,7 @@ public interface ILoginService {
      *
      * @return
      */
-    default void sendCaptchaCode(Integer identifierType, String identifier) {
+    default void sendCaptchaCode(String captchaCodeType,Integer identifierType, String identifier) {
         throw new UnsupportedOperationException();
     }
 }

@@ -28,7 +28,7 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Value("${custom.message.email.sender}")
+    @Value("${spring.mail.username}")
     private String emailSender;
 
     @Override
@@ -43,7 +43,7 @@ public class MimeEmailPushStrategy implements MessagePushStrategy {
         mimeMessageHelper.setFrom(emailSender);
         mimeMessageHelper.setTo(context.getReceiver());
         mimeMessageHelper.setSubject(context.getTitle());
-        mimeMessageHelper.setText(context.getContent());
+        mimeMessageHelper.setText(context.getContent(),true);
         List<File> attachments = context.getAttachments();
         // 添加附件（多个）
         if (CollectionUtils.isNotEmpty(attachments)) {

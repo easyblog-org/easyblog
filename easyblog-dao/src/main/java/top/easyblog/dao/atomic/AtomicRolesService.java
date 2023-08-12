@@ -48,7 +48,7 @@ public class AtomicRolesService {
 
 
     public Roles queryDetails(QueryRolesDetailsRequest request) {
-        if (StringUtils.isBlank(request.getCode()) && Objects.nonNull(request.getName())) {
+        if (StringUtils.isBlank(request.getCode()) && Objects.isNull(request.getName())) {
             return null;
         }
         RolesExample example = new RolesExample();

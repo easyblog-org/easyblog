@@ -33,9 +33,11 @@ public class AdminMessageRuleConfigController {
 
 
     @ResponseWrapper
-    @PutMapping("/")
-    public void update(UpdateMessagePushRuleRequest request) {
-        messagePushRuleService.update(request);
+    @PutMapping("/{id}")
+    public void update(
+            @PathVariable("id") Long id,
+            @RequestBody UpdateMessagePushRuleRequest request) {
+        messagePushRuleService.update(id,request);
     }
 
     @ResponseWrapper

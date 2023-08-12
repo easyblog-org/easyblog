@@ -152,6 +152,8 @@ public enum EasyResultCode {
     MESSAGE_TEMPLATE_STATUS_ILLEGAL,
     PASSWORD_NOT_CHANGE,
     NO_ACCESS_PERMISSION,
+    INCORRECT_CAPTCHA_POLICY,
+    CAPTCHA_EXPIRED_OR_NOT_EXISTS,
     ;
 
     public String getCode() {

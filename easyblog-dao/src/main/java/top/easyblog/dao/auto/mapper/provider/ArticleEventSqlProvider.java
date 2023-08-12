@@ -52,6 +52,34 @@ public class ArticleEventSqlProvider {
             sql.VALUES("update_time", "#{updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getRemark() != null) {
+            sql.VALUES("remark", "#{remark,jdbcType=LONGVARCHAR}");
+        }
+        
+        return sql.toString();
+    }
+
+    public String selectByExampleWithBLOBs(ArticleEventExample example) {
+        SQL sql = new SQL();
+        if (example != null && example.isDistinct()) {
+            sql.SELECT_DISTINCT("id");
+        } else {
+            sql.SELECT("id");
+        }
+        sql.SELECT("article_code");
+        sql.SELECT("user_code");
+        sql.SELECT("event");
+        sql.SELECT("operator");
+        sql.SELECT("create_time");
+        sql.SELECT("update_time");
+        sql.SELECT("remark");
+        sql.FROM("article_event");
+        applyWhere(sql, example, false);
+        
+        if (example != null && example.getOrderByClause() != null) {
+            sql.ORDER_BY(example.getOrderByClause());
+        }
+        
         return sql.toString();
     }
 
@@ -120,6 +148,28 @@ public class ArticleEventSqlProvider {
             sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
         }
         
+        if (record.getRemark() != null) {
+            sql.SET("remark = #{record.remark,jdbcType=LONGVARCHAR}");
+        }
+        
+        applyWhere(sql, example, true);
+        return sql.toString();
+    }
+
+    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
+        SQL sql = new SQL();
+        sql.UPDATE("article_event");
+        
+        sql.SET("id = #{record.id,jdbcType=BIGINT}");
+        sql.SET("article_code = #{record.articleCode,jdbcType=VARCHAR}");
+        sql.SET("user_code = #{record.userCode,jdbcType=VARCHAR}");
+        sql.SET("event = #{record.event,jdbcType=VARCHAR}");
+        sql.SET("operator = #{record.operator,jdbcType=VARCHAR}");
+        sql.SET("create_time = #{record.createTime,jdbcType=TIMESTAMP}");
+        sql.SET("update_time = #{record.updateTime,jdbcType=TIMESTAMP}");
+        sql.SET("remark = #{record.remark,jdbcType=LONGVARCHAR}");
+        
+        ArticleEventExample example = (ArticleEventExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -167,6 +217,10 @@ public class ArticleEventSqlProvider {
         
         if (record.getUpdateTime() != null) {
             sql.SET("update_time = #{updateTime,jdbcType=TIMESTAMP}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("remark = #{remark,jdbcType=LONGVARCHAR}");
         }
         
         sql.WHERE("id = #{id,jdbcType=BIGINT}");
