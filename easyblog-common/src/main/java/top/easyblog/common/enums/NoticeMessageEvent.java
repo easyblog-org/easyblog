@@ -12,6 +12,7 @@ import lombok.Getter;
 public enum NoticeMessageEvent {
 
     REGISTER_CAPTCHA_EMAIL_NOTICE("register-captcha-email-notice"),
+    PHONE_LOGIN_CAPTCHA_NOTICE("phone-login-captcha-notice"),
 
     ;
 

@@ -143,6 +143,8 @@ public enum EasyResultCode {
     PASSWORD_NOT_EQUAL,
     // 统计指标不存在
     STATISTIC_INDEX_NOT_FOUND,
+    // 短信推送失败
+    SMS_PUSH_FAILED,
 
     CREATE_USER_FAILED,
     INVALID_CONTINENT_TYPE,

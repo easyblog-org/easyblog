@@ -1,4 +1,4 @@
-package top.easyblog.client.model.response;
+package top.easyblog.client.dto.response;
 
 /**
  * @author: frank.huang

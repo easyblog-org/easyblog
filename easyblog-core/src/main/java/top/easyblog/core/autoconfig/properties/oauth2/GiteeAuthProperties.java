@@ -1,4 +1,4 @@
-package top.easyblog.core.strategy.oauth2.config;
+package top.easyblog.core.autoconfig.properties.oauth2;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

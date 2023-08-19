@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.easyblog.client.config.CommonFeignConfig;
 import top.easyblog.client.internal.Verify;
-import top.easyblog.client.model.request.QueryGiteeAuthTokenRequest;
-import top.easyblog.client.model.response.dto.GiteeAuthDTO;
-import top.easyblog.client.model.response.dto.GiteeAuthTokenDTO;
+import top.easyblog.client.dto.request.QueryGiteeAuthTokenRequest;
+import top.easyblog.client.dto.response.dto.GiteeAuthDTO;
+import top.easyblog.client.dto.response.dto.GiteeAuthTokenDTO;
 
 /**
  * Gitee第三方接入官方文档：https://gitee.com/api/v5/oauth_doc#/list-item-1

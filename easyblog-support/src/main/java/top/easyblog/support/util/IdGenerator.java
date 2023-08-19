@@ -14,6 +14,8 @@ public class IdGenerator {
 
     private static final String ALPHANUMERIC = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHLJKLMNOPQRSTUVWXYZ";
 
+    private static final String NUMERIC = "0123456789";
+
     private static final Snowflake SNOWFLAKE = IdUtil.createSnowflake(1, 1);
 
     public static final int DEFAULT_LENGTH = 10;
@@ -41,8 +43,8 @@ public class IdGenerator {
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            int index = random.nextInt(ALPHANUMERIC.length());
-            sb.append(ALPHANUMERIC.charAt(index));
+            int index = random.nextInt(NUMERIC.length());
+            sb.append(NUMERIC.charAt(index));
         }
         return sb.toString();
     }

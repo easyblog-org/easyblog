@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import top.easyblog.client.config.CommonFeignConfig;
-import top.easyblog.client.model.response.dto.GitHubAuthDTO;
+import top.easyblog.client.dto.response.dto.GitHubAuthDTO;
 import top.easyblog.client.internal.Verify;
 
 /**
