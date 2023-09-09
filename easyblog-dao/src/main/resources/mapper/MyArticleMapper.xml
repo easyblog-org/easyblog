@@ -77,7 +77,7 @@
             and a.author_id=#{request.authorId}
         </if>
         <if test="request.title!=null">
-            and a.title like %#{request.title}%
+            and a.title like CONCAT('%', #{request.title}, '%')
         </if>
         <if test="request.createTimeBegin!=null">
             and a.create_time &gt;= FROM_UNIXTIME(#{request.createTimeBegin}/1000)

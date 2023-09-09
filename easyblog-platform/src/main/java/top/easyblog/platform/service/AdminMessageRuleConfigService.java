@@ -186,6 +186,7 @@ public class AdminMessageRuleConfigService {
             pushRuleBean.setConfigs(configBeanList);
         }).collect(Collectors.toList());
 
+        pageResponse.setTotal(configRuleBeanPageResponse.getTotal());
         pageResponse.setData(messagePushRuleBeans);
         return pageResponse;
     }

@@ -65,7 +65,8 @@ public class AtomicBusinessMessageRecordService {
         BusinessMessageRecordExample example = generateExamples(request);
         example.setLimit(request.getLimit());
         example.setOffset(request.getOffset());
-        return mapper.selectByExampleWithBLOBs(example);
+        example.setOrderByClause("create_time desc");
+        return mapper.selectByExample(example);
     }
 
     private BusinessMessageRecordExample generateExamples(QueryBusinessMessageRecordsRequest request) {
