@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
-import top.easyblog.common.request.article.CreateArticleRequest;
-import top.easyblog.common.request.article.QueryArticleCategoryListRequest;
-import top.easyblog.common.request.article.QueryArticlesRequest;
-import top.easyblog.common.request.article.UpdateArticleRequest;
+import top.easyblog.common.request.article.*;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.ArticleCategoryService;
 import top.easyblog.core.ArticleService;
@@ -46,5 +43,17 @@ public class AdminArticleService {
 
     public PageResponse<ArticleCategoryBean> queryArticleCategoryList(QueryArticleCategoryListRequest request) {
         return articleCategoryService.list(request);
+    }
+
+    public void createCategory(CreateArticleCategoryRequest request) {
+        articleCategoryService.saveArticleCategory(request);
+    }
+
+    public void updateArticleCategory(Long id, UpdateArticleCategoryRequest request) {
+        articleCategoryService.updateArticleCategory(id, request);
+    }
+
+    public void deleteCategory(Long id, String password) {
+        articleCategoryService.deleteByIds(id,password);
     }
 }

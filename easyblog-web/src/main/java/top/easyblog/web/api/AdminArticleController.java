@@ -3,14 +3,13 @@ package top.easyblog.web.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.easyblog.common.bean.ArticleBean;
+import top.easyblog.common.bean.ArticleCategoryBean;
 import top.easyblog.common.request.account.CreateAccountRequest;
 import top.easyblog.common.request.account.QueryAccountListRequest;
 import top.easyblog.common.request.account.QueryAccountRequest;
 import top.easyblog.common.request.account.UpdateAccountRequest;
-import top.easyblog.common.request.article.CreateArticleRequest;
-import top.easyblog.common.request.article.QueryArticleCategoryListRequest;
-import top.easyblog.common.request.article.QueryArticlesRequest;
-import top.easyblog.common.request.article.UpdateArticleRequest;
+import top.easyblog.common.request.article.*;
+import top.easyblog.common.response.PageResponse;
 import top.easyblog.dao.auto.model.Article;
 import top.easyblog.platform.service.AdminAccountService;
 import top.easyblog.platform.service.AdminArticleService;
@@ -52,14 +51,34 @@ public class AdminArticleController {
 
     @ResponseWrapper
     @GetMapping("/list")
-    public Object queryList(@Valid @RequestParamAlias QueryArticlesRequest request) {
+    public PageResponse<ArticleBean> queryList(@Valid @RequestParamAlias QueryArticlesRequest request) {
         return articleService.list(request);
     }
 
     @ResponseWrapper
     @GetMapping("/category/list")
-    public Object queryArticleCategoryList(@Valid @RequestParamAlias QueryArticleCategoryListRequest request) {
+    public PageResponse<ArticleCategoryBean> queryArticleCategoryList(@Valid @RequestParamAlias QueryArticleCategoryListRequest request) {
         return articleService.queryArticleCategoryList(request);
+    }
+
+
+    @ResponseWrapper
+    @PostMapping("/category")
+    public void createCategory(@RequestBody @Valid CreateArticleCategoryRequest request) {
+        articleService.createCategory(request);
+    }
+
+    @ResponseWrapper
+    @PutMapping("/category/{id}")
+    public void updateCategory(@PathVariable("id") Long id,
+                               @RequestBody @Valid UpdateArticleCategoryRequest request) {
+        articleService.updateArticleCategory(id, request);
+    }
+
+    @ResponseWrapper
+    @PostMapping("/category/{id}")
+    public void deleteCategory(@PathVariable("id") Long id, @RequestParam("pwd") String password) {
+        articleService.deleteCategory(id,password);
     }
 
 }

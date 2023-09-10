@@ -75,4 +75,16 @@ public class AtomicArticleCategoryService {
         return example;
     }
 
+    public void deleteByIds(List<Long> ids) {
+        if (CollectionUtils.isEmpty(ids)) {
+            return;
+        }
+
+        ArticleCategoryExample example = new ArticleCategoryExample();
+        ArticleCategoryExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        mapper.deleteByExample(example);
+        log.info("[DB]Delete article article by ids:{}", ids);
+    }
+
 }
