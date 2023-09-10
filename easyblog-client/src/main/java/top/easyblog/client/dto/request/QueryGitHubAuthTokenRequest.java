@@ -1,4 +1,4 @@
-package top.easyblog.client.model.request;
+package top.easyblog.client.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

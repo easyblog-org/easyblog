@@ -1,4 +1,4 @@
-package top.easyblog.client.model.response;
+package top.easyblog.client.dto.response;
 
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;

@@ -1,20 +1,24 @@
 package top.easyblog.core;
 
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import top.easyblog.common.bean.ArticleBean;
 import top.easyblog.common.bean.ArticleCategoryBean;
 import top.easyblog.common.constant.Constants;
 import top.easyblog.common.enums.QuerySection;
+import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.request.article.CreateArticleCategoryRequest;
 import top.easyblog.common.request.article.QueryArticleCategoryListRequest;
 import top.easyblog.common.request.article.UpdateArticleCategoryRequest;
+import top.easyblog.common.response.EasyResultCode;
 import top.easyblog.common.response.PageResponse;
 import top.easyblog.core.convert.BeanMapper;
 import top.easyblog.dao.atomic.AtomicArticleCategoryService;
@@ -39,6 +43,12 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
     @Autowired
     private BeanMapper beanMapper;
 
+    @Value("${custom.batch-delete-password}")
+    private String batchDeletePassword;
+
+    // 根节点分类Id
+    private static final Long ROOT_CATEGORY_PID = -1L;
+
     /**
      * 创建文章分类
      *
@@ -52,8 +62,8 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
     }
 
     private void checkPidValid(Long pid) {
-        if (Objects.isNull(pid)) {
-            log.info("Pid is null,will do not check parent category valid.");
+        if (Objects.isNull(pid) || Objects.equals(ROOT_CATEGORY_PID, pid)) {
+            log.info("Pid is root or null,will do not check parent category valid.");
             return;
         }
         ArticleCategoryBean articleCategoryBean = details(pid);
@@ -138,5 +148,34 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
                     .collect(Collectors.groupingBy(ArticleCategoryBean::getId));
             ctx.setArticleCategoryBeanMap(articleCategoryBeanMap);
         }
+    }
+
+    /**
+     * 删除分类
+     *
+     * @param id
+     * @param password
+     */
+    public void deleteByIds(Long id, String password) {
+        if (!StringUtils.equals(password, batchDeletePassword)) {
+            throw new BusinessException(EasyResultCode.NO_DELETE_PERMISSION);
+        }
+
+        ArticleCategoryBean details = details(id);
+        Assert.notNull(details, "Delete category not found by id:" + id);
+        List<Long> toBeDeleteIds = Lists.newArrayList(id);
+
+        // 查询并删除子节点
+        List<ArticleCategory> articleCategories = atomicArticleCategoryService.queryListByRequest(QueryArticleCategoryListRequest.builder()
+                .offset(null)
+                .limit(null)
+                .pids(Collections.singletonList(id))
+                .build());
+        if (CollectionUtils.isNotEmpty(articleCategories)) {
+            List<Long> relatedChildIds = articleCategories.stream().map(ArticleCategory::getId).collect(Collectors.toList());
+            toBeDeleteIds.addAll(relatedChildIds);
+        }
+
+        atomicArticleCategoryService.deleteByIds(toBeDeleteIds);
     }
 }

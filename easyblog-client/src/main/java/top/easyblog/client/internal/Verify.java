@@ -2,7 +2,7 @@ package top.easyblog.client.internal;
 
 
 
-import top.easyblog.client.model.response.Response;
+import top.easyblog.client.dto.response.Response;
 import top.easyblog.common.exception.BusinessException;
 import top.easyblog.common.response.EasyResultCode;
 

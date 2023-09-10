@@ -5,7 +5,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import top.easyblog.client.config.CommonFormFeignConfig;
 import top.easyblog.client.internal.Verify;
-import top.easyblog.client.model.request.QueryGitHubAuthTokenRequest;
+import top.easyblog.client.dto.request.QueryGitHubAuthTokenRequest;
 
 /**
  * @author: frank.huang

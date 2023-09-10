@@ -77,7 +77,7 @@ public class MessagePushListener implements SmartApplicationListener {
 
         String failReason = Optional.ofNullable(applicationEvent.getException()).map(e -> {
             if (e instanceof BusinessException) {
-                return ((BusinessException) e).getCode();
+                return String.format("%s:%s", ((BusinessException) e).getCode(), e.getMessage());
             } else {
                 return e.getMessage();
             }
