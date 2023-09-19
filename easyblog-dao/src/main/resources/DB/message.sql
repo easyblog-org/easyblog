@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `message_config`
     `code`                     varchar(8)  NOT NULL DEFAULT 0 COMMENT 'code',
     `type`                     varchar(36) NOT NULL DEFAULT 'receiver' COMMENT '参数类型: receiver/content ',
     `name`                     varchar(64) NOT NULL DEFAULT '' COMMENT '模板参数名',
-    `template_value_config_id` bigint(20)  NOT NULL DEFAULT '' COMMENT '模板参数取值方式配置',
+    `template_value_config_id` bigint(20)  NOT NULL DEFAULT 0 COMMENT '模板参数取值方式配置',
     `deleted`                  bit         NOT NULL DEFAULT 0 COMMENT '是否删除: 0.未删除 1.已删除',
     `create_time`              timestamp   NOT NULL DEFAULT current_timestamp COMMENT '创建时间',
     `update_time`              timestamp   NOT NULL DEFAULT current_timestamp on update current_timestamp COMMENT '更新时间',
