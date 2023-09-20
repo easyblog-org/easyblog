@@ -25,9 +25,10 @@ fi
 # Running Params Configuration
 #===========================================================================================
 ACTIVE_PROFILE="dev"
-SERVER_PORT="8001"
+SERVER_PORT=8001
 USE_DOCKER="false"
-while getopts ":m:p:d:" opt
+INSTANCE_NUM=1
+while getopts ":m:p:d:n:" opt
 do
     case $opt in
         m)
@@ -35,7 +36,9 @@ do
         p)
             SERVER_PORT=$OPTARG;;
         d)
-            USE_DOCKER=$OPTARG;;        
+            USE_DOCKER=$OPTARG;;
+        n)
+            INSTANCE_NUM=$OPTARG;;
         ?)
         echo "Unknown parameter"
         exit 1;;
@@ -137,15 +140,16 @@ runOnDocker(){
     docker stop "$ins" && docker rm "$ins"
   done
 
-   #启动新实例
   latest_image="${ARTIFACT}"
-  uuid=`cat /proc/sys/kernel/random/uuid`
-  random_version=${uuid:0:6}
-  docker run  --name ${ARTIFACT}-${random_version} -p ${SERVER_PORT}:${SERVER_PORT} \
-              -e "JVM_PARAMS=${JVM_PARAMS}" \
-              -e "JAVA_OPTS=${JAVA_OPTS}" \
-              -d "${latest_image}"  \
-              -v "${LOG_BASE_DIR}":/data/logs
+  for ((i=0; i<${INSTANCE_NUM}; i++)); do
+      port= $i + ${SERVER_PORT}
+      echo "$port"
+      docker run  --name ${ARTIFACT}-${port} -p ${port}:${SERVER_PORT} \
+                    -e "JVM_PARAMS=${JVM_PARAMS}" \
+                    -e "JAVA_OPTS=${JAVA_OPTS}" \
+                    -d "${latest_image}"  \
+                    -v "${LOG_BASE_DIR}":/data/logs
+  done
   echo "Start application on port ${SERVER_PORT} successfully! You can check ${LOG_BASE_DIR}/info.log"
 }
 
