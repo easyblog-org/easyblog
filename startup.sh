@@ -142,7 +142,7 @@ runOnDocker(){
 
   latest_image="${ARTIFACT}"
   for ((i=0; i<${INSTANCE_NUM}; i++)); do
-      port= $i + ${SERVER_PORT}
+      let port= $i + ${SERVER_PORT}
       echo "$port"
       docker run  --name ${ARTIFACT}-${port} -p ${port}:${SERVER_PORT} \
                     -e "JVM_PARAMS=${JVM_PARAMS}" \
