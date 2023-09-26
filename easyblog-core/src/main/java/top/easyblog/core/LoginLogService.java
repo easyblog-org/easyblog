@@ -91,7 +91,7 @@ public class LoginLogService implements IUserSectionInquireService {
         }
 
         List<String> userCodes = new ArrayList<>(userIdCodesMap.values());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_SIGN_LOG.getName(), section)) {
+        if (StringUtils.containsIgnoreCase(section, QuerySection.QUERY_SIGN_LOG.getName())) {
             QueryLoginLogListRequest request = QueryLoginLogListRequest.builder()
                     .userCodes(userCodes).status(Status.ENABLE.getCode().intValue()).offset(NumberUtils.INTEGER_ZERO)
                     .limit(Constants.QUERY_LIMIT_MAX_THOUSAND).build();

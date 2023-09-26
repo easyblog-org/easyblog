@@ -119,7 +119,7 @@ public class UserAvatarService implements
         }
 
         List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).distinct().collect(Collectors.toList());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR_AVATAR.name(), section)
+        if (StringUtils.containsIgnoreCase(section, QuerySection.QUERY_ARTICLE_AUTHOR_AVATAR.getName())
                 || queryWhenSectionEmpty) {
             ctx.setAuthorAvatarBeanMap(buildUserAvatarMap(authorIds, (userHeaderBeans) -> userHeaderBeans.stream()
                     .filter(item -> Boolean.TRUE.equals(item.getIsCurrentHeader()))

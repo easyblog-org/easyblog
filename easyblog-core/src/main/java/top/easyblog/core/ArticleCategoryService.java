@@ -140,7 +140,7 @@ public class ArticleCategoryService implements IArticleSectionInquireService {
         List<Long> categoryIds = articleBeanList.stream()
                 .map(item -> Arrays.stream(StringUtils.split(item.getCategoryIds(), Constants.COMMA)).map(Long::parseLong)
                         .collect(Collectors.toList())).flatMap(Collection::stream).distinct().collect(Collectors.toList());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_CATEGORY.name(), section) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(section, QuerySection.QUERY_ARTICLE_CATEGORY.getName()) || queryWhenSectionEmpty) {
             List<ArticleCategory> articleCategories = atomicArticleCategoryService.queryListByRequest(QueryArticleCategoryListRequest.builder()
                     .ids(categoryIds).limit(null).offset(null).build());
             Map<Long, List<ArticleCategoryBean>> articleCategoryBeanMap = articleCategories.stream().filter(Objects::nonNull)

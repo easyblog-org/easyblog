@@ -46,7 +46,7 @@ public class ArticleContentService implements IArticleSectionInquireService {
     public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList, boolean queryWhenSectionEmpty) {
         if (CollectionUtils.isEmpty(articleBeanList)) return;
         List<String> contentIds = articleBeanList.stream().map(ArticleBean::getContentId).distinct().collect(Collectors.toList());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_CONTENT.name(), section) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(section, QuerySection.QUERY_ARTICLE_CONTENT.getName()) || queryWhenSectionEmpty) {
             List<ArticleContent> articleContents = atomicArticleContentService.queryListByIds(contentIds);
             Map<String, ArticleContentBean> articleContentMap = articleContents.stream().filter(Objects::nonNull)
                     .map(item -> beanMapper.convertArticleContent2Bean(item))

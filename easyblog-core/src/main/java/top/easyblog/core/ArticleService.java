@@ -177,7 +177,10 @@ public class ArticleService {
     }
 
     private void fillSections(String sections, List<ArticleBean> articleBeans) {
-        if (CollectionUtils.isEmpty(articleBeans)) return;
+        if (CollectionUtils.isEmpty(articleBeans)) {
+            log.info("Article list is empty,ignore deal section query...");
+            return;
+        }
         ArticleSectionContext ctx = queryArticleSectionInfo(sections, articleBeans);
         articleBeans.stream().filter(Objects::nonNull).forEach(articleBean -> {
             String categoryIds = articleBean.getCategoryIds();
@@ -198,7 +201,7 @@ public class ArticleService {
         ArticleSectionContext ctx = new ArticleSectionContext();
         List<Runnable> tasks = new ArrayList<>();
         articleSectionInquireServices.forEach(executor -> {
-            tasks.add(() -> executor.execute(sections, ctx, articleBeans, true));
+            tasks.add(() -> executor.execute(sections, ctx, articleBeans, false));
         });
 
         ConcurrentUtils.executeTaskInBlockModel(tasks, null);

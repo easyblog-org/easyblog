@@ -30,5 +30,5 @@ public enum QuerySection {
 
     ;
 
-    private String name;
+    private final String name;
 }
