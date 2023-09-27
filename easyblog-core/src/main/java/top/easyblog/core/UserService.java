@@ -235,11 +235,11 @@ public class UserService implements IArticleSectionInquireService {
      */
     @Override
     public void execute(String section, ArticleSectionContext ctx, List<ArticleBean> articleBeanList,
-            boolean queryWhenSectionEmpty) {
+                        boolean queryWhenSectionEmpty) {
         if (CollectionUtils.isEmpty(articleBeanList))
             return;
         List<String> authorIds = articleBeanList.stream().map(ArticleBean::getAuthorId).distinct().collect(Collectors.toList());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ARTICLE_AUTHOR.name(), section)
+        if (StringUtils.containsIgnoreCase(section, QuerySection.QUERY_ARTICLE_AUTHOR.getName())
                 || queryWhenSectionEmpty) {
             List<User> userList = atomicUserService.queryUserListByRequest(QueryUserListRequest.builder()
                     .codes(authorIds).limit(null).offset(null).build());

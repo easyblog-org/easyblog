@@ -139,7 +139,7 @@ public class RolesService implements IUserSectionInquireService {
         }
 
         List<Long> userIds = new ArrayList<>(userIdCodesMap.keySet());
-        if (StringUtils.containsIgnoreCase(QuerySection.QUERY_ROLE.getName(), section) || queryWhenSectionEmpty) {
+        if (StringUtils.containsIgnoreCase(section, QuerySection.QUERY_ROLE.getName()) || queryWhenSectionEmpty) {
             List<UserRoleRelationship> userRoleRelationships = atomicUserRolesService
                     .queryList(QueryUserRolesListRequest.builder()
                             .userIds(userIds).enabled(Boolean.TRUE).build());
