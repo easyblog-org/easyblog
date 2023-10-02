@@ -30,6 +30,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static top.easyblog.common.constant.LoginConstants.LOGIN_TOKEN_KEY_PREFIX;
+
 /**
  * @author frank.huang
  * @date 2022/01/29 14:09
@@ -117,7 +119,7 @@ public class LoginService implements ILoginService {
         }
 
         // 如果用户已经登录直接返回，否则生成新的token
-        loginDetailsBean.setToken(String.format("auth:token:%s", generateLoginToken()));
+        loginDetailsBean.setToken(String.format(LOGIN_TOKEN_KEY_PREFIX, generateLoginToken()));
         asyncSaveLoginToken(request, loginDetailsBean);
         // 保存用户登录日志
         asyncSaveLoginLog(request, loginDetailsBean);
@@ -174,7 +176,8 @@ public class LoginService implements ILoginService {
         String token = request.getToken();
         Boolean hasKey = redisService.exists(token);
         if (Objects.isNull(hasKey) || !hasKey) {
-            throw new BusinessException(EasyResultCode.AUTH_TOKEN_NOT_FOUND);
+            log.info("AUTH_TOKEN_NOT_FOUND:" + token);
+            return true;
         }
         Long expire = redisService.getExpire(token);
         if (Objects.isNull(expire) || expire < 0) {
@@ -182,36 +185,34 @@ public class LoginService implements ILoginService {
             return true;
         }
 
-        String userInfoJson = redisService.get(token);
-        UserDetailsBean userDetailsBean = JsonUtils.parseObject(userInfoJson, UserDetailsBean.class);
         Boolean res = redisService.expire(token, 0L, TimeUnit.NANOSECONDS);
         if (Objects.isNull(res) || !res) {
             log.info("Redis delete token failed：{}", token);
             return false;
         }
 
-        asyncUpdateLoginStatusOffline(userDetailsBean, token);
+        asyncUpdateLoginStatusOffline(token);
         return true;
     }
 
     /**
      * 退出后更新登录状态为OFFLINE
      *
-     * @param userDetailsBean
      * @param token
      */
-    private void asyncUpdateLoginStatusOffline(UserDetailsBean userDetailsBean, String token) {
+    public void asyncUpdateLoginStatusOffline(String token) {
+        if (StringUtils.isBlank(token)) {
+            log.info("Token is empty, do not deal update login log");
+            return;
+        }
+
         ConcurrentUtils.asyncRunSingleTask(() -> {
-            // 退出成功执行
-            AccountBean currAccount = null;
-            if (Objects.nonNull(userDetailsBean) && Objects.nonNull(currAccount = userDetailsBean.getCurrAccount())) {
-                // 更新用户账户状态为退出
-                LoginLogBean signInLogBean = loginLogService.queryLoginLogDetails(QueryLoginLogRequest.builder().userCode(userDetailsBean.getCode()).accountCode(currAccount.getCode()).token(token).build());
-                Optional.ofNullable(signInLogBean).ifPresent(logBean -> {
-                    UpdateLoginLogRequest updateLoginLogRequest = UpdateLoginLogRequest.builder().status(LoginStatus.OFFLINE.getCode()).build();
-                    loginLogService.updateSignLog(logBean.getCode(), updateLoginLogRequest);
-                });
-            }
+            // 更新用户账户状态为退出
+            LoginLogBean signInLogBean = loginLogService.queryLoginLogDetails(QueryLoginLogRequest.builder().token(String.format(LOGIN_TOKEN_KEY_PREFIX, token)).build());
+            Optional.ofNullable(signInLogBean).ifPresent(logBean -> {
+                UpdateLoginLogRequest updateLoginLogRequest = UpdateLoginLogRequest.builder().status(LoginStatus.OFFLINE.getCode()).build();
+                loginLogService.updateSignLog(logBean.getCode(), updateLoginLogRequest);
+            });
         });
     }
 

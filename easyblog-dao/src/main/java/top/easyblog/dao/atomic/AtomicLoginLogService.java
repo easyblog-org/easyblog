@@ -111,9 +111,4 @@ public class AtomicLoginLogService {
         log.info("[DB]Update sign_in_log: {}", JsonUtils.toJSONString(loginLog));
     }
 
-
-    public void updateLoginLogByToken(String token, Integer status) {
-        myLoginLogMapper.updateByTokenSelective(token, status);
-        log.info("[DB]Update sign_in_log status to [{}] by token [{}]", status, token);
-    }
 }
