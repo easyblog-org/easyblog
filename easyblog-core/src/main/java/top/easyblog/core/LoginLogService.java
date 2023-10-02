@@ -64,9 +64,7 @@ public class LoginLogService implements IUserSectionInquireService {
         }
 
         List<LoginLogBean> loginLogBeans = atomicLoginLogService.querySignInLogListByRequest(request).stream()
-                .map(loginLog -> {
-                    return beanMapper.convertLoginLog2LoginLogBean(loginLog);
-                }).collect(Collectors.toList());
+                .map(loginLog -> beanMapper.convertLoginLog2LoginLogBean(loginLog)).collect(Collectors.toList());
         return PageResponse.<LoginLogBean>builder().limit(request.getLimit()).offset(request.getOffset())
                 .total(count).data(loginLogBeans).build();
     }

@@ -18,9 +18,7 @@ public final class LoginConstants {
     /**
      * 用户登录token
      */
-    public final static String LOGIN_TOKEN_KEY_PREFIX = "account:type:%s:identifier:%s";
-
-    public final static String USER_INFO_PREFIX = "user:token:%s";
+    public final static String LOGIN_TOKEN_KEY_PREFIX = "auth:token:%s";
 
     // 手机验证码key
     public static final String PHONE_LOGIN_CAPTCHA_CODE = "zeus:phone_captcha_code:%s";
