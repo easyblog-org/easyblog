@@ -2,6 +2,7 @@ package top.easyblog.dao.mongo.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -19,6 +20,7 @@ public class ArticleContent {
     @Field("_id")
     private String id;
 
+    @Indexed(unique = true, name = "idx_content_id")
     @Field("content_id")
     private String contentId;
 
