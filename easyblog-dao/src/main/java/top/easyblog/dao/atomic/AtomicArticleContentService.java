@@ -40,9 +40,13 @@ public class AtomicArticleContentService {
     }
 
     public String updateByPrimaryKeySelective(ArticleContent articleContent) {
-        if (Objects.isNull(articleContent.getContentId())) return "";
-        //通过query根据id查询出对应对象，通过update对象进行修改
-        Query query = new Query(Criteria.where("_id").is(articleContent.getContentId()));
+        if (StringUtils.isBlank(articleContent.getContentId())) {
+            log.info("Content is empty");
+            return "";
+        }
+        ;
+        //通过query根据content_id查询出对应对象，通过update对象进行修改
+        Query query = new Query(Criteria.where("content_id").is(articleContent.getContentId()));
         Update update = new Update();
         if (StringUtils.isNotBlank(articleContent.getContent())) {
             update.set("content", articleContent.getContent());
